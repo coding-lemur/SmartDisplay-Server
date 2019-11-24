@@ -1,0 +1,33 @@
+{
+    "name": "smart-display-server",
+    "version": "0.1.0",
+    "description": "Server which controlles the smart display.",
+    "main": "./lib/index.js",
+    "bin": {
+        "pizza": "./lib/index.js"
+    },
+    "scripts": {
+        "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+        "create": "npm run build && npm run test",
+        "build": "tsc -p .",
+        "test": "sudo npm i -g && pizza",
+        "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+    },
+    "author": "René Schimmelpfennig",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^3.0.0",
+        "clear": "^0.1.0",
+        "commander": "^4.0.1",
+        "exit-hook": "^2.2.0",
+        "figlet": "^1.2.4",
+        "mqtt": "^3.0.0",
+        "path": "^0.12.7"
+    },
+    "devDependencies": {
+        "@types/node": "^12.12.7",
+        "nodemon": "^1.19.4",
+        "ts-node": "^8.5.0",
+        "typescript": "^3.7.2"
+    }
+}
