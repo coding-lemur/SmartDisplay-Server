@@ -8,19 +8,11 @@ import path from 'path';
 import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
-import mqtt from 'mqtt';
 
 import packageJson from '../package.json';
 import settings from '../settings.json';
 
-enum App {
-    Time,
-    RoomWeather,
-    CityWeather
-}
-
-let powerOn = true;
-let currentApp = App.Time;
+import { Server } from './server';
 
 program
     .description(packageJson.description)
@@ -34,26 +26,7 @@ console.log(
     )
 );
 
-console.log("los geht's!");
-
-const mqttSettings = settings.mqtt;
-const client = mqtt.connect(mqttSettings.server, {
-    username: mqttSettings.username,
-    password: mqttSettings.password
-});
-
-client.publish('awtrix-server', 'started');
-client.subscribe('#');
-
-client.on('message', (topic, message) => {
-    // message is Buffer
-    console.log(message.toString());
-    //client.end()
-});
-
-client.on('error', error => {
-    console.error(error);
-});
+const server = new Server(settings);
 
 /*process.on('SIGTERM', code => {
     client.publish('awtrix-server', 'exit');
@@ -64,9 +37,5 @@ client.on('error', error => {
 
 exitHook(() => {
     console.log('Exiting');
-    client.end(true);
+    server.shutdown();
 });
-
-setInterval(() => {
-    console.log('next app');
-}, 15000);
