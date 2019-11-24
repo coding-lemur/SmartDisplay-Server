@@ -9,6 +9,8 @@ import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
 import mqtt from 'mqtt';
+
+import packageJson from '../package.json';
 import settings from '../settings.json';
 
 enum App {
@@ -19,6 +21,11 @@ enum App {
 
 let powerOn = true;
 let currentApp = App.Time;
+
+program
+    .description(packageJson.description)
+    .version(packageJson.version)
+    .parse(process.argv);
 
 clear();
 console.log(
