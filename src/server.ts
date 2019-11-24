@@ -31,7 +31,9 @@ export class Server {
         this.client.on('error', error => {
             console.error(error);
         });
+    }
 
+    run(): void {
         console.log("los geht's!");
 
         setInterval(() => {

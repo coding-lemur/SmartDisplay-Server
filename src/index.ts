@@ -28,6 +28,8 @@ console.log(
 
 const server = new Server(settings);
 
+server.run();
+
 /*process.on('SIGTERM', code => {
     client.publish('awtrix-server', 'exit');
     return console.log(`About to exit with code ${code}`);
