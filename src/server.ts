@@ -1,47 +1,57 @@
-import mqtt from 'mqtt';
-
-enum App {
-    Time,
-    RoomWeather,
-    CityWeather
-}
+import { App } from './apps/app';
+import { TimeApp } from './apps/time';
+import { SmartDisplayController } from './smart-display-controller';
 
 export class Server {
-    private readonly client: mqtt.Client;
+    private readonly apps: App[] = [];
+    private readonly controller: SmartDisplayController;
 
     private powerOn = true;
-    private currentApp = App.Time;
+    private currentAppIndex = 0;
 
     constructor(private settings: any) {
-        const mqttSettings = settings.mqtt;
-        this.client = mqtt.connect(mqttSettings.server, {
-            username: mqttSettings.username,
-            password: mqttSettings.password
-        });
+        this.controller = new SmartDisplayController(settings);
 
-        this.client.publish('awtrix-server', 'started');
-        this.client.subscribe('#');
+        this.loadApps();
+    }
 
-        this.client.on('message', (topic, message) => {
-            // message is Buffer
-            console.log(message.toString());
-            //client.end()
-        });
+    private loadApps(): void {
+        const timeApp = new TimeApp();
 
-        this.client.on('error', error => {
-            console.error(error);
-        });
+        this.apps.push(timeApp);
+
+        for (const app of this.apps) {
+            app.setup();
+        }
     }
 
     run(): void {
-        console.log("los geht's!");
+        console.log('go!');
+
+        this.showApp();
 
         setInterval(() => {
             console.log('next app');
+
+            this.nextApp();
+            this.showApp();
         }, 15000);
     }
 
+    private nextApp(): void {
+        this.currentAppIndex++;
+
+        if (this.currentAppIndex >= this.apps.length) {
+            this.currentAppIndex = 0;
+        }
+    }
+
+    private showApp(): void {
+        const app = this.apps[this.currentAppIndex];
+        app.show();
+    }
+
     shutdown(): void {
-        this.client.end(true);
+        this.controller.destroy();
     }
 }
