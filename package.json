@@ -10,7 +10,7 @@
         "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
         "create": "npm run build && npm run test",
         "build": "tsc -p .",
-        "test": "sudo npm i -g && pizza",
+        "test": "sudo npm i -g && smart-display",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
     },
     "author": "René Schimmelpfennig",
