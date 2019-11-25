@@ -21,9 +21,7 @@ program
 
 clear();
 console.log(
-    chalk.red(
-        figlet.textSync('smart-display server', { horizontalLayout: 'full' })
-    )
+    chalk.red(figlet.textSync('SmartDisplay', { horizontalLayout: 'full' }))
 );
 
 const server = new Server(settings);
