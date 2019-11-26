@@ -31,7 +31,7 @@ export class SmartDisplayController {
     }
 
     private processIncomingMessage(command: string, message: string) {
-        console.log('process', command, message);
+        console.log('controller cmd', command, message);
 
         switch (command) {
             case 'info': {

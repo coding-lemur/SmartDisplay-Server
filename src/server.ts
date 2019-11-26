@@ -20,9 +20,18 @@ export class Server {
                 username: mqttSettings.username,
                 password: mqttSettings.password
             })
-            /*.on('message', (topic, message) => {
-                console.log('message', topic, message.toString());
-            })*/
+            .on('message', (topic, message) => {
+                if (!topic.startsWith('smart-display/server/in/')) {
+                    return;
+                }
+
+                const parts = topic.split('/');
+                const lastPart = parts[parts.length - 1];
+
+                this.processIncomingMessage(lastPart, message.toString());
+
+                console.log('server message', topic, message.toString());
+            })
             .on('error', error => {
                 console.error(error);
             });
@@ -30,6 +39,20 @@ export class Server {
         this.controller = new SmartDisplayController(this.client);
 
         this.loadApps();
+    }
+
+    private processIncomingMessage(command: string, message: string) {
+        console.log('server cmd', command, message);
+
+        switch (command) {
+            case 'power': {
+                if (message === 'on' || message === 'off') {
+                    this.powerOn = message === 'on' ? true : false;
+                }
+
+                break;
+            }
+        }
     }
 
     private loadApps(): void {
