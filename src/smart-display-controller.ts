@@ -7,37 +7,46 @@ import {
     ControllerSettings,
     DrawTextData,
     DrawTextDataEasy,
-    FontWeight
+    LastUpdated
 } from './models';
 
 export class SmartDisplayController {
-    private readonly client: mqtt.Client;
+    private readonly info = new LastUpdated<ControllerInfo>();
+    private readonly roomWeather = new LastUpdated<RoomWeather>();
+    private readonly lux = new LastUpdated<number>();
 
-    // TODO maybe save the date when value was updated
-    private info: ControllerInfo | null = null;
-    private roomWeather: RoomWeather | null = null;
-    private lux: number | null = null;
+    constructor(private client: mqtt.Client) {
+        client
+            .on('message', (topic, message) => {
+                if (!topic.startsWith('smart-display/client/out/')) {
+                    return;
+                }
 
-    constructor(private settings: any) {
-        const mqttSettings = settings.mqtt;
+                const parts = topic.split('/');
+                const lastPart = parts[parts.length - 1];
 
-        this.client = mqtt.connect(mqttSettings.server, {
-            username: mqttSettings.username,
-            password: mqttSettings.password
-        });
+                this.processIncomingMessage(lastPart, message.toString());
+            })
+            .subscribe('smart-display/client/out/#');
+    }
 
-        this.client.publish('smart-display/server/out', 'started'); // TODO maybe move to server.ts
-        this.client.subscribe('smart-display/client/out/#');
+    private processIncomingMessage(command: string, message: string) {
+        console.log('process', command, message);
 
-        this.client.on('message', (topic, message) => {
-            // message is Buffer
-            console.log(message.toString());
-            //client.end()
-        });
-
-        this.client.on('error', error => {
-            console.error(error);
-        });
+        switch (command) {
+            case 'info': {
+                this.info.value = JSON.parse(message);
+                break;
+            }
+            case 'lux': {
+                this.lux.value = parseInt(message, 10);
+                break;
+            }
+            case 'roomWeather': {
+                this.roomWeather.value = JSON.parse(message);
+                break;
+            }
+        }
     }
 
     getInfo(): ControllerInfo | null {
@@ -74,7 +83,7 @@ export class SmartDisplayController {
     }
 
     drawText(data: DrawTextDataEasy): void {
-        const color = Color(data.color);
+        const color = Color(data.hexColor);
         const dataOut: DrawTextData = {
             text: data.text,
             x: data.position.x,
@@ -85,6 +94,18 @@ export class SmartDisplayController {
 
         this.client.publish(
             'smartDisplay/client/in/drawText',
+            JSON.stringify(dataOut)
+        );
+    }
+
+    fill(hexColor: string): void {
+        const color = Color(hexColor);
+        const dataOut = {
+            color: color.rgb()
+        };
+
+        this.client.publish(
+            'smartDisplay/client/in/fill',
             JSON.stringify(dataOut)
         );
     }

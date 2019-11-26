@@ -25,7 +25,6 @@ console.log(
 );
 
 const server = new Server(settings);
-
 server.run();
 
 /*process.on('SIGTERM', code => {

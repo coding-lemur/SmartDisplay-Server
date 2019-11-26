@@ -8,7 +8,7 @@ export enum FontWeight {
 export interface DrawTextDataEasy {
     text: string;
     position: Position;
-    color: string;
+    hexColor: string;
     fontWeight: FontWeight;
 }
 
