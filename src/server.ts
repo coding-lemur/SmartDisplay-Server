@@ -56,8 +56,7 @@ export class Server {
     }
 
     private loadApps(): void {
-        const timeApp = new TimeApp();
-
+        const timeApp = new TimeApp(this.controller);
         this.apps.push(timeApp);
 
         for (const app of this.apps) {
