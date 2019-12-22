@@ -3,6 +3,6 @@
         "server": "mqtt://my-server.com:1883",
         "username": "smart-display",
         "password": "*******"
-    }
+    },
     "locale": "de"
 }
