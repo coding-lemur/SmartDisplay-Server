@@ -9,10 +9,6 @@ import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
 
-import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
-import 'dayjs/locale/de';
-
 import packageJson from '../package.json';
 import settings from '../settings.json';
 
@@ -28,11 +24,7 @@ console.log(
     chalk.red(figlet.textSync('SmartDisplay', { horizontalLayout: 'full' }))
 );
 
-dayjs.locale('de');
-dayjs.extend(weekday);
-
-const server = new Server(settings);
-server.run();
+let server: Server;
 
 /*process.on('SIGTERM', code => {
     client.publish('awtrix-server', 'exit');
@@ -43,5 +35,18 @@ server.run();
 
 exitHook(() => {
     console.log('Exiting');
-    server.shutdown();
+
+    if (server != null) {
+        server.shutdown();
+    }
+});
+
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import(`dayjs/locale/${settings.locale}`).then(() => {
+    dayjs.locale(settings.locale);
+    dayjs.extend(weekday);
+
+    server = new Server(settings);
+    server.run();
 });
