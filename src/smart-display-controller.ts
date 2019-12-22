@@ -1,6 +1,8 @@
 import mqtt from 'mqtt';
 import Color from 'color';
 
+import { Position } from './models';
+
 import {
     RoomWeather,
     ControllerInfo,
@@ -95,6 +97,23 @@ export class SmartDisplayController {
 
         this.client.publish(
             'smartDisplay/client/in/drawText',
+            JSON.stringify(dataOut)
+        );
+    }
+
+    drawLine(start: Position, end: Position, hexColor: string): void {
+        const color = Color(hexColor);
+
+        const dataOut: any = {
+            x0: start.x,
+            y0: start.x,
+            x1: end.x,
+            y1: end.y,
+            color: color.rgb().array()
+        };
+
+        this.client.publish(
+            'smartDisplay/client/in/drawLine',
             JSON.stringify(dataOut)
         );
     }
