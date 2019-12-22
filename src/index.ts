@@ -9,6 +9,10 @@ import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
 
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import 'dayjs/locale/de';
+
 import packageJson from '../package.json';
 import settings from '../settings.json';
 
@@ -23,6 +27,9 @@ clear();
 console.log(
     chalk.red(figlet.textSync('SmartDisplay', { horizontalLayout: 'full' }))
 );
+
+dayjs.locale('de');
+dayjs.extend(weekday);
 
 const server = new Server(settings);
 server.run();
