@@ -7,7 +7,8 @@ import {
     ControllerSettings,
     DrawTextData,
     DrawTextDataEasy,
-    LastUpdated
+    LastUpdated,
+    FontWeight
 } from './models';
 
 export class SmartDisplayController {
@@ -89,7 +90,7 @@ export class SmartDisplayController {
             x: data.position.x,
             y: data.position.y,
             color: color.rgb().array(),
-            font: data.fontWeight
+            font: data.fontWeight || FontWeight.Normal
         };
 
         this.client.publish(

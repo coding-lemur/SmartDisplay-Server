@@ -9,7 +9,7 @@ export interface DrawTextDataEasy {
     text: string;
     position: Position;
     hexColor: string;
-    fontWeight: FontWeight;
+    fontWeight?: FontWeight;
 }
 
 export interface DrawTextData {
