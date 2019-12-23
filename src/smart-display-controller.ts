@@ -106,7 +106,7 @@ export class SmartDisplayController {
 
         const dataOut: any = {
             x0: start.x,
-            y0: start.x,
+            y0: start.y,
             x1: end.x,
             y1: end.y,
             color: color.rgb().array()
