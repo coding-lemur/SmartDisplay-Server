@@ -23,7 +23,7 @@ export class TimeApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: time,
-            position: { x: 7, y: 9 }
+            position: { x: 7, y: 1 }
         });
     }
 
