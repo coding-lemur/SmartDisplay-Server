@@ -21,7 +21,7 @@ export class SmartDisplayController {
     constructor(private client: mqtt.Client) {
         client
             .on('message', (topic, message) => {
-                if (!topic.startsWith('smart-display/client/out/')) {
+                if (!topic.startsWith('smartDisplay/client/out/')) {
                     return;
                 }
 
@@ -30,7 +30,7 @@ export class SmartDisplayController {
 
                 this.processIncomingMessage(lastPart, message.toString());
             })
-            .subscribe('smart-display/client/out/#');
+            .subscribe('smartDisplay/client/out/#');
     }
 
     private processIncomingMessage(command: string, message: string) {
@@ -59,7 +59,7 @@ export class SmartDisplayController {
     }
 
     getRoomWeather(): RoomWeather | null {
-        this.client.publish('smart-display/client/in/roomWeather', '');
+        this.client.publish('smartDisplay/client/in/roomWeather', '');
 
         return null;
     }

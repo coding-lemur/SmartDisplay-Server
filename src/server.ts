@@ -21,7 +21,7 @@ export class Server {
                 password: mqttSettings.password
             })
             .on('message', (topic, message) => {
-                if (!topic.startsWith('smart-display/server/in/')) {
+                if (!topic.startsWith('smartDisplay/server/in/')) {
                     return;
                 }
 
@@ -66,7 +66,7 @@ export class Server {
 
     run(): void {
         console.log('go!');
-        this.client.publish('smart-display/server/out', 'started');
+        this.client.publish('smartDisplay/server/out', 'started');
 
         this.showApp();
 
