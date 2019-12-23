@@ -43,6 +43,7 @@ exitHook(() => {
 
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
+
 import(`dayjs/locale/${settings.locale}`).then(() => {
     dayjs.locale(settings.locale);
     dayjs.extend(weekday);
