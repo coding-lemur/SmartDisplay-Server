@@ -2,7 +2,6 @@ import mqtt from 'mqtt';
 import Color from 'color';
 
 import {
-    RoomWeather,
     ControllerInfo,
     ControllerSettings,
     DrawTextData,
@@ -14,9 +13,11 @@ import {
 import { MqttHelper } from './helper';
 
 export class SmartDisplayController {
-    private readonly info = new LastUpdated<ControllerInfo>();
-    private readonly roomWeather = new LastUpdated<RoomWeather>();
-    private readonly lux = new LastUpdated<number>();
+    private readonly _info = new LastUpdated<ControllerInfo>();
+
+    get info(): ControllerInfo | null {
+        return this._info.value;
+    }
 
     constructor(private client: mqtt.Client) {
         client
@@ -43,36 +44,10 @@ export class SmartDisplayController {
 
         switch (command) {
             case 'info': {
-                this.info.value = JSON.parse(message);
-                break;
-            }
-            case 'lux': {
-                this.lux.value = parseInt(message, 10);
-                break;
-            }
-            case 'roomWeather': {
-                this.roomWeather.value = JSON.parse(message);
+                this._info.value = JSON.parse(message);
                 break;
             }
         }
-    }
-
-    getInfo(): ControllerInfo | null {
-        this.client.publish('smartDisplay/client/in/info', '');
-
-        return null;
-    }
-
-    getRoomWeather(): RoomWeather | null {
-        this.client.publish('smartDisplay/client/in/roomWeather', '');
-
-        return null;
-    }
-
-    getLux(): number | null {
-        this.client.publish('smartDisplay/client/in/lux', '');
-
-        return null;
     }
 
     changeSettings(settings: ControllerSettings): void {

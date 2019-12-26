@@ -2,9 +2,9 @@ import mqtt from 'mqtt';
 
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
+import { RoomWeatherApp } from './apps/roomWeather';
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
-import { RoomWeather } from './apps/roomWeather';
 
 export class Server {
     private readonly client: mqtt.Client;
@@ -65,7 +65,7 @@ export class Server {
 
     private loadApps(): void {
         const timeApp = new TimeApp();
-        const roomWeather = new RoomWeather();
+        const roomWeather = new RoomWeatherApp();
         this.apps.push(...[timeApp, roomWeather]);
     }
 
