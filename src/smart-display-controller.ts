@@ -16,6 +16,7 @@ export class SmartDisplayController {
     private readonly _info = new LastUpdated<ControllerInfo>();
 
     get info(): ControllerInfo | null {
+        // TODO return NULL if data too old
         return this._info.value;
     }
 
