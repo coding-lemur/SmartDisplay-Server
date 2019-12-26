@@ -97,7 +97,7 @@ export class SmartDisplayController {
             x: data.position.x,
             y: data.position.y,
             color: color.rgb().array(),
-            font: data.fontWeight || FontWeight.Normal
+            font: data.fontWeight ?? FontWeight.Normal
         };
 
         this.client.publish(
