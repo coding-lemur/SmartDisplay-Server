@@ -1,8 +1,6 @@
 import mqtt from 'mqtt';
 import Color from 'color';
 
-import { Position } from './models';
-
 import {
     RoomWeather,
     ControllerInfo,
@@ -10,8 +8,10 @@ import {
     DrawTextData,
     DrawTextDataEasy,
     LastUpdated,
-    FontWeight
+    FontWeight,
+    Position
 } from './models';
+import { MqttHelper } from './helper';
 
 export class SmartDisplayController {
     private readonly info = new LastUpdated<ControllerInfo>();
@@ -25,16 +25,21 @@ export class SmartDisplayController {
                     return;
                 }
 
-                const parts = topic.split('/');
-                const lastPart = parts[parts.length - 1];
-
+                const lastPart = MqttHelper.getLastTopicPart(topic);
                 this.processIncomingMessage(lastPart, message.toString());
             })
             .subscribe('smartDisplay/client/out/#');
     }
 
-    private processIncomingMessage(command: string, message: string) {
-        console.log('controller cmd', command, message);
+    private processIncomingMessage(
+        command: string | null,
+        message: string
+    ): void {
+        if (command == null) {
+            return;
+        }
+
+        console.log(new Date(), 'controller cmd', command, message);
 
         switch (command) {
             case 'info': {

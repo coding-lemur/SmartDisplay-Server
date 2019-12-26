@@ -2,6 +2,7 @@ import mqtt from 'mqtt';
 
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
+import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
 
 export class Server {
@@ -25,15 +26,13 @@ export class Server {
                     return;
                 }
 
-                const parts = topic.split('/');
-                const lastPart = parts[parts.length - 1];
-
+                const lastPart = MqttHelper.getLastTopicPart(topic);
                 this.processIncomingMessage(lastPart, message.toString());
 
                 console.log('server message', topic, message.toString());
             })
             .on('error', error => {
-                console.error(error);
+                console.error('MQTT', error);
             });
 
         this.controller = new SmartDisplayController(this.client);
@@ -41,7 +40,14 @@ export class Server {
         this.loadApps();
     }
 
-    private processIncomingMessage(command: string, message: string) {
+    private processIncomingMessage(
+        command: string | null,
+        message: string
+    ): void {
+        if (command == null) {
+            return;
+        }
+
         console.log('server cmd', command, message);
 
         switch (command) {
@@ -65,13 +71,16 @@ export class Server {
     }
 
     run(): void {
-        console.log('go!');
         this.client.publish('smartDisplay/server/out', 'started');
 
         this.showApp();
 
         setInterval(() => {
             console.log('next app');
+
+            if (!this.client.connected) {
+                console.error('client not connected');
+            }
 
             this.nextApp();
             this.showApp();
