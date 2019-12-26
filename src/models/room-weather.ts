@@ -1,4 +1,4 @@
 export interface RoomWeather {
-    humidity: string;
-    temperature: string;
+    humidity: number;
+    temperature: number;
 }
