@@ -4,6 +4,7 @@ import { App } from './apps/app';
 import { TimeApp } from './apps/time';
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
+import { RoomWeather } from './apps/roomWeather';
 
 export class Server {
     private readonly client: mqtt.Client;
@@ -12,6 +13,7 @@ export class Server {
 
     private powerOn = true;
     private currentAppIndex = 0;
+    private appIterations = 0;
 
     constructor(settings: any) {
         const mqttSettings = settings.mqtt;
@@ -63,15 +65,14 @@ export class Server {
 
     private loadApps(): void {
         const timeApp = new TimeApp(this.controller);
-        this.apps.push(timeApp);
-
-        for (const app of this.apps) {
-            app.setup();
-        }
+        const roomWeather = new RoomWeather(this.controller);
+        this.apps.push(...[timeApp, roomWeather]);
     }
 
     run(): void {
         this.client.publish('smartDisplay/server/out', 'started');
+
+        this.appIterations = 0;
 
         this.renderApp();
 
@@ -80,23 +81,38 @@ export class Server {
                 console.error('client not connected');
             }
 
-            //this.nextApp();
-            //console.log('next app');
             this.renderApp();
+
+            if (this.appIterations >= 15) {
+                this.nextApp();
+            }
         }, 1000);
     }
 
     private nextApp(): void {
+        console.log('next app');
+
         this.currentAppIndex++;
 
         if (this.currentAppIndex >= this.apps.length) {
             this.currentAppIndex = 0;
         }
+
+        this.appIterations = 0;
     }
 
     private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
+
+        if (this.appIterations === 0) {
+            app.reset();
+        }
+
+        this.controller.clear();
         app.render();
+        this.controller.show();
+
+        this.appIterations++;
     }
 
     shutdown(): void {

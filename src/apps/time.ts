@@ -8,15 +8,11 @@ export class TimeApp implements App {
 
     constructor(private controller: SmartDisplayController) {}
 
-    setup(): void {}
+    reset(): void {}
 
     render(): void {
-        this.controller.clear();
-
         this.renderTime();
         this.renderWeekday();
-
-        this.controller.show();
 
         // toggle colon
         this.showColon = !this.showColon;
