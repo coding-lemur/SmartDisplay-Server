@@ -4,7 +4,6 @@ const clear = require('clear');
 const figlet = require('figlet');
 
 import chalk from 'chalk';
-import path from 'path';
 import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
