@@ -1,0 +1,15 @@
+[Unit]
+Description=SmartDisplay Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/SmartDisplay-Server/
+Type=simple
+ExecStart=/usr/bin/npm start
+RemainAfterExit=no
+Restart=on-failure
+RestartSec=5s
+User=pi
+
+[Install]
+WantedBy=multi-user.target
