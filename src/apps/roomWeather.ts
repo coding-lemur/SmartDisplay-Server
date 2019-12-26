@@ -7,21 +7,19 @@ export class RoomWeatherApp implements App {
     reset(): void {}
 
     render(controller: SmartDisplayController): void {
-        if (controller.info == null) {
-            controller.drawText({
-                hexColor: '#FF0000',
-                text: 'NO DATA',
-                position: { x: 7, y: 1 }
-            });
-
+        if (
+            controller.info == null ||
+            controller.info.roomWeather == null ||
+            controller.info.roomWeather.temperature == null
+        ) {
             return;
         }
 
-        const roomWeather = controller.info?.roomWeather;
+        const { temperature } = controller.info.roomWeather;
 
         controller.drawText({
             hexColor: '#00C8C8',
-            text: `${roomWeather?.temperature}°`,
+            text: `${temperature}°`,
             position: { x: 7, y: 1 }
         });
     }
