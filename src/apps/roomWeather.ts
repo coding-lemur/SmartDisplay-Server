@@ -2,12 +2,12 @@ import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 
 export class RoomWeather implements App {
-    constructor(private controller: SmartDisplayController) {}
+    constructor() {}
 
     reset(): void {}
 
-    render(): void {
-        this.controller.drawText({
+    render(controller: SmartDisplayController): void {
+        controller.drawText({
             hexColor: '#00C8C8',
             text: '4°',
             position: { x: 7, y: 1 }

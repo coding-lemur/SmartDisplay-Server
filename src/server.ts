@@ -64,8 +64,8 @@ export class Server {
     }
 
     private loadApps(): void {
-        const timeApp = new TimeApp(this.controller);
-        const roomWeather = new RoomWeather(this.controller);
+        const timeApp = new TimeApp();
+        const roomWeather = new RoomWeather();
         this.apps.push(...[timeApp, roomWeather]);
     }
 
@@ -109,7 +109,7 @@ export class Server {
         }
 
         this.controller.clear();
-        app.render();
+        app.render(this.controller);
         this.controller.show();
 
         this.appIterations++;
