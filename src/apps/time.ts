@@ -4,21 +4,27 @@ import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 
 export class TimeApp implements App {
+    private showColon = true;
+
     constructor(private controller: SmartDisplayController) {}
 
     setup(): void {}
 
-    show(): void {
+    render(): void {
         this.controller.clear();
 
         this.renderTime();
         this.renderWeekday();
 
         this.controller.show();
+
+        // toggle colon
+        this.showColon = !this.showColon;
     }
 
     private renderTime(): void {
-        const time = dayjs().format('HH:mm');
+        const format = this.showColon ? 'HH:mm' : 'HH mm';
+        const time = dayjs().format(format);
 
         this.controller.drawText({
             hexColor: '#00C8C8',

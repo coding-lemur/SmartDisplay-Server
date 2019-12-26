@@ -73,18 +73,17 @@ export class Server {
     run(): void {
         this.client.publish('smartDisplay/server/out', 'started');
 
-        this.showApp();
+        this.renderApp();
 
         setInterval(() => {
-            console.log('next app');
-
             if (!this.client.connected) {
                 console.error('client not connected');
             }
 
-            this.nextApp();
-            this.showApp();
-        }, 15000);
+            //this.nextApp();
+            //console.log('next app');
+            this.renderApp();
+        }, 1000);
     }
 
     private nextApp(): void {
@@ -95,9 +94,9 @@ export class Server {
         }
     }
 
-    private showApp(): void {
+    private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
-        app.show();
+        app.render();
     }
 
     shutdown(): void {
