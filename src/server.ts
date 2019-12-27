@@ -11,7 +11,6 @@ export class Server {
     private readonly apps: App[] = [];
     private readonly controller: SmartDisplayController;
 
-    private powerOn = true;
     private currentAppIndex = 0;
     private appIterations = 0;
 
@@ -55,7 +54,9 @@ export class Server {
         switch (command) {
             case 'power': {
                 if (message === 'on' || message === 'off') {
-                    this.powerOn = message === 'on' ? true : false;
+                    const powerOn = message === 'on' ? true : false;
+
+                    this.controller.power(powerOn);
                 }
 
                 break;

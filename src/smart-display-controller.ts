@@ -15,6 +15,8 @@ import { MqttHelper } from './helper';
 export class SmartDisplayController {
     private readonly _info = new LastUpdated<ControllerInfo>();
 
+    private _powerStatus: boolean = true; // true = on; false = off
+
     get info(): ControllerInfo | null {
         // TODO return NULL if data too old
         return this._info.value;
@@ -46,6 +48,22 @@ export class SmartDisplayController {
         switch (command) {
             case 'info': {
                 this._info.value = JSON.parse(message);
+
+                const powerOnDevice = this._info.value?.powerOn;
+
+                // check power status
+                if (powerOnDevice !== this._powerStatus) {
+                    // inconsistence detected
+                    console.warn(
+                        'power status inconstistence:',
+                        `server: ${this._powerStatus}`,
+                        `device: ${powerOnDevice}`
+                    );
+
+                    // fix status
+                    this.power(this._powerStatus);
+                }
+
                 break;
             }
         }
@@ -107,6 +125,18 @@ export class SmartDisplayController {
 
         this.client.publish(
             'smartDisplay/client/in/fill',
+            JSON.stringify(dataOut)
+        );
+    }
+
+    power(status: boolean): void {
+        this._powerStatus = status;
+
+        const dataOut = {
+            on: status
+        };
+        this.client.publish(
+            'smartDisplay/client/in/power',
             JSON.stringify(dataOut)
         );
     }
