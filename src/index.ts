@@ -33,7 +33,7 @@ let server: Server;
 //process.stdin.resume(); // so the program will not close instantly
 
 exitHook(() => {
-    console.log('Exiting');
+    console.debug('Exiting');
 
     if (server != null) {
         server.shutdown();

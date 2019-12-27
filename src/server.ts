@@ -11,6 +11,7 @@ export class Server {
     private readonly apps: App[] = [];
     private readonly controller: SmartDisplayController;
 
+    private interval: NodeJS.Timeout | null = null;
     private currentAppIndex = 0;
     private appIterations = 0;
 
@@ -22,6 +23,7 @@ export class Server {
                 username: mqttSettings.username,
                 password: mqttSettings.password
             })
+            .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
                 if (!topic.startsWith('smartDisplay/server/in/')) {
                     return;
@@ -29,8 +31,6 @@ export class Server {
 
                 const lastPart = MqttHelper.getLastTopicPart(topic);
                 this.processIncomingMessage(lastPart, message.toString());
-
-                console.log('server message', topic, message.toString());
             })
             .on('error', error => {
                 console.error('MQTT', error);
@@ -49,14 +49,22 @@ export class Server {
             return;
         }
 
-        console.log('server cmd', command, message);
+        console.debug('server cmd', command, message);
 
         switch (command) {
             case 'power': {
                 if (message === 'on' || message === 'off') {
                     const powerOn = message === 'on' ? true : false;
 
+                    console.debug('switch power-status', powerOn);
+
                     this.controller.power(powerOn);
+
+                    if (powerOn) {
+                        this.startInterval();
+                    } else {
+                        this.stopInterval();
+                    }
                 }
 
                 break;
@@ -73,14 +81,22 @@ export class Server {
     run(): void {
         this.client.publish('smartDisplay/server/out', 'started');
 
+        this.startInterval();
+    }
+
+    private startInterval(): void {
+        console.debug('startInterval()');
+
         this.appIterations = 0;
 
         this.renderApp();
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             if (!this.client.connected) {
                 console.error('client not connected');
             }
+
+            console.debug('power-status', this.controller.powerStatus);
 
             this.renderApp();
 
@@ -90,8 +106,18 @@ export class Server {
         }, 1000);
     }
 
+    private stopInterval(): void {
+        console.debug('stopInterval()');
+
+        if (this.interval == null) {
+            return;
+        }
+
+        clearInterval(this.interval);
+    }
+
     private nextApp(): void {
-        console.log('next app');
+        console.debug('next app');
 
         this.currentAppIndex++;
 
@@ -117,6 +143,8 @@ export class Server {
     }
 
     shutdown(): void {
+        console.debug('shutdown');
+
         this.controller.destroy();
     }
 }

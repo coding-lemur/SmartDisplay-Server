@@ -22,8 +22,13 @@ export class SmartDisplayController {
         return this._info.value;
     }
 
+    get powerStatus(): boolean {
+        return this._powerStatus;
+    }
+
     constructor(private client: mqtt.Client) {
         client
+            .subscribe('smartDisplay/client/out/#')
             .on('message', (topic, message) => {
                 if (!topic.startsWith('smartDisplay/client/out/')) {
                     return;
@@ -31,8 +36,7 @@ export class SmartDisplayController {
 
                 const lastPart = MqttHelper.getLastTopicPart(topic);
                 this.processIncomingMessage(lastPart, message.toString());
-            })
-            .subscribe('smartDisplay/client/out/#');
+            });
     }
 
     private processIncomingMessage(
@@ -43,29 +47,37 @@ export class SmartDisplayController {
             return;
         }
 
-        console.log(new Date(), 'controller cmd', command, message);
+        console.debug(new Date(), 'controller cmd', command, message);
 
         switch (command) {
             case 'info': {
-                this._info.value = JSON.parse(message);
+                try {
+                    this._info.value = JSON.parse(message);
 
-                const powerOnDevice = this._info.value?.powerOn;
-
-                // check power status
-                if (powerOnDevice !== this._powerStatus) {
-                    // inconsistence detected
-                    console.warn(
-                        'power status inconstistence:',
-                        `server: ${this._powerStatus}`,
-                        `device: ${powerOnDevice}`
-                    );
-
-                    // fix status
-                    this.power(this._powerStatus);
+                    this.checkPowerStatus();
+                } catch (error) {
+                    console.error('error on parse info payload', error);
                 }
 
                 break;
             }
+        }
+    }
+
+    private checkPowerStatus(): void {
+        const powerOnDevice = this._info.value?.powerOn;
+
+        // check power status
+        if (powerOnDevice !== this._powerStatus) {
+            // inconsistence detected
+            console.warn(
+                'power status inconstistence:',
+                `server: ${this._powerStatus}`,
+                `device: ${powerOnDevice}`
+            );
+
+            // fix status
+            this.power(this._powerStatus);
         }
     }
 
