@@ -1,12 +1,9 @@
-import { RoomWeather } from './room-weather';
+import { RoomWeather, Network } from './';
 
 export interface ControllerInfo {
     version: string;
-    wifirssi: string;
-    wifiquality: number;
-    wifissid: string;
-    ip: string;
     chipID: string;
     lux: number;
+    network: Network;
     roomWeather: RoomWeather;
 }
