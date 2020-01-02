@@ -1,5 +1,6 @@
 import mqtt from 'mqtt';
 import Color from 'color';
+import dayjs from 'dayjs';
 
 import {
     ControllerInfo,
@@ -18,7 +19,19 @@ export class SmartDisplayController {
     private _powerStatus: boolean = true; // true = on; false = off
 
     get info(): ControllerInfo | null {
-        // TODO return NULL if data too old
+        if (this._info == null || this._info.lastUpdated == null) {
+            return null;
+        }
+
+        const lastUpdate = dayjs(this._info.lastUpdated);
+        const diffSeconds = dayjs().diff(lastUpdate, 'second');
+
+        if (diffSeconds > 60) {
+            console.warn('info too old', diffSeconds);
+
+            return null;
+        }
+
         return this._info.value;
     }
 
