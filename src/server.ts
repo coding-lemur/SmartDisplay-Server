@@ -96,8 +96,6 @@ export class Server {
                 console.error('client not connected');
             }
 
-            console.debug('power-status', this.controller.powerStatus);
-
             this.renderApp();
 
             if (this.appIterations >= 15) {
