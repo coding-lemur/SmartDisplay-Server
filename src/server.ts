@@ -73,8 +73,8 @@ export class Server {
     }
 
     private loadApps(): void {
-        const timeApp = new TimeApp();
-        const roomWeather = new RoomWeatherApp();
+        const timeApp = new TimeApp(this.controller);
+        const roomWeather = new RoomWeatherApp(this.controller);
         this.apps.push(...[timeApp, roomWeather]);
     }
 
@@ -115,27 +115,33 @@ export class Server {
     }
 
     private nextApp(): void {
-        console.debug('next app');
-
+        this.appIterations = 0;
         this.currentAppIndex++;
 
         if (this.currentAppIndex >= this.apps.length) {
             this.currentAppIndex = 0;
         }
 
-        this.appIterations = 0;
+        const app = this.apps[this.currentAppIndex];
+
+        console.debug('next app', app.name);
+
+        app.reset();
+
+        if (!app.isReady) {
+            this.nextApp();
+        }
     }
 
     private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
+        const { shouldRerender } = app;
 
-        if (this.appIterations === 0) {
-            app.reset();
+        if (shouldRerender) {
+            this.controller.clear();
+            app.render();
+            this.controller.show();
         }
-
-        this.controller.clear();
-        app.render(this.controller);
-        this.controller.show();
 
         this.appIterations++;
     }

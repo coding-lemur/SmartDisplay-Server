@@ -6,30 +6,34 @@ import { SmartDisplayController } from '../smart-display-controller';
 export class TimeApp implements App {
     private showColon = true;
 
-    constructor() {}
+    readonly name = 'time';
+    readonly shouldRerender = true;
+    readonly isReady = true;
+
+    constructor(private controller: SmartDisplayController) {}
 
     reset(): void {}
 
-    render(controller: SmartDisplayController): void {
-        this.renderTime(controller);
-        this.renderWeekday(controller);
+    render(): void {
+        this.renderTime();
+        this.renderWeekday();
 
         // toggle colon
         this.showColon = !this.showColon;
     }
 
-    private renderTime(controller: SmartDisplayController): void {
+    private renderTime(): void {
         const format = this.showColon ? 'HH:mm' : 'HH mm';
         const time = dayjs().format(format);
 
-        controller.drawText({
+        this.controller.drawText({
             hexColor: '#00C8C8',
             text: time,
             position: { x: 7, y: 1 }
         });
     }
 
-    private renderWeekday(controller: SmartDisplayController): void {
+    private renderWeekday(): void {
         const currentWeekday = dayjs().weekday();
         const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
 
@@ -37,7 +41,7 @@ export class TimeApp implements App {
             const xPosition = getXPositionByWeekDay(weekday);
             const color = weekday === currentWeekday ? '#00C8C8' : '#A0A0A0';
 
-            controller.drawLine(
+            this.controller.drawLine(
                 { x: xPosition, y: 7 },
                 { x: xPosition + 2, y: 7 },
                 color
