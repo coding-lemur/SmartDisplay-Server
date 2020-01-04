@@ -1,4 +1,4 @@
-import mqtt from 'mqtt';
+import mqtt, { IClientOptions } from 'mqtt';
 
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
@@ -16,13 +16,14 @@ export class Server {
     private appIterations = 0;
 
     constructor(settings: any) {
-        const mqttSettings = settings.mqtt;
+        const { server, username, password } = settings.mqtt;
+        const clientOptions: IClientOptions = {
+            username,
+            password
+        };
 
         this.client = mqtt
-            .connect(mqttSettings.server, {
-                username: mqttSettings.username,
-                password: mqttSettings.password
-            })
+            .connect(server, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
                 if (!topic.startsWith('smartDisplay/server/in/')) {
@@ -92,14 +93,14 @@ export class Server {
         this.renderApp();
 
         this.interval = setInterval(() => {
-            if (!this.client.connected) {
+            if (this.client.connected) {
+                this.renderApp();
+
+                if (this.appIterations >= 15) {
+                    this.nextApp();
+                }
+            } else {
                 console.error('client not connected');
-            }
-
-            this.renderApp();
-
-            if (this.appIterations >= 15) {
-                this.nextApp();
             }
         }, 1000);
     }
