@@ -9,8 +9,13 @@ export class CityWeatherApp implements App {
     private readonly _service = new OpenWeatherMapService(this.settings);
     private readonly _data = new LastUpdated<CityWeatherData>();
 
+    private _wasRendered = false;
+
     readonly name = 'city-weather';
-    readonly shouldRerender = true;
+
+    get shouldRerender(): boolean {
+        return !this._wasRendered;
+    }
 
     get isReady(): boolean {
         if (this._data == null || this._data.lastUpdated == null) {
@@ -29,7 +34,12 @@ export class CityWeatherApp implements App {
     ) {}
 
     reset(): void {
-        if (this.isReady) {
+        this._wasRendered = false;
+
+        const isReady = this.isReady;
+        console.log('city reset', isReady);
+
+        if (isReady) {
             return;
         }
 
@@ -51,5 +61,7 @@ export class CityWeatherApp implements App {
             text: `${this._data?.value?.temperature}°`,
             position: { x: 7, y: 1 }
         });
+
+        this._wasRendered = true;
     }
 }
