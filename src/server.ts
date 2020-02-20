@@ -3,6 +3,7 @@ import mqtt, { IClientOptions } from 'mqtt';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/roomWeather';
+import { CityWeatherApp } from './apps/cityWeather';
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
 
@@ -39,7 +40,7 @@ export class Server {
 
         this.controller = new SmartDisplayController(this.client);
 
-        this.loadApps();
+        this.loadApps(settings.apps);
     }
 
     private processIncomingMessage(
@@ -73,10 +74,14 @@ export class Server {
         }
     }
 
-    private loadApps(): void {
+    private loadApps(settings: any): void {
         const timeApp = new TimeApp(this.controller);
         const roomWeather = new RoomWeatherApp(this.controller);
-        this.apps.push(...[timeApp, roomWeather]);
+        const cityWeather = new CityWeatherApp(
+            this.controller,
+            settings.cityWeather
+        );
+        this.apps.push(...[timeApp, roomWeather, cityWeather]);
     }
 
     run(): void {
