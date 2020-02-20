@@ -4,5 +4,12 @@
         "username": "smart-display",
         "password": "*******"
     },
-    "locale": "de"
+    "locale": "de",
+    "apps": {
+        "cityWeather": {
+            "cityId": "your-city-id",
+            "appId": "your-app-id",
+            "units": "metric"
+        }
+    }
 }
