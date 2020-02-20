@@ -10,7 +10,7 @@ export class OpenWeatherMapService {
 
         return new Promise((resolve, reject) => {
             axios
-                .get('api.openweathermap.org/data/2.5/weather', {
+                .get('http://api.openweathermap.org/data/2.5/weather', {
                     params: {
                         id: settings.cityId,
                         appid: settings.appId,
