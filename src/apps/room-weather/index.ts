@@ -1,6 +1,6 @@
-import { App } from './app';
-import { RoomWeather } from '../models';
-import { SmartDisplayController } from '../smart-display-controller';
+import { App } from '../app';
+import { RoomWeather } from '../../models';
+import { SmartDisplayController } from '../../smart-display-controller';
 
 export class RoomWeatherApp implements App {
     private _wasRendered = false;

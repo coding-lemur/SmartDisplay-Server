@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 
-import { App } from './app';
-import { CityWeatherData, LastUpdated } from '../models';
-import { OpenWeatherMapService } from '../services';
-import { SmartDisplayController } from '../smart-display-controller';
+import { App } from '../app';
+import { LastUpdated } from '../../models';
+import { SmartDisplayController } from '../../smart-display-controller';
+import { OpenWeatherMapService } from './services';
+import { CityWeatherData } from './models';
 
 export class CityWeatherApp implements App {
     private readonly _service = new OpenWeatherMapService(this.settings);

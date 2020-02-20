@@ -1,11 +1,11 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
-import { App } from './apps/app';
-import { TimeApp } from './apps/time';
-import { RoomWeatherApp } from './apps/roomWeather';
-import { CityWeatherApp } from './apps/cityWeather';
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
+import { App } from './apps/app';
+import { TimeApp } from './apps/time';
+import { RoomWeatherApp } from './apps/room-weather';
+import { CityWeatherApp } from './apps/city-weather';
 
 export class Server {
     private readonly client: mqtt.Client;
@@ -129,7 +129,6 @@ export class Server {
         }
 
         const app = this.apps[this.currentAppIndex];
-
         console.debug('next app', app.name);
 
         app.reset();
@@ -141,9 +140,8 @@ export class Server {
 
     private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
-        const { shouldRerender } = app;
 
-        if (shouldRerender) {
+        if (app.shouldRerender) {
             this.controller.clear();
             app.render();
             this.controller.show();
@@ -154,7 +152,6 @@ export class Server {
 
     shutdown(): void {
         console.debug('shutdown');
-
         this.controller.destroy();
     }
 }

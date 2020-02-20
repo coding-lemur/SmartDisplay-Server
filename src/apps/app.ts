@@ -1,5 +1,3 @@
-import { SmartDisplayController } from '../smart-display-controller';
-
 export interface App {
     readonly name: string;
     readonly shouldRerender: boolean;
