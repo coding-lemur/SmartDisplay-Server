@@ -28,7 +28,6 @@ export class SmartDisplayController {
 
         if (diffSeconds > 60) {
             console.warn('info too old', diffSeconds);
-
             return null;
         }
 
