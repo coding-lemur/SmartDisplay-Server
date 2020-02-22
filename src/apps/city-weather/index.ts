@@ -4,11 +4,11 @@ import { App } from '../app';
 import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
 import { OpenWeatherMapService } from './services';
-import { CityWeatherData } from './models';
+import { CityWeatherData, CityWeatherSetting } from './models';
 
 export class CityWeatherApp implements App {
-    private readonly _service = new OpenWeatherMapService(this.settings);
     private readonly _data = new LastUpdated<CityWeatherData>();
+    private readonly _service = new OpenWeatherMapService(this.setting);
 
     private _wasRendered = false;
 
@@ -31,16 +31,13 @@ export class CityWeatherApp implements App {
 
     constructor(
         private controller: SmartDisplayController,
-        private settings: any
+        private setting: CityWeatherSetting
     ) {}
 
     reset(): void {
         this._wasRendered = false;
 
-        const isReady = this.isReady;
-        console.log('city reset', isReady);
-
-        if (isReady) {
+        if (this.isReady) {
             return;
         }
 
