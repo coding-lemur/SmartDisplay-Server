@@ -37,6 +37,25 @@ export class RoomWeatherApp implements App {
             position: { x: 7, y: 1 }
         });
 
+        this.showHumidityProgressbar();
+
         this._wasRendered = true;
+    }
+
+    private showHumidityProgressbar(): void {
+        const humidity = this._roomWeather?.humidity;
+
+        if (humidity == null) {
+            return;
+        }
+
+        const percentValue = humidity / 100;
+        const xEndPosition = 2 + Math.round(26 * percentValue);
+
+        this.controller.drawLine(
+            { x: 2, y: 7 },
+            { x: xEndPosition, y: 7 },
+            '#00C8C8'
+        );
     }
 }
