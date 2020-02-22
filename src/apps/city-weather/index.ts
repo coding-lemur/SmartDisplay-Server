@@ -96,7 +96,7 @@ export class CityWeatherApp implements App {
         this.controller.drawLine(
             { x: 2, y: 7 },
             { x: xEndPosition, y: 7 },
-            '#808080'
+            '#A0A0A0'
         );
     }
 }
