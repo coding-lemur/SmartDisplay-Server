@@ -48,5 +48,5 @@ import(`dayjs/locale/${settings.locale}`).then(() => {
     dayjs.extend(weekday);
 
     server = new Server(settings);
-    server.run();
+    server.start();
 });

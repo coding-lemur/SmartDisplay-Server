@@ -1,5 +1,4 @@
 import mqtt, { IClientOptions } from 'mqtt';
-import dayjs from 'dayjs';
 
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
@@ -17,8 +16,8 @@ export class Server {
     private currentAppIndex = 0;
     private appIterations = 0;
 
-    private get inStandby(): boolean {
-        return this.interval == null;
+    private get inRunning(): boolean {
+        return this.interval != null;
     }
 
     constructor(settings: any) {
@@ -75,9 +74,9 @@ export class Server {
                     this.controller.power(powerOn);
 
                     if (powerOn) {
-                        this.startInterval();
+                        this.start();
                     } else {
-                        this.stopInterval();
+                        this.stop();
                     }
                 }
 
@@ -91,8 +90,8 @@ export class Server {
         message: string
     ): void {
         // check info from client but server is in standby (no running interval)
-        if (command === 'info' && this.inStandby) {
-            this.startInterval();
+        if (command === 'info' && !this.inRunning) {
+            this.start();
         }
     }
 
@@ -106,13 +105,8 @@ export class Server {
         this.apps.push(...[timeApp, roomWeather, cityWeather]);
     }
 
-    run(): void {
+    start(): void {
         this.client.publish('smartDisplay/server/out', 'started');
-
-        this.startInterval();
-    }
-
-    private startInterval(): void {
         console.debug('startInterval()');
 
         this.appIterations = 0;
@@ -133,12 +127,12 @@ export class Server {
             // check controller is offline
             if (this.controller.isOffline) {
                 console.debug('controller offline -> stop server');
-                this.stopInterval();
+                this.stop();
             }
         }, 1000);
     }
 
-    private stopInterval(): void {
+    stop(): void {
         console.debug('stopInterval()');
 
         if (this.interval == null) {
@@ -181,6 +175,11 @@ export class Server {
 
     shutdown(): void {
         console.debug('shutdown');
+
+        if (this.client != null) {
+            this.client.end(true);
+        }
+
         this.controller.destroy();
     }
 }
