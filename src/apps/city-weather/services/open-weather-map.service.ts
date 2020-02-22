@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { CityWeatherData } from '../models';
+import { CityWeatherData, CityWeatherSetting } from '../models';
 
 export class OpenWeatherMapService {
-    constructor(private settings: any) {}
+    constructor(private settings: CityWeatherSetting) {}
 
     loadData(): Promise<CityWeatherData> {
         const { settings } = this;
