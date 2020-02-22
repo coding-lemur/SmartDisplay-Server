@@ -16,7 +16,6 @@ export class Server {
     private interval: NodeJS.Timeout | null = null;
     private currentAppIndex = 0;
     private appIterations = 0;
-    private nextControllerOnlineCheck = dayjs();
 
     private get inStandby(): boolean {
         return this.interval == null;
@@ -33,17 +32,22 @@ export class Server {
             .connect(server, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
-                if (topic.startsWith('smartDisplay/server/in/')) {
-                    const lastPart = MqttHelper.getLastTopicPart(topic);
-                    this.processIncomingMessage(lastPart, message.toString());
-                    return;
-                } else if (topic.startsWith('smartDisplay/client/out/')) {
-                    const lastPart = MqttHelper.getLastTopicPart(topic);
+                const command = MqttHelper.getLastTopicPart(topic);
 
-                    // check server in standby (no running interval) but client connected
-                    if (this.inStandby && lastPart === 'info') {
-                        this.startInterval();
-                    }
+                if (command == null) {
+                    return;
+                }
+
+                if (topic.startsWith('smartDisplay/server/in/')) {
+                    this.processIncomingServerMessage(
+                        command,
+                        message.toString()
+                    );
+                } else if (topic.startsWith('smartDisplay/client/out/')) {
+                    this.processOutcomingClientMessage(
+                        command,
+                        message.toString()
+                    );
                 }
             })
             .on('error', error => {
@@ -55,14 +59,10 @@ export class Server {
         this.loadApps(settings.apps);
     }
 
-    private processIncomingMessage(
-        command: string | null,
+    private processIncomingServerMessage(
+        command: string,
         message: string
     ): void {
-        if (command == null) {
-            return;
-        }
-
         console.debug('server cmd', command, message);
 
         switch (command) {
@@ -86,6 +86,16 @@ export class Server {
         }
     }
 
+    private processOutcomingClientMessage(
+        command: string,
+        message: string
+    ): void {
+        // check info from client but server is in standby (no running interval)
+        if (command === 'info' && this.inStandby) {
+            this.startInterval();
+        }
+    }
+
     private loadApps(settings: any): void {
         const timeApp = new TimeApp(this.controller);
         const roomWeather = new RoomWeatherApp(this.controller);
@@ -105,7 +115,6 @@ export class Server {
     private startInterval(): void {
         console.debug('startInterval()');
 
-        this.nextControllerOnlineCheck = dayjs().add(10, 'minute');
         this.appIterations = 0;
 
         this.renderApp();
@@ -122,13 +131,9 @@ export class Server {
             }
 
             // check controller is offline
-            if (dayjs().isAfter(this.nextControllerOnlineCheck)) {
-                if (this.controller.isOffline) {
-                    console.debug('controller offline -> stop server');
-                    this.stopInterval();
-                } else {
-                    this.nextControllerOnlineCheck = dayjs().add(10, 'minute');
-                }
+            if (this.controller.isOffline) {
+                console.debug('controller offline -> stop server');
+                this.stopInterval();
             }
         }, 1000);
     }

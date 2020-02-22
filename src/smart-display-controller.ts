@@ -57,19 +57,17 @@ export class SmartDisplayController {
                     return;
                 }
 
-                const lastPart = MqttHelper.getLastTopicPart(topic);
-                this.processIncomingMessage(lastPart, message.toString());
+                const command = MqttHelper.getLastTopicPart(topic);
+
+                if (command == null) {
+                    return;
+                }
+
+                this.processIncomingMessage(command, message.toString());
             });
     }
 
-    private processIncomingMessage(
-        command: string | null,
-        message: string
-    ): void {
-        if (command == null) {
-            return;
-        }
-
+    private processIncomingMessage(command: string, message: string): void {
         console.debug(new Date(), 'controller cmd', command, message);
 
         switch (command) {
