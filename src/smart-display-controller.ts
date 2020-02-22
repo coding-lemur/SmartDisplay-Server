@@ -46,7 +46,7 @@ export class SmartDisplayController {
         const lastUpdate = dayjs(this._info.lastUpdated);
         const diffMinute = dayjs().diff(lastUpdate, 'minute');
 
-        return diffMinute > 10;
+        return diffMinute > 5;
     }
 
     constructor(private client: mqtt.Client) {
