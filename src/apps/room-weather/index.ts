@@ -55,7 +55,7 @@ export class RoomWeatherApp implements App {
         this.controller.drawLine(
             { x: 2, y: 7 },
             { x: xEndPosition, y: 7 },
-            '#00C8C8'
+            '#A0A0A0'
         );
     }
 }
