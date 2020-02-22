@@ -89,13 +89,12 @@ export class CityWeatherApp implements App {
             return;
         }
 
-        const cachePercentAge =
+        const cacheAgePercent =
             cacheMinutesAge / CityWeatherApp.MaxCacheMinutesAge;
-        const xEndPosition = 2 + Math.round(26 * cachePercentAge);
+        const xPosition = 2 + Math.round(26 * cacheAgePercent);
 
-        this.controller.drawLine(
-            { x: 2, y: 7 },
-            { x: xEndPosition, y: 7 },
+        this.controller.drawPixel(
+            { x: xPosition, y: 7 },
             '#A0A0A0'
         );
     }
