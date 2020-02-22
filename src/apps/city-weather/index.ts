@@ -8,6 +8,8 @@ import { OpenWeatherMapService } from './services';
 import { CityWeatherData, CityWeatherSetting } from './models';
 
 export class CityWeatherApp implements App {
+    static readonly MaxCacheMinutesAge = 30;
+
     private readonly _data = new LastUpdated<CityWeatherData>();
     private readonly _service = new OpenWeatherMapService(this.setting);
 
@@ -20,14 +22,13 @@ export class CityWeatherApp implements App {
     }
 
     get isReady(): boolean {
-        if (this._data == null || this._data.lastUpdated == null) {
+        const cacheMinutesAge = this.calcCacheMinutesAge();
+
+        if (cacheMinutesAge == null) {
             return false;
         }
 
-        const lastUpdate = dayjs(this._data.lastUpdated);
-        const diffMinutes = dayjs().diff(lastUpdate, 'minute');
-
-        return diffMinutes < 30;
+        return cacheMinutesAge < CityWeatherApp.MaxCacheMinutesAge;
     }
 
     constructor(
@@ -65,6 +66,37 @@ export class CityWeatherApp implements App {
             position: { x: 7, y: 1 }
         });
 
+        this.showCacheAgeProgressbar();
+
         this._wasRendered = true;
+    }
+
+    private calcCacheMinutesAge(): number | null {
+        if (this._data == null || this._data.lastUpdated == null) {
+            return null;
+        }
+
+        const lastUpdate = dayjs(this._data.lastUpdated);
+        const diffMinutes = dayjs().diff(lastUpdate, 'minute');
+
+        return diffMinutes;
+    }
+
+    private showCacheAgeProgressbar(): void {
+        const cacheMinutesAge = this.calcCacheMinutesAge();
+
+        if (cacheMinutesAge == null) {
+            return;
+        }
+
+        const cachePercentAge =
+            cacheMinutesAge / CityWeatherApp.MaxCacheMinutesAge;
+        const xEndPosition = 2 + Math.round(26 * cachePercentAge);
+
+        this.controller.drawLine(
+            { x: 2, y: 7 },
+            { x: xEndPosition, y: 7 },
+            '#808080'
+        );
     }
 }
