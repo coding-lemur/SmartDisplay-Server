@@ -1,6 +1,7 @@
 import { App } from '../app';
 import { RoomWeather } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
+import { StringHelper } from '../../helper';
 
 export class RoomWeatherApp implements App {
     private _wasRendered = false;
@@ -26,9 +27,13 @@ export class RoomWeatherApp implements App {
     }
 
     render(): void {
+        const temperature = StringHelper.roundToFixed(
+            this._roomWeather?.temperature
+        );
+
         this.controller.drawText({
             hexColor: '#00C8C8',
-            text: `${this._roomWeather?.temperature}°`,
+            text: `${temperature}°`,
             position: { x: 7, y: 1 }
         });
 
