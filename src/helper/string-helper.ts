@@ -1,5 +1,5 @@
 export class StringHelper {
-    static roundToFixed(value?: number, fractionDigits = 2): string | null {
+    static roundToFixed(value?: number, fractionDigits = 1): string | null {
         if (value == null) {
             return null;
         }
