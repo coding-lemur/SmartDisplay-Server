@@ -150,6 +150,21 @@ export class SmartDisplayController {
         );
     }
 
+    drawPixel(position: Position, hexColor: string): void {
+        const color = Color(hexColor);
+
+        const dataOut: any = {
+            x: position.x,
+            y: position.y,
+            color: color.rgb().array()
+        };
+
+        this.client.publish(
+            'smartDisplay/client/in/drawPixel',
+            JSON.stringify(dataOut)
+        );
+    }
+
     fill(hexColor: string): void {
         const color = Color(hexColor);
         const dataOut = {
