@@ -40,7 +40,7 @@ export class SmartDisplayController {
 
     get isOffline(): boolean {
         if (this._info == null || this._info.lastUpdated == null) {
-            return true;
+            return false; // first access after start
         }
 
         const lastUpdate = dayjs(this._info.lastUpdated);

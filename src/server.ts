@@ -107,7 +107,7 @@ export class Server {
 
     start(): void {
         this.client.publish('smartDisplay/server/out', 'started');
-        console.debug('startInterval()');
+        console.debug('start server');
 
         this.appIterations = 0;
 
@@ -133,7 +133,7 @@ export class Server {
     }
 
     stop(): void {
-        console.debug('stopInterval()');
+        console.debug('stop server');
 
         if (this.interval == null) {
             return;
