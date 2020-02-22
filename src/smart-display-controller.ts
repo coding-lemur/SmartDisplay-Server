@@ -38,6 +38,17 @@ export class SmartDisplayController {
         return this._powerStatus;
     }
 
+    get isOffline(): boolean {
+        if (this._info == null || this._info.lastUpdated == null) {
+            return true;
+        }
+
+        const lastUpdate = dayjs(this._info.lastUpdated);
+        const diffMinute = dayjs().diff(lastUpdate, 'minute');
+
+        return diffMinute > 10;
+    }
+
     constructor(private client: mqtt.Client) {
         client
             .subscribe('smartDisplay/client/out/#')

@@ -1,4 +1,5 @@
 import mqtt, { IClientOptions } from 'mqtt';
+import dayjs from 'dayjs';
 
 import { MqttHelper } from './helper';
 import { SmartDisplayController } from './smart-display-controller';
@@ -15,6 +16,11 @@ export class Server {
     private interval: NodeJS.Timeout | null = null;
     private currentAppIndex = 0;
     private appIterations = 0;
+    private nextControllerOnlineCheck = dayjs();
+
+    private get inStandby(): boolean {
+        return this.interval == null;
+    }
 
     constructor(settings: any) {
         const { server, username, password } = settings.mqtt;
@@ -27,12 +33,18 @@ export class Server {
             .connect(server, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
-                if (!topic.startsWith('smartDisplay/server/in/')) {
+                if (topic.startsWith('smartDisplay/server/in/')) {
+                    const lastPart = MqttHelper.getLastTopicPart(topic);
+                    this.processIncomingMessage(lastPart, message.toString());
                     return;
-                }
+                } else if (topic.startsWith('smartDisplay/client/out/')) {
+                    const lastPart = MqttHelper.getLastTopicPart(topic);
 
-                const lastPart = MqttHelper.getLastTopicPart(topic);
-                this.processIncomingMessage(lastPart, message.toString());
+                    // check server in standby (no running interval) but client connected
+                    if (this.inStandby && lastPart === 'info') {
+                        this.startInterval();
+                    }
+                }
             })
             .on('error', error => {
                 console.error('MQTT', error);
@@ -93,6 +105,7 @@ export class Server {
     private startInterval(): void {
         console.debug('startInterval()');
 
+        this.nextControllerOnlineCheck = dayjs().add(10, 'minute');
         this.appIterations = 0;
 
         this.renderApp();
@@ -107,6 +120,16 @@ export class Server {
             } else {
                 console.error('client not connected');
             }
+
+            // check controller is offline
+            if (dayjs().isAfter(this.nextControllerOnlineCheck)) {
+                if (this.controller.isOffline) {
+                    console.debug('controller offline -> stop server');
+                    this.stopInterval();
+                } else {
+                    this.nextControllerOnlineCheck = dayjs().add(10, 'minute');
+                }
+            }
         }, 1000);
     }
 
@@ -118,6 +141,7 @@ export class Server {
         }
 
         clearInterval(this.interval);
+        this.interval = null;
     }
 
     private nextApp(): void {
