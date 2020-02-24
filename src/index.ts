@@ -3,7 +3,6 @@
 const clear = require('clear');
 const figlet = require('figlet');
 
-import chalk from 'chalk';
 import process from 'process';
 import program from 'commander';
 import exitHook from 'exit-hook';
@@ -19,9 +18,7 @@ program
     .parse(process.argv);
 
 clear();
-console.log(
-    chalk.red(figlet.textSync('SmartDisplay', { horizontalLayout: 'full' }))
-);
+console.log('SmartDisplay');
 
 let server: Server;
 
