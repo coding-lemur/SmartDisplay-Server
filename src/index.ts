@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const clear = require('clear');
-const figlet = require('figlet');
 
 import process from 'process';
 import program from 'commander';
