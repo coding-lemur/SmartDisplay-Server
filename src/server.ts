@@ -16,7 +16,7 @@ export class Server {
     private currentAppIndex = 0;
     private appIterations = 0;
 
-    private get inRunning(): boolean {
+    private get isRunning(): boolean {
         return this.interval != null;
     }
 
@@ -89,9 +89,18 @@ export class Server {
         command: string,
         message: string
     ): void {
-        // check info from client but server is in standby (no running interval)
-        if (command === 'info' && !this.inRunning) {
-            this.start();
+        switch (command) {
+            case 'info':
+                // check info from client but server is in standby (no running interval)
+                if (!this.isRunning) {
+                    this.start();
+                }
+                break;
+            case 'button':
+                if (this.isRunning && message === 'pressed') {
+                    this.nextApp();
+                }
+                break;
         }
     }
 
