@@ -16,7 +16,8 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ## Features
 - open source (MIT licence)
-- RAM optimized (designed for run on a raspberry pi)
+- RAM optimized (designed for run on a Raspberry Pi)
+- auto standby mode if no client is connected
 - easy extendable (only implement a TypeScript interface)
 - modern and platform independent architecture (nodejs)
 
@@ -25,5 +26,6 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 2. checkout repository
 3. run `npm install`
 4. run `npm start`
-5. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
-6. (optional) setup a systemd service for autorestart, restart after errors
+5. configure MQTT broker in settings.json
+6. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
+7. setup a systemd service for autorestart, restart after errors
