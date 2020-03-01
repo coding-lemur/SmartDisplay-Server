@@ -24,8 +24,8 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 ## Setup
 1. install nodejs ([example for Ubuntu/Raspbian](https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/))
 2. checkout repository
-3. run `npm install`
-4. run `npm start`
-5. configure MQTT broker in settings.json
+3. configure MQTT broker in settings.json
+4. run `npm install`
+5. run `npm start`
 6. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
 7. setup a systemd service for autorestart, restart after errors
