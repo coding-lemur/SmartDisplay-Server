@@ -6,6 +6,7 @@ import { App } from './apps/app';
 import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
 import { CityWeatherApp } from './apps/city-weather';
+import { DateApp } from './apps/date';
 
 export class Server {
     private readonly client: mqtt.Client;
@@ -24,7 +25,7 @@ export class Server {
         const { server, username, password } = settings.mqtt;
         const clientOptions: IClientOptions = {
             username,
-            password
+            password,
         };
 
         this.client = mqtt
@@ -49,7 +50,7 @@ export class Server {
                     );
                 }
             })
-            .on('error', error => {
+            .on('error', (error) => {
                 console.error('MQTT', error);
             });
 
@@ -106,12 +107,13 @@ export class Server {
 
     private loadApps(settings: any): void {
         const timeApp = new TimeApp(this.controller);
+        const dateApp = new DateApp(this.controller);
         const roomWeather = new RoomWeatherApp(this.controller);
         const cityWeather = new CityWeatherApp(
             this.controller,
             settings.cityWeather
         );
-        this.apps.push(...[timeApp, roomWeather, cityWeather]);
+        this.apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
     }
 
     start(): void {
