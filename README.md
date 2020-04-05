@@ -21,6 +21,12 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 - easy extendable (only implement a TypeScript interface)
 - modern and platform independent architecture (nodejs)
 
+## included apps
+- time: display the current time
+- date: display the currend day and month
+- roomWeather: display the current room temperature (by integrated DHT22 from the controller)
+- cityWeather: display the current city temperature (by openweathermap API call)
+
 ## Setup
 1. install nodejs ([example for Ubuntu/Raspbian](https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/))
 2. checkout repository
