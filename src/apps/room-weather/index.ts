@@ -1,7 +1,7 @@
 import { App } from '../app';
 import { RoomWeather } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { StringHelper } from '../../helper';
+import { StringHelper, DrawHelper } from '../../helper';
 
 export class RoomWeatherApp implements App {
     private _wasRendered = false;
@@ -27,6 +27,18 @@ export class RoomWeatherApp implements App {
     }
 
     render(): void {
+        this.renderTemperature();
+
+        DrawHelper.renderProgressbar(
+            this.controller,
+            this._roomWeather?.humidity,
+            100
+        );
+
+        this._wasRendered = true;
+    }
+
+    private renderTemperature(): void {
         const temperature = StringHelper.roundToFixed(
             this._roomWeather?.temperature
         );
@@ -34,28 +46,7 @@ export class RoomWeatherApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
-
-        this.showHumidityProgressbar();
-
-        this._wasRendered = true;
-    }
-
-    private showHumidityProgressbar(): void {
-        const humidity = this._roomWeather?.humidity;
-
-        if (humidity == null) {
-            return;
-        }
-
-        const percentValue = humidity / 100;
-        const xEndPosition = 2 + Math.round(26 * percentValue);
-
-        this.controller.drawLine(
-            { x: 2, y: 7 },
-            { x: xEndPosition, y: 7 },
-            '#A0A0A0'
-        );
     }
 }

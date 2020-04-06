@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 import { App } from '../app';
 import { SmartDisplayController } from '../../smart-display-controller';
+import { DrawHelper } from '../../helper';
 
 export class TimeApp implements App {
     private showColon = true;
@@ -17,7 +18,7 @@ export class TimeApp implements App {
     render(): void {
         this.renderTime();
 
-        TimeApp.renderWeekday(this.controller);
+        DrawHelper.renderWeekday(this.controller);
 
         // toggle colon
         this.showColon = !this.showColon;
@@ -32,21 +33,5 @@ export class TimeApp implements App {
             text: time,
             position: { x: 7, y: 1 },
         });
-    }
-
-    static renderWeekday(controller: SmartDisplayController): void {
-        const currentWeekday = dayjs().weekday();
-        const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
-
-        for (let weekday = 0; weekday < 7; weekday++) {
-            const xPosition = getXPositionByWeekDay(weekday);
-            const color = weekday === currentWeekday ? '#00C8C8' : '#A0A0A0';
-
-            controller.drawLine(
-                { x: xPosition, y: 7 },
-                { x: xPosition + 2, y: 7 },
-                color
-            );
-        }
     }
 }

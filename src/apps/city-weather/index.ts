@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { App } from '../app';
 import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { StringHelper } from '../../helper';
+import { StringHelper, DrawHelper } from '../../helper';
 import { OpenWeatherMapService } from './services';
 import { CityWeatherData, CityWeatherSetting } from './models';
 
@@ -46,16 +46,28 @@ export class CityWeatherApp implements App {
         // refresh weather data
         this._service
             .loadData()
-            .then(data => {
+            .then((data) => {
                 console.log('city weather', data);
                 this._data.value = data;
             })
-            .catch(error =>
+            .catch((error) =>
                 console.error("can't load openweathermap data", error)
             );
     }
 
     render(): void {
+        this.renderTemperature();
+
+        DrawHelper.renderPixelProgress(
+            this.controller,
+            this.calcCacheMinutesAge(),
+            CityWeatherApp.MaxCacheMinutesAge
+        );
+
+        this._wasRendered = true;
+    }
+
+    private renderTemperature(): void {
         const temperature = StringHelper.roundToFixed(
             this._data?.value?.temperature
         );
@@ -63,12 +75,8 @@ export class CityWeatherApp implements App {
         this.controller.drawText({
             hexColor: '#4CFF00',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
-
-        this.showCacheAgeProgressbar();
-
-        this._wasRendered = true;
     }
 
     private calcCacheMinutesAge(): number | null {
@@ -80,22 +88,5 @@ export class CityWeatherApp implements App {
         const diffMinutes = dayjs().diff(lastUpdate, 'minute');
 
         return diffMinutes;
-    }
-
-    private showCacheAgeProgressbar(): void {
-        const cacheMinutesAge = this.calcCacheMinutesAge();
-
-        if (cacheMinutesAge == null) {
-            return;
-        }
-
-        const cacheAgePercent =
-            cacheMinutesAge / CityWeatherApp.MaxCacheMinutesAge;
-        const xPosition = 2 + Math.round(26 * cacheAgePercent);
-
-        this.controller.drawPixel(
-            { x: xPosition, y: 7 },
-            '#A0A0A0'
-        );
     }
 }

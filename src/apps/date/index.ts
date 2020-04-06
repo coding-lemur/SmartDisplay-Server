@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
 import { App } from '../app';
-import { TimeApp } from '../time';
 import { SmartDisplayController } from '../../smart-display-controller';
+import { DrawHelper } from '../../helper';
 
 export class DateApp implements App {
     private _wasRendered = false;
@@ -24,7 +24,7 @@ export class DateApp implements App {
     render(): void {
         this.renderDate();
 
-        TimeApp.renderWeekday(this.controller);
+        DrawHelper.renderWeekday(this.controller);
 
         this._wasRendered = true;
     }
