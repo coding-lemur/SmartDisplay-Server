@@ -16,7 +16,8 @@ export class TimeApp implements App {
 
     render(): void {
         this.renderTime();
-        this.renderWeekday();
+
+        TimeApp.renderWeekday(this.controller);
 
         // toggle colon
         this.showColon = !this.showColon;
@@ -29,11 +30,11 @@ export class TimeApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: time,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
     }
 
-    private renderWeekday(): void {
+    static renderWeekday(controller: SmartDisplayController): void {
         const currentWeekday = dayjs().weekday();
         const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
 
@@ -41,7 +42,7 @@ export class TimeApp implements App {
             const xPosition = getXPositionByWeekDay(weekday);
             const color = weekday === currentWeekday ? '#00C8C8' : '#A0A0A0';
 
-            this.controller.drawLine(
+            controller.drawLine(
                 { x: xPosition, y: 7 },
                 { x: xPosition + 2, y: 7 },
                 color

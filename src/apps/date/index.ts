@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { App } from '../app';
+import { TimeApp } from '../time';
 import { SmartDisplayController } from '../../smart-display-controller';
 
 export class DateApp implements App {
@@ -21,6 +22,14 @@ export class DateApp implements App {
     }
 
     render(): void {
+        this.renderDate();
+
+        TimeApp.renderWeekday(this.controller);
+
+        this._wasRendered = true;
+    }
+
+    private renderDate(): void {
         const date = dayjs().format('DD.MM.');
 
         this.controller.drawText({
@@ -28,7 +37,5 @@ export class DateApp implements App {
             text: date,
             position: { x: 7, y: 1 },
         });
-
-        this._wasRendered = true;
     }
 }
