@@ -7,4 +7,5 @@ export interface ControllerInfo {
     powerOn: boolean;
     network: Network;
     roomWeather: RoomWeather;
+    freeHeap: number;
 }
