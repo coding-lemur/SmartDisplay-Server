@@ -7,8 +7,7 @@
         "smart-display": "./dist/src/index.js"
     },
     "scripts": {
-        "start": "npm run build && node dist/src/index.js",
-        "start-dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+        "start": "ts-node src/index.ts",
         "create": "npm run build && npm run test",
         "build": "tsc -p .",
         "test": "sudo npm i -g && smart-display",
@@ -29,7 +28,6 @@
     "devDependencies": {
         "@types/color": "^3.0.0",
         "@types/node": "^12.12.7",
-        "nodemon": "^1.19.4",
         "ts-node": "^8.5.0",
         "typescript": "^3.7.2"
     }
