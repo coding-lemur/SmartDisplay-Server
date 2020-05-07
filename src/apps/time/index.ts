@@ -8,12 +8,8 @@ export class TimeApp implements App {
     private showColon = true;
 
     readonly name = 'time';
-    readonly shouldRerender = true;
-    readonly isReady = true;
 
     constructor(private controller: SmartDisplayController) {}
-
-    reset(): void {}
 
     render(): void {
         this.renderTime();
@@ -31,7 +27,7 @@ export class TimeApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: time,
-            position: { x: 7, y: 1 },
+            position: { x: 7, y: 1 }
         });
     }
 }

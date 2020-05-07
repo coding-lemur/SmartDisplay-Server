@@ -1,8 +1,9 @@
 export interface App {
     readonly name: string;
-    readonly shouldRerender: boolean;
-    readonly isReady: boolean;
+    readonly isReady?: boolean;
+    readonly renderOnlyOneTime?: boolean;
 
-    reset(): void;
+    init?(): void;
+    reset?(): void;
     render(): void;
 }

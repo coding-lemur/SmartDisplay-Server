@@ -44,9 +44,9 @@ export class SmartDisplayController {
         }
 
         const lastUpdate = dayjs(this._info.lastUpdated);
-        const diffMinute = dayjs().diff(lastUpdate, 'minute');
+        const diffMinutes = dayjs().diff(lastUpdate, 'minute');
 
-        return diffMinute > 5;
+        return diffMinutes > 5;
     }
 
     constructor(private client: mqtt.Client) {
@@ -136,7 +136,7 @@ export class SmartDisplayController {
     drawLine(start: Position, end: Position, hexColor: string): void {
         const color = Color(hexColor);
 
-        const dataOut: any = {
+        const dataOut = {
             x0: start.x,
             y0: start.y,
             x1: end.x,
@@ -153,7 +153,7 @@ export class SmartDisplayController {
     drawPixel(position: Position, hexColor: string): void {
         const color = Color(hexColor);
 
-        const dataOut: any = {
+        const dataOut = {
             x: position.x,
             y: position.y,
             color: color.rgb().array()

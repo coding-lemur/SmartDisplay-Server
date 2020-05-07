@@ -13,8 +13,6 @@ export class DateApp implements App {
         return !this._wasRendered;
     }
 
-    readonly isReady = true;
-
     constructor(private controller: SmartDisplayController) {}
 
     reset(): void {
@@ -35,7 +33,7 @@ export class DateApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: date,
-            position: { x: 7, y: 1 },
+            position: { x: 7, y: 1 }
         });
     }
 }

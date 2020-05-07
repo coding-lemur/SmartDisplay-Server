@@ -4,14 +4,10 @@ import { SmartDisplayController } from '../../smart-display-controller';
 import { StringHelper, DrawHelper } from '../../helper';
 
 export class RoomWeatherApp implements App {
-    private _wasRendered = false;
     private _roomWeather: RoomWeather | undefined;
 
     readonly name = 'room-weather';
-
-    get shouldRerender(): boolean {
-        return !this._wasRendered;
-    }
+    readonly renderOnlyOneTime = true;
 
     get isReady(): boolean {
         return this._roomWeather?.temperature != null;
@@ -20,8 +16,6 @@ export class RoomWeatherApp implements App {
     constructor(private controller: SmartDisplayController) {}
 
     reset(): void {
-        this._wasRendered = false;
-
         // load room-weather
         this._roomWeather = this.controller?.info?.roomWeather;
     }
@@ -34,8 +28,6 @@ export class RoomWeatherApp implements App {
             this._roomWeather?.humidity,
             100
         );
-
-        this._wasRendered = true;
     }
 
     private renderTemperature(): void {
@@ -46,7 +38,7 @@ export class RoomWeatherApp implements App {
         this.controller.drawText({
             hexColor: '#00C8C8',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 },
+            position: { x: 7, y: 1 }
         });
     }
 }

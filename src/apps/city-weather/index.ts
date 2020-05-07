@@ -13,13 +13,8 @@ export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
     private readonly _service = new OpenWeatherMapService(this.setting);
 
-    private _wasRendered = false;
-
     readonly name = 'city-weather';
-
-    get shouldRerender(): boolean {
-        return !this._wasRendered;
-    }
+    readonly renderOnlyOneTime = true;
 
     get isReady(): boolean {
         const cacheMinutesAge = this.calcCacheMinutesAge();
@@ -36,23 +31,16 @@ export class CityWeatherApp implements App {
         private setting: CityWeatherSetting
     ) {}
 
-    reset(): void {
-        this._wasRendered = false;
+    init(): void {
+        this.refreshWeatherData();
+    }
 
+    reset(): void {
         if (this.isReady) {
             return;
         }
 
-        // refresh weather data
-        this._service
-            .loadData()
-            .then((data) => {
-                console.log('city weather', data);
-                this._data.value = data;
-            })
-            .catch((error) =>
-                console.error("can't load openweathermap data", error)
-            );
+        this.refreshWeatherData();
     }
 
     render(): void {
@@ -63,8 +51,6 @@ export class CityWeatherApp implements App {
             this.calcCacheMinutesAge(),
             CityWeatherApp.MaxCacheMinutesAge
         );
-
-        this._wasRendered = true;
     }
 
     private renderTemperature(): void {
@@ -75,7 +61,7 @@ export class CityWeatherApp implements App {
         this.controller.drawText({
             hexColor: '#4CFF00',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 },
+            position: { x: 7, y: 1 }
         });
     }
 
@@ -88,5 +74,17 @@ export class CityWeatherApp implements App {
         const diffMinutes = dayjs().diff(lastUpdate, 'minute');
 
         return diffMinutes;
+    }
+
+    private refreshWeatherData(): void {
+        this._service
+            .loadData()
+            .then((data) => {
+                console.log('city weather', data);
+                this._data.value = data;
+            })
+            .catch((error) =>
+                console.error("can't load openweathermap data", error)
+            );
     }
 }

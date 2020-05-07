@@ -25,7 +25,7 @@ export class Server {
         const { server, username, password } = settings.mqtt;
         const clientOptions: IClientOptions = {
             username,
-            password,
+            password
         };
 
         this.client = mqtt
@@ -120,6 +120,15 @@ export class Server {
         this.client.publish('smartDisplay/server/out', 'started');
         console.debug('start server');
 
+        // init all apps
+        for (const app of this.apps) {
+            if (app.init == null) {
+                continue;
+            }
+
+            app.init();
+        }
+
         this.appIterations = 0;
 
         this.renderApp();
@@ -163,11 +172,12 @@ export class Server {
         }
 
         const app = this.apps[this.currentAppIndex];
-        console.debug('next app', app.name);
 
-        app.reset();
+        if (app.reset != null) {
+            app.reset();
+        }
 
-        if (!app.isReady) {
+        if (app.isReady === false) {
             this.nextApp();
         }
     }
@@ -175,7 +185,15 @@ export class Server {
     private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
 
-        if (app.shouldRerender) {
+        if (this.appIterations === 0) {
+            console.log('app', app.name);
+        }
+
+        const shouldRender = !(
+            app.renderOnlyOneTime === true && this.appIterations > 0
+        );
+
+        if (shouldRender) {
             this.controller.clear();
             app.render();
             this.controller.show();
