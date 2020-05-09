@@ -19,19 +19,7 @@ export class SmartDisplayController {
     private _powerStatus: boolean = true; // true = on; false = off
 
     get info(): ControllerInfo | null {
-        if (this._info == null || this._info.lastUpdated == null) {
-            return null;
-        }
-
-        const lastUpdate = dayjs(this._info.lastUpdated);
-        const diffSeconds = dayjs().diff(lastUpdate, 'second');
-
-        if (diffSeconds > 60) {
-            console.warn('info too old', diffSeconds);
-            return null;
-        }
-
-        return this._info.value;
+        return this._info?.value;
     }
 
     get powerStatus(): boolean {
@@ -39,14 +27,14 @@ export class SmartDisplayController {
     }
 
     get isOffline(): boolean {
-        if (this._info == null || this._info.lastUpdated == null) {
+        if (this._info?.lastUpdated == null) {
             return true;
         }
 
         const lastUpdate = dayjs(this._info.lastUpdated);
-        const diffMinutes = dayjs().diff(lastUpdate, 'minute');
+        const diffSeconds = dayjs().diff(lastUpdate, 'second');
 
-        return diffMinutes > 5;
+        return diffSeconds > 300; // more than 5 minutes old
     }
 
     constructor(private client: mqtt.Client) {
