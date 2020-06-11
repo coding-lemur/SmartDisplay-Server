@@ -8,6 +8,7 @@ export class TimeApp implements App {
     private showColon = true;
 
     readonly name = 'time';
+    readonly renderOnlyOneTime = true;
 
     constructor(private controller: SmartDisplayController) {}
 
@@ -17,7 +18,7 @@ export class TimeApp implements App {
         DrawHelper.renderWeekday(this.controller);
 
         // toggle colon
-        this.showColon = !this.showColon;
+        //this.showColon = !this.showColon;
     }
 
     private renderTime(): void {
