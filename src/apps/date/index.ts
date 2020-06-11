@@ -5,26 +5,15 @@ import { SmartDisplayController } from '../../smart-display-controller';
 import { DrawHelper } from '../../helper';
 
 export class DateApp implements App {
-    private _wasRendered = false;
-
     readonly name = 'date';
-
-    get shouldRerender(): boolean {
-        return !this._wasRendered;
-    }
+    readonly renderOnlyOneTime = true;
 
     constructor(private controller: SmartDisplayController) {}
-
-    reset(): void {
-        this._wasRendered = false;
-    }
 
     render(): void {
         this.renderDate();
 
         DrawHelper.renderWeekday(this.controller);
-
-        this._wasRendered = true;
     }
 
     private renderDate(): void {
