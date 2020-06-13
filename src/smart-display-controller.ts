@@ -90,12 +90,12 @@ export class SmartDisplayController {
         }
     }
 
-    changeSettings(settings: ControllerSettings): void {
+    /*changeSettings(settings: ControllerSettings): void {
         this.client.publish(
             'smartDisplay/client/in/changeSettings',
             JSON.stringify(settings)
         );
-    }
+    }*/
 
     show(): void {
         this.client.publish('smartDisplay/client/in/show', '');
