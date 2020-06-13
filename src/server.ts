@@ -97,6 +97,10 @@ export class Server {
                 const info = JSON.parse(message) as ControllerInfo;
 
                 if (!this.isRunning && info.powerOn === true) {
+                    console.log(
+                        "start server because controller isn't powered off"
+                    );
+
                     this.start();
                 }
                 break;
@@ -129,14 +133,9 @@ export class Server {
         console.debug('start server');
 
         // init all apps
-        for (const app of this.apps) {
-            if (app.init == null) {
-                continue;
-            }
+        this.apps.filter((a) => a.init != null).forEach((a) => a.init!());
 
-            app.init();
-        }
-
+        this.currentAppIndex = 0;
         this.appIterations = 0;
 
         this.renderApp();
