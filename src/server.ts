@@ -1,6 +1,7 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
 import { MqttHelper } from './helper';
+import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
@@ -93,7 +94,9 @@ export class Server {
         switch (command) {
             case 'info':
                 // check info from client but server is in standby (no running interval)
-                if (!this.isRunning) {
+                const info = JSON.parse(message) as ControllerInfo;
+
+                if (!this.isRunning && info.powerOn === true) {
                     this.start();
                 }
                 break;
