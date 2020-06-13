@@ -17,13 +17,17 @@ export class CityWeatherApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady(): boolean {
+        return !this.isDataOutdated;
+    }
+
+    private get isDataOutdated(): boolean {
         const cacheMinutesAge = this.calcCacheMinutesAge();
 
         if (cacheMinutesAge == null) {
-            return false;
+            return true;
         }
 
-        return cacheMinutesAge < CityWeatherApp.MaxCacheMinutesAge;
+        return cacheMinutesAge >= CityWeatherApp.MaxCacheMinutesAge;
     }
 
     constructor(
@@ -36,11 +40,9 @@ export class CityWeatherApp implements App {
     }
 
     reset(): void {
-        if (this.isReady) {
-            return;
+        if (this.isDataOutdated) {
+            this.refreshWeatherData();
         }
-
-        this.refreshWeatherData();
     }
 
     render(): void {
