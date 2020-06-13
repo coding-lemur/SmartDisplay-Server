@@ -117,6 +117,11 @@ export class Server {
     }
 
     start(): void {
+        if (this.interval != null) {
+            console.warn('found running instance');
+            this.stop();
+        }
+
         this.client.publish('smartDisplay/server/out', 'started');
         console.debug('start server');
 
