@@ -196,9 +196,8 @@ export class Server {
             console.log('app', app.name);
         }
 
-        const shouldRender = !(
-            app.renderOnlyOneTime === true && this.appIterations > 0
-        );
+        const shouldRender =
+            app.renderOnlyOneTime === false || this.appIterations === 0;
 
         if (shouldRender) {
             this.controller.clear();
