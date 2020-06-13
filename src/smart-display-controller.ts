@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 import {
     ControllerInfo,
-    ControllerSettings,
     DrawTextData,
     DrawTextDataEasy,
     LastUpdated,
