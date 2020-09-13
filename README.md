@@ -43,4 +43,4 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ## Architecture
 
-![curcuit diagram](https://raw.githubusercontent.com/Smart-Display/SmartDisplay-Server/master/docs/architecture.png)
+![architecture diagram](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/architecture.png)
