@@ -3,4 +3,5 @@ export interface CityWeatherSetting {
     appId: string;
     units: 'metric' | 'imperial';
     maxCacheAgeMinutes: number;
+    publishWeatherData: boolean;
 }

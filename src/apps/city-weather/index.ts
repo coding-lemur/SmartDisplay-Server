@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { MqttClient } from 'mqtt';
 
 import { App } from '../app';
 import { LastUpdated } from '../../models';
@@ -30,6 +31,7 @@ export class CityWeatherApp implements App {
 
     constructor(
         private controller: SmartDisplayController,
+        private client: MqttClient,
         private setting: CityWeatherSetting
     ) {}
 
@@ -83,6 +85,13 @@ export class CityWeatherApp implements App {
                 console.log('city weather', data);
 
                 this._data.value = data;
+
+                if (this.setting.publishWeatherData) {
+                    this.client.publish(
+                        'smartDisplay/server/out/cityWeather',
+                        JSON.stringify(data)
+                    );
+                }
             })
             .catch((error) =>
                 console.error("can't load openweathermap data", error)

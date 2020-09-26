@@ -10,7 +10,8 @@
             "cityId": "your-city-id",
             "appId": "your-app-id",
             "units": "metric",
-            "maxCacheAgeMinutes": 30
+            "maxCacheAgeMinutes": 30,
+            "publishWeatherData": false
         }
     }
 }
