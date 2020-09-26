@@ -81,6 +81,7 @@ export class CityWeatherApp implements App {
             .loadData()
             .then((data) => {
                 console.log('city weather', data);
+
                 this._data.value = data;
             })
             .catch((error) =>

@@ -11,6 +11,7 @@ export class OpenWeatherMapService {
 
         const response = await fetch(url);
         const data = await response.json();
+
         const result: CityWeatherData = {
             temperature: data.main.temp,
             humidity: data.main.humidity,
