@@ -6,10 +6,9 @@ import { SmartDisplayController } from '../../smart-display-controller';
 import { StringHelper, DrawHelper } from '../../helper';
 import { OpenWeatherMapService } from './services';
 import { CityWeatherData, CityWeatherSetting } from './models';
+import { settings } from 'cluster';
 
 export class CityWeatherApp implements App {
-    static readonly MaxCacheMinutesAge = 30;
-
     private readonly _data = new LastUpdated<CityWeatherData>();
     private readonly _service = new OpenWeatherMapService(this.setting);
 
@@ -27,7 +26,7 @@ export class CityWeatherApp implements App {
             return true;
         }
 
-        return cacheMinutesAge >= CityWeatherApp.MaxCacheMinutesAge;
+        return cacheMinutesAge >= this.setting.maxCacheAgeMinutes;
     }
 
     constructor(
@@ -51,7 +50,7 @@ export class CityWeatherApp implements App {
         DrawHelper.renderPixelProgress(
             this.controller,
             this.calcCacheMinutesAge(),
-            CityWeatherApp.MaxCacheMinutesAge
+            this.setting.maxCacheAgeMinutes
         );
     }
 

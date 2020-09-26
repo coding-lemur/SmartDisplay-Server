@@ -9,7 +9,8 @@
         "cityWeather": {
             "cityId": "your-city-id",
             "appId": "your-app-id",
-            "units": "metric"
+            "units": "metric",
+            "maxCacheAgeMinutes": 30
         }
     }
 }
