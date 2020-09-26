@@ -6,7 +6,6 @@ import { SmartDisplayController } from '../../smart-display-controller';
 import { StringHelper, DrawHelper } from '../../helper';
 import { OpenWeatherMapService } from './services';
 import { CityWeatherData, CityWeatherSetting } from './models';
-import { settings } from 'cluster';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
