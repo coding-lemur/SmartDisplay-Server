@@ -1,32 +1,22 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 import { CityWeatherData, CityWeatherSetting } from '../models';
 
 export class OpenWeatherMapService {
     constructor(private settings: CityWeatherSetting) {}
 
-    loadData(): Promise<CityWeatherData> {
-        const { settings } = this;
+    async loadData(): Promise<CityWeatherData> {
+        const { cityId, appId, units } = this.settings;
+        const url = `http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${appId}&units=${units}`;
 
-        return new Promise((resolve, reject) => {
-            axios
-                .get('http://api.openweathermap.org/data/2.5/weather', {
-                    params: {
-                        id: settings.cityId,
-                        appid: settings.appId,
-                        units: settings.units
-                    }
-                })
-                .then(response => {
-                    const { data } = response;
-                    const result: CityWeatherData = {
-                        temperature: data.main.temp,
-                        humidity: data.main.humidity,
-                        windSpeed: data.wind.speed
-                    };
-                    resolve(result);
-                })
-                .catch(error => reject(error));
-        });
+        const response = await fetch(url);
+        const data = await response.json();
+        const result: CityWeatherData = {
+            temperature: data.main.temp,
+            humidity: data.main.humidity,
+            windSpeed: data.wind.speed
+        };
+
+        return result;
     }
 }
