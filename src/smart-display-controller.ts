@@ -60,20 +60,24 @@ export class SmartDisplayController {
         switch (command) {
             case 'info': {
                 try {
-                    this._info.value = JSON.parse(message);
+                    const info = JSON.parse(message) as ControllerInfo;
 
-                    this.checkPowerStatus();
+                    this._info.value = info;
+                    this.checkPowerStatus(info);
                 } catch (error) {
                     console.error('error on parse info payload', error);
                 }
 
                 break;
             }
+
+            default:
+                break;
         }
     }
 
-    private checkPowerStatus(): void {
-        const powerOnDevice = this._info.value?.powerOn;
+    private checkPowerStatus(info: ControllerInfo): void {
+        const powerOnDevice = info?.powerOn;
 
         // check power status
         if (powerOnDevice !== this._powerStatus) {
