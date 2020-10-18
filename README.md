@@ -18,20 +18,23 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ## Features
 
--   open source (MIT licence)
--   RAM optimized (designed for run on a Raspberry Pi)
--   auto standby mode if no client is connected
--   easy extendable (only implement a TypeScript interface)
--   modern and platform independent architecture (nodejs)
+- open source (MIT licence) 😍
+- RAM optimized (designed for run on a Raspberry Pi) 🚀
+- auto standby mode if no client is connected 🔌⚡
+- easy extendable (only implement a TypeScript interface) 👩‍💻
+- modern and platform independent architecture (nodejs) 🐧
+- Docker support 🐳
 
 ## included apps
 
--   time: display the current time
--   date: display the currend day and month
--   roomWeather: display the current room temperature (by integrated DHT22 from the controller)
--   cityWeather: display the current city temperature (by openweathermap API call)
+- time: display the current time
+- date: display the currend day and month
+- roomWeather: display the current room temperature (by integrated DHT22 from the controller)
+- cityWeather: display the current city temperature (by openweathermap API call)
 
 ## Setup
+
+### Standalone
 
 1. install nodejs ([example for Ubuntu/Raspbian](https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/))
 2. checkout repository
@@ -40,6 +43,20 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 5. run `npm start`
 6. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
 7. setup a systemd service for autorestart, restart after errors
+
+### Docker
+
+#### Environment Variables
+
+- MQTT_SERVER
+- MQTT_USERNAME
+- MQTT_PASSWORD
+- LOCALE
+- APP_CITY_WEATHER_CITY_ID
+- APP_CITY_WEATHER_APP_ID
+- APP_CITY_WEATHER_UNITS
+- APP_CITY_WEATHER_MAX_CACHE_AGE
+- APP_CITY_WEATHER_PUBLISH_DATA
 
 ## Architecture
 
