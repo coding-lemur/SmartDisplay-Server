@@ -1,5 +1,7 @@
 # SmartDisplay Server
 
+![Node.js CI](https://github.com/Smart-Display/SmartDisplay-Server/workflows/Node.js%20CI/badge.svg)
+
 ## Description
 
 Use in combination with [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller).
@@ -50,9 +52,9 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ### Docker
 
-#### Get the latest image
-
-`docker push mceddy/smartdisplay-server:latest`
+1. Getting the latest image: `docker push mceddy/smartdisplay-server:latest`
+2. Overwrite environment variables
+3. Run the image: `docker run mceddy/smartdisplay-server`
 
 #### Environment Variables
 
@@ -67,7 +69,3 @@ Overwrite following environment variables to setup your container:
 - APP_CITY_WEATHER_UNITS
 - APP_CITY_WEATHER_MAX_CACHE_AGE
 - APP_CITY_WEATHER_PUBLISH_DATA
-
-### Run the image
-
-`docker run mceddy/smartdisplay-server`
