@@ -7,7 +7,6 @@ import program from 'commander';
 import exitHook from 'exit-hook';
 
 import packageJson from '../package.json';
-import settings from '../settings.json';
 
 import { Server } from './server';
 
@@ -35,6 +34,10 @@ exitHook(() => {
         server.shutdown();
     }
 });
+
+import { SettingsHelper } from '@app/helper';
+
+const settings = SettingsHelper.loadSettings();
 
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
