@@ -69,3 +69,4 @@ Overwrite following environment variables to setup your container:
 - APP_CITY_WEATHER_UNITS
 - APP_CITY_WEATHER_MAX_CACHE_AGE
 - APP_CITY_WEATHER_PUBLISH_DATA
+- TZ (Timezone e.g. "Europe/Berlin")
