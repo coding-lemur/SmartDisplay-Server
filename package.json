@@ -2,6 +2,10 @@
     "name": "smart-display-server",
     "version": "0.4.0",
     "description": "Server which controlles the smart display.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Smart-Display/SmartDisplay-Server.git"
+    },
     "main": "./dist/src/index.js",
     "bin": {
         "smart-display": "./dist/src/index.js"
