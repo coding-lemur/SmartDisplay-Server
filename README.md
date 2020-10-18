@@ -48,6 +48,8 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 #### Environment Variables
 
+You can overwrite settings by set following environment variables:
+
 - MQTT_SERVER
 - MQTT_USERNAME
 - MQTT_PASSWORD
