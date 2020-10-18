@@ -23,14 +23,18 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 - auto standby mode if no client is connected 🔌⚡
 - easy extendable (only implement a TypeScript interface) 👩‍💻
 - modern and platform independent architecture (nodejs) 🐧
-- Docker support 🐳
+- [Docker support 🐳](https://hub.docker.com/r/mceddy/smartdisplay-server)
 
-## included apps
+## Included apps
 
 - time: display the current time
 - date: display the currend day and month
 - roomWeather: display the current room temperature (by integrated DHT22 from the controller)
 - cityWeather: display the current city temperature (by openweathermap API call)
+
+## Architecture
+
+![architecture diagram](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/architecture.png?raw=true)
 
 ## Setup
 
@@ -46,9 +50,13 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ### Docker
 
+#### Get the latest image
+
+`docker push mceddy/smartdisplay-server:latest`
+
 #### Environment Variables
 
-You can overwrite settings by set following environment variables:
+Overwrite following environment variables to setup your container:
 
 - MQTT_SERVER
 - MQTT_USERNAME
@@ -60,6 +68,6 @@ You can overwrite settings by set following environment variables:
 - APP_CITY_WEATHER_MAX_CACHE_AGE
 - APP_CITY_WEATHER_PUBLISH_DATA
 
-## Architecture
+### Run the image
 
-![architecture diagram](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/architecture.png)
+`docker run mceddy/smartdisplay-server`
