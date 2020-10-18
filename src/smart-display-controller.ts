@@ -8,7 +8,7 @@ import {
     DrawTextDataEasy,
     LastUpdated,
     FontWeight,
-    Position
+    Position,
 } from './models';
 import { MqttHelper } from './helper';
 
@@ -93,13 +93,6 @@ export class SmartDisplayController {
         }
     }
 
-    /*changeSettings(settings: ControllerSettings): void {
-        this.client.publish(
-            'smartDisplay/client/in/changeSettings',
-            JSON.stringify(settings)
-        );
-    }*/
-
     show(): void {
         this.client.publish('smartDisplay/client/in/show', '');
     }
@@ -115,7 +108,7 @@ export class SmartDisplayController {
             x: data.position.x,
             y: data.position.y,
             color: color.rgb().array(),
-            font: data.fontWeight ?? FontWeight.Normal
+            font: data.fontWeight ?? FontWeight.Normal,
         };
 
         this.client.publish(
@@ -132,7 +125,7 @@ export class SmartDisplayController {
             y0: start.y,
             x1: end.x,
             y1: end.y,
-            color: color.rgb().array()
+            color: color.rgb().array(),
         };
 
         this.client.publish(
@@ -147,7 +140,7 @@ export class SmartDisplayController {
         const dataOut = {
             x: position.x,
             y: position.y,
-            color: color.rgb().array()
+            color: color.rgb().array(),
         };
 
         this.client.publish(
@@ -159,7 +152,7 @@ export class SmartDisplayController {
     fill(hexColor: string): void {
         const color = Color(hexColor);
         const dataOut = {
-            color: color.rgb()
+            color: color.rgb(),
         };
 
         this.client.publish(
@@ -172,7 +165,7 @@ export class SmartDisplayController {
         this._powerStatus = status;
 
         const dataOut = {
-            on: status
+            on: status,
         };
         this.client.publish(
             'smartDisplay/client/in/power',
