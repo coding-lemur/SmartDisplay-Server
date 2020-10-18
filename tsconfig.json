@@ -1,19 +1,15 @@
 {
     "compilerOptions": {
-        "baseUrl": "",
+        "baseUrl": "src",
         "outDir": "dist",
         "target": "ES6",
         "module": "commonjs",
         "lib": ["es6", "es2015", "DOM"],
         "declaration": true,
-        "rootDir": "",
         "strict": true,
         "types": ["node"],
         "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "paths": {
-            "@app/*": ["src/*"]
-        }
+        "resolveJsonModule": true
     },
     "exclude": ["node_modules", "dist"]
 }

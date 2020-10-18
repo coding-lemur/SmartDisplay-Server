@@ -1,7 +1,7 @@
 import process from 'process';
 
-import { Settings } from '@app/models';
-import settingsFile from '@app/../settings.json';
+import { Settings } from '../models';
+import settingsFile from '../../settings.json';
 
 // TODO use any library
 export class SettingsHelper {

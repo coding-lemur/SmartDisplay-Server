@@ -35,7 +35,7 @@ exitHook(() => {
     }
 });
 
-import { SettingsHelper } from '@app/helper';
+import { SettingsHelper } from './helper';
 
 const settings = SettingsHelper.loadSettings();
 
