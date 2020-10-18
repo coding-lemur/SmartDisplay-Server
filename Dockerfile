@@ -2,11 +2,10 @@ FROM node:12
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY yarn.lock ./
+COPY package*.json ./
 
-RUN yarn
+RUN npm install
 
 COPY . .
 
-CMD [ "node", "yarn", "start" ]
+CMD [ "node", "npm", "start" ]
