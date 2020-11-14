@@ -52,7 +52,7 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ### Docker
 
-1. Getting the latest image: `docker push mceddy/smartdisplay-server:latest`
+1. Getting the latest image: `docker pull mceddy/smartdisplay-server:latest`
 2. Overwrite environment variables
 3. Run the image: `docker run mceddy/smartdisplay-server`
 
