@@ -40,15 +40,21 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ## Setup
 
+### Create OpenWeatherMap account (free)
+
+1. signup at https://home.openweathermap.org/users/sign_up
+2. copy your API key from https://home.openweathermap.org/api_keys
+3. find ID of your city: https://openweathermap.org/find
+
 ### Standalone
 
 1. install nodejs ([example for Ubuntu/Raspbian](https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/))
 2. checkout repository
-3. configure MQTT broker in settings.json
+3. change settings in settings.json
 4. run `npm install`
 5. run `npm start`
 6. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
-7. setup a systemd service for autorestart, restart after errors
+7. setup a systemd service for autorestart, restart after errors (see prepared service config file in "/systemd/smartdisplay.service")
 
 ### Docker
 
