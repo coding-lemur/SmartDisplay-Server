@@ -18,10 +18,30 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: elgohr/Publish-Docker-Github-Action@master
+      - 
+        name: Checkout 
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
         with:
-          name: mceddy/smartdisplay-server
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "latest,${{ env.RELEASE_VERSION }}"
+          platforms: all
+      - 
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}       
+      -
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+          tags: mceddy/smartdisplay-server:latest
