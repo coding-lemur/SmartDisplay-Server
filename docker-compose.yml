@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+    app:
+        image: mceddy/smartdisplay-server
+        environment:
+            MQTT_SERVER: 'mqtt://localhost:1883'
+            MQTT_USERNAME: 'user'
+            MQTT_PASSWORD: 'password'
+            LOCALE: 'de'
+            APP_CITY_WEATHER_CITY_ID: '2950159' # Berlin
+            APP_CITY_WEATHER_APP_ID: 'your OpenWeather API key'
+            APP_CITY_WEATHER_UNITS: 'metric'
+            APP_CITY_WEATHER_MAX_CACHE_AGE: 30
+            APP_CITY_WEATHER_PUBLISH_DATA: false
+            TZ: 'Europe/Berlin'
+        restart: unless-stopped
