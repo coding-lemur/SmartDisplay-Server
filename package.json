@@ -22,7 +22,7 @@
     "dependencies": {
         "clear": "^0.1.0",
         "color": "^3.1.2",
-        "commander": "^6.2.0",
+        "commander": "^6.2.1",
         "dayjs": "^1.9.6",
         "exit-hook": "^2.2.0",
         "mqtt": "^4.2.5",
