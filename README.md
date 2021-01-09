@@ -66,13 +66,16 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 Overwrite following environment variables to setup your container:
 
-- MQTT_SERVER
-- MQTT_USERNAME
-- MQTT_PASSWORD
-- LOCALE
-- APP_CITY_WEATHER_CITY_ID
-- APP_CITY_WEATHER_APP_ID
-- APP_CITY_WEATHER_UNITS
-- APP_CITY_WEATHER_MAX_CACHE_AGE
-- APP_CITY_WEATHER_PUBLISH_DATA
-- TZ (Timezone e.g. "Europe/Berlin")
+| Name                           | Description                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| MQTT_SERVER                    | Adress of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                      |
+| MQTT_USERNAME                  | Username to access the MQTT Broker                                                                                 |
+| MQTT_PASSWORD                  | Password of the MQTT user                                                                                          |
+| APP_ITERATIONS                 | Number of seconds before switching to the next app                                                                 |
+| LOCALE                         | Country code for loading date time settings (e.g. "de")                                                            |
+| APP_CITY_WEATHER_APP_ID        | Your [OpenWeathermap API Key](https://home.openweathermap.org/api_keys)                                            |
+| APP_CITY_WEATHER_CITY_ID       | The [City ID](https://openweathermap.org/find) for external weather data                                           |
+| APP_CITY_WEATHER_UNITS         | weather data unit forma ("metric" or "imperial")                                                                   |
+| APP_CITY_WEATHER_MAX_CACHE_AGE | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
+| APP_CITY_WEATHER_PUBLISH_DATA  | On TRUE external weather data will published via MQTT if the display is active                                     |
+| TZ                             | Timezone to show the correct time (e.g. "Europe/Berlin")                                                           |
