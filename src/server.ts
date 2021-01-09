@@ -1,7 +1,7 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
 import { MqttHelper } from './helper';
-import { ControllerInfo } from './models';
+import { ControllerInfo, Settings } from './models';
 import { SmartDisplayController } from './smart-display-controller';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
@@ -10,23 +10,26 @@ import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
 
 export class Server {
+    private readonly settings: Settings;
     private readonly client: mqtt.Client;
     private readonly apps: App[] = [];
     private readonly controller: SmartDisplayController;
 
     private interval: NodeJS.Timeout | null = null;
     private currentAppIndex = 0;
-    private appIterations = 0;
+    private currentAppIteration = 0;
 
     private get isRunning(): boolean {
         return this.interval != null;
     }
 
-    constructor(settings: any) {
+    constructor(settings: Settings) {
+        this.settings = settings;
+
         const { server, username, password } = settings.mqtt;
         const clientOptions: IClientOptions = {
             username,
-            password
+            password,
         };
 
         this.client = mqtt
@@ -57,7 +60,7 @@ export class Server {
 
         this.controller = new SmartDisplayController(this.client);
 
-        this.loadApps(settings.apps);
+        this.loadApps();
     }
 
     private processIncomingServerMessage(
@@ -84,6 +87,18 @@ export class Server {
 
                 break;
             }
+
+            case 'power-state': {
+                const powerOn = this.isRunning ? 'on' : 'off';
+
+                this.client.publish(
+                    'smartDisplay/server/out/power-state',
+                    powerOn
+                );
+            }
+
+            default:
+                break;
         }
     }
 
@@ -112,14 +127,15 @@ export class Server {
         }
     }
 
-    private loadApps(settings: any): void {
+    private loadApps(): void {
+        const appSettings = this.settings.apps;
         const timeApp = new TimeApp(this.controller);
         const dateApp = new DateApp(this.controller);
         const roomWeather = new RoomWeatherApp(this.controller);
         const cityWeather = new CityWeatherApp(
             this.controller,
             this.client,
-            settings.cityWeather
+            appSettings.cityWeather
         );
         this.apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
     }
@@ -137,15 +153,17 @@ export class Server {
         this.apps.filter((a) => a.init != null).forEach((a) => a.init!());
 
         this.currentAppIndex = 0;
-        this.appIterations = 0;
+        this.currentAppIteration = 0;
 
         this.renderApp();
+
+        const { appIterations } = this.settings;
 
         this.interval = setInterval(() => {
             if (this.client.connected) {
                 this.renderApp();
 
-                if (this.appIterations >= 15) {
+                if (this.currentAppIteration >= appIterations) {
                     this.nextApp();
                 }
             } else {
@@ -172,7 +190,7 @@ export class Server {
     }
 
     private nextApp(): void {
-        this.appIterations = 0;
+        this.currentAppIteration = 0;
         this.currentAppIndex++;
 
         if (this.currentAppIndex >= this.apps.length) {
@@ -193,12 +211,12 @@ export class Server {
     private renderApp(): void {
         const app = this.apps[this.currentAppIndex];
 
-        if (this.appIterations === 0) {
+        if (this.currentAppIteration === 0) {
             console.log('app', app.name);
         }
 
         const shouldRender =
-            app.renderOnlyOneTime === false || this.appIterations === 0;
+            app.renderOnlyOneTime === false || this.currentAppIteration === 0;
 
         if (shouldRender) {
             this.controller.clear();
@@ -206,7 +224,7 @@ export class Server {
             this.controller.show();
         }
 
-        this.appIterations++;
+        this.currentAppIteration++;
     }
 
     shutdown(): void {

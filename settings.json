@@ -4,6 +4,7 @@
         "username": "smart-display",
         "password": "*******"
     },
+    "appIterations": 10, // seconds
     "locale": "de",
     "apps": {
         "cityWeather": {
