@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const clear = require('clear');
+require('dotenv').config();
 
 import process from 'process';
 import program from 'commander';
@@ -35,16 +36,14 @@ exitHook(() => {
     }
 });
 
-import { SettingsHelper } from './helper';
-
-const settings = SettingsHelper.loadSettings();
-
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 
-import(`dayjs/locale/${settings.locale}`).then(() => {
-    dayjs.locale(settings.locale);
+const locale = process.env.LOCALE;
+
+import(`dayjs/locale/${locale}`).then(() => {
+    dayjs.locale(locale);
     dayjs.extend(weekday);
 
-    server = new Server(settings);
+    server = new Server();
 });

@@ -24,6 +24,7 @@
         "color": "^3.1.2",
         "commander": "^6.2.0",
         "dayjs": "^1.10.4",
+        "dotenv": "^8.2.0",
         "exit-hook": "^2.2.1",
         "mqtt": "^4.2.6",
         "node-fetch": "^2.6.1",

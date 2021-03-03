@@ -4,4 +4,3 @@ export * from './last-updated';
 export * from './network';
 export * from './position';
 export * from './room-weather';
-export * from './settings';

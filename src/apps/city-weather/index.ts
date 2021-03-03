@@ -6,11 +6,17 @@ import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
 import { StringHelper, DrawHelper } from '../../helper';
 import { OpenWeatherMapService } from './services';
-import { CityWeatherData, CityWeatherSetting } from './models';
+import { CityWeatherData } from './models';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
-    private readonly _service = new OpenWeatherMapService(this.setting);
+    private readonly _service = new OpenWeatherMapService();
+    private readonly _maxCacheAgeMinutes = parseInt(
+        process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
+        10
+    );
+    private readonly _publishWeatherData =
+        process.env.APP_CITY_WEATHER_PUBLISH_DATA?.toLowerCase() === 'true';
 
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
@@ -26,13 +32,12 @@ export class CityWeatherApp implements App {
             return true;
         }
 
-        return cacheMinutesAge >= this.setting.maxCacheAgeMinutes;
+        return cacheMinutesAge >= this._maxCacheAgeMinutes;
     }
 
     constructor(
         private controller: SmartDisplayController,
-        private client: MqttClient,
-        private setting: CityWeatherSetting
+        private client: MqttClient
     ) {}
 
     init(): void {
@@ -51,7 +56,7 @@ export class CityWeatherApp implements App {
         DrawHelper.renderPixelProgress(
             this.controller,
             this.calcCacheMinutesAge(),
-            this.setting.maxCacheAgeMinutes
+            this._maxCacheAgeMinutes
         );
     }
 
@@ -63,7 +68,7 @@ export class CityWeatherApp implements App {
         this.controller.drawText({
             hexColor: '#4CFF00',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
     }
 
@@ -86,7 +91,7 @@ export class CityWeatherApp implements App {
 
                 this._data.value = data;
 
-                if (this.setting.publishWeatherData) {
+                if (this._publishWeatherData) {
                     this.client.publish(
                         'smartDisplay/server/out/cityWeather',
                         JSON.stringify(data)

@@ -1,7 +1,7 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
 import { MqttHelper } from './helper';
-import { ControllerInfo, Settings } from './models';
+import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
@@ -10,30 +10,30 @@ import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
 
 export class Server {
-    private readonly settings: Settings;
-    private readonly client: mqtt.Client;
-    private readonly apps: App[] = [];
-    private readonly controller: SmartDisplayController;
+    private readonly _client: mqtt.Client;
+    private readonly _apps: App[] = [];
+    private readonly _controller: SmartDisplayController;
+    private readonly _appIterations = parseInt(
+        process.env.APP_ITERATIONS || '10',
+        10
+    );
 
-    private interval: NodeJS.Timeout | null = null;
-    private currentAppIndex = 0;
-    private currentAppIteration = 0;
+    private _interval: NodeJS.Timeout | null = null;
+    private _currentAppIndex = 0;
+    private _currentAppIteration = 0;
 
     private get isRunning(): boolean {
-        return this.interval != null;
+        return this._interval != null;
     }
 
-    constructor(settings: Settings) {
-        this.settings = settings;
-
-        const { server, username, password } = settings.mqtt;
+    constructor() {
         const clientOptions: IClientOptions = {
-            username,
-            password,
+            username: process.env.MQTT_USERNAME,
+            password: process.env.MQTT_PASSWORD,
         };
 
-        this.client = mqtt
-            .connect(server, clientOptions)
+        this._client = mqtt
+            .connect(process.env.MQTT_SERVER, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
                 const command = MqttHelper.getLastTopicPart(topic);
@@ -58,7 +58,7 @@ export class Server {
                 console.error('MQTT', error);
             });
 
-        this.controller = new SmartDisplayController(this.client);
+        this._controller = new SmartDisplayController(this._client);
 
         this.loadApps();
     }
@@ -76,7 +76,7 @@ export class Server {
 
                     console.debug('switch power-status', powerOn);
 
-                    this.controller.power(powerOn);
+                    this._controller.power(powerOn);
 
                     if (powerOn) {
                         this.start();
@@ -91,7 +91,7 @@ export class Server {
             case 'power-state': {
                 const powerOn = this.isRunning ? 'on' : 'off';
 
-                this.client.publish(
+                this._client.publish(
                     'smartDisplay/server/out/power-state',
                     powerOn
                 );
@@ -128,42 +128,35 @@ export class Server {
     }
 
     private loadApps(): void {
-        const appSettings = this.settings.apps;
-        const timeApp = new TimeApp(this.controller);
-        const dateApp = new DateApp(this.controller);
-        const roomWeather = new RoomWeatherApp(this.controller);
-        const cityWeather = new CityWeatherApp(
-            this.controller,
-            this.client,
-            appSettings.cityWeather
-        );
-        this.apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
+        const timeApp = new TimeApp(this._controller);
+        const dateApp = new DateApp(this._controller);
+        const roomWeather = new RoomWeatherApp(this._controller);
+        const cityWeather = new CityWeatherApp(this._controller, this._client);
+        this._apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
     }
 
     start(): void {
-        if (this.interval != null) {
+        if (this._interval != null) {
             console.warn('found running instance');
             this.stop();
         }
 
-        this.client.publish('smartDisplay/server/out', 'started');
+        this._client.publish('smartDisplay/server/out', 'started');
         console.debug('start server');
 
         // init all apps
-        this.apps.filter((a) => a.init != null).forEach((a) => a.init!());
+        this._apps.filter((a) => a.init != null).forEach((a) => a.init!());
 
-        this.currentAppIndex = 0;
-        this.currentAppIteration = 0;
+        this._currentAppIndex = 0;
+        this._currentAppIteration = 0;
 
         this.renderApp();
 
-        const { appIterations } = this.settings;
-
-        this.interval = setInterval(() => {
-            if (this.client.connected) {
+        this._interval = setInterval(() => {
+            if (this._client.connected) {
                 this.renderApp();
 
-                if (this.currentAppIteration >= appIterations) {
+                if (this._currentAppIteration >= this._appIterations) {
                     this.nextApp();
                 }
             } else {
@@ -171,7 +164,7 @@ export class Server {
             }
 
             // check controller is offline
-            if (this.controller.isOffline) {
+            if (this._controller.isOffline) {
                 console.debug('controller offline -> stop server');
                 this.stop();
             }
@@ -181,23 +174,23 @@ export class Server {
     stop(): void {
         console.debug('stop server');
 
-        if (this.interval == null) {
+        if (this._interval == null) {
             return;
         }
 
-        clearInterval(this.interval);
-        this.interval = null;
+        clearInterval(this._interval);
+        this._interval = null;
     }
 
     private nextApp(): void {
-        this.currentAppIteration = 0;
-        this.currentAppIndex++;
+        this._currentAppIteration = 0;
+        this._currentAppIndex++;
 
-        if (this.currentAppIndex >= this.apps.length) {
-            this.currentAppIndex = 0;
+        if (this._currentAppIndex >= this._apps.length) {
+            this._currentAppIndex = 0;
         }
 
-        const app = this.apps[this.currentAppIndex];
+        const app = this._apps[this._currentAppIndex];
 
         if (app.reset != null) {
             app.reset();
@@ -209,31 +202,31 @@ export class Server {
     }
 
     private renderApp(): void {
-        const app = this.apps[this.currentAppIndex];
+        const app = this._apps[this._currentAppIndex];
 
-        if (this.currentAppIteration === 0) {
+        if (this._currentAppIteration === 0) {
             console.log('app', app.name);
         }
 
         const shouldRender =
-            app.renderOnlyOneTime === false || this.currentAppIteration === 0;
+            app.renderOnlyOneTime === false || this._currentAppIteration === 0;
 
         if (shouldRender) {
-            this.controller.clear();
+            this._controller.clear();
             app.render();
-            this.controller.show();
+            this._controller.show();
         }
 
-        this.currentAppIteration++;
+        this._currentAppIteration++;
     }
 
     shutdown(): void {
         console.debug('shutdown');
 
-        if (this.client != null) {
-            this.client.end(true);
+        if (this._client != null) {
+            this._client.end(true);
         }
 
-        this.controller.destroy();
+        this._controller.destroy();
     }
 }
