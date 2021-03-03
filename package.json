@@ -1,6 +1,6 @@
 {
     "name": "smart-display-server",
-    "version": "0.41.1",
+    "version": "0.42.0",
     "description": "Server which controlles the smart display.",
     "repository": {
         "type": "git",
