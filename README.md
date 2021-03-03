@@ -50,9 +50,9 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 1. install nodejs ([example for Ubuntu/Raspbian](https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/))
 2. checkout repository
-3. change settings in settings.json
+3. change settings in `.env` file (see "Environment Variables" table in Docker part for detail info)
 4. run `npm install`
-5. run `npm start`
+5. run `npm run start`
 6. connect [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller) with Server (set server IP)
 7. setup a systemd service for autorestart, restart after errors (see prepared service config file in "/systemd/smartdisplay.service")
 
