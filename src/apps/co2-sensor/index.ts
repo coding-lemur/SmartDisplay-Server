@@ -17,7 +17,13 @@ export class Co2SensorApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady(): boolean {
-        return this._data.value != null;
+        const { value } = this._data;
+
+        if (value == null || value < this._alarmThreshold) {
+            return false;
+        }
+
+        return true;
     }
 
     constructor(private _controller: SmartDisplayController) {}
@@ -56,30 +62,10 @@ export class Co2SensorApp implements App {
             return;
         }
 
-        const hexColor = this._getHexColor(co2Value);
-        const text =
-            co2Value >= this._alarmThreshold ? 'Lüften' : `CO2 ${co2Value}`;
-
         this._controller.drawText({
-            hexColor,
-            text,
-            position: { x: 2, y: 1 },
+            hexColor: '#FF0000',
+            text: 'Lüften!',
+            position: { x: 3, y: 1 },
         });
-    }
-
-    private _getHexColor(co2Value: number): string {
-        const alarmColor = '#FF0000';
-        const warnColor = '#FFD800';
-        const defaultColor = '#00C8C8';
-
-        if (co2Value >= this._alarmThreshold) {
-            return alarmColor;
-        }
-
-        if (co2Value >= 1000) {
-            return warnColor;
-        }
-
-        return defaultColor;
     }
 }
