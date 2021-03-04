@@ -69,7 +69,7 @@ export class Co2SensorApp implements App {
 
     private _getHexColor(co2Value: number): string {
         const alarmColor = '#FF0000';
-        const warnColor = '#FF6A00';
+        const warnColor = '#FFD800';
         const defaultColor = '#00C8C8';
 
         if (co2Value >= this._alarmThreshold) {
