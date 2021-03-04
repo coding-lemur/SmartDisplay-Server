@@ -8,21 +8,21 @@ export class DateApp implements App {
     readonly name = 'date';
     readonly renderOnlyOneTime = true;
 
-    constructor(private controller: SmartDisplayController) {}
+    constructor(private _controller: SmartDisplayController) {}
 
     render(): void {
-        this.renderDate();
+        this._renderDate();
 
-        DrawHelper.renderWeekday(this.controller);
+        DrawHelper.renderWeekday(this._controller);
     }
 
-    private renderDate(): void {
+    private _renderDate(): void {
         const date = dayjs().format('DD.MM.');
 
-        this.controller.drawText({
+        this._controller.drawText({
             hexColor: '#00C8C8',
             text: date,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
     }
 }

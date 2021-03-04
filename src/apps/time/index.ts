@@ -10,25 +10,25 @@ export class TimeApp implements App {
     readonly name = 'time';
     readonly renderOnlyOneTime = true;
 
-    constructor(private controller: SmartDisplayController) {}
+    constructor(private _controller: SmartDisplayController) {}
 
     render(): void {
-        this.renderTime();
+        this._renderTime();
 
-        DrawHelper.renderWeekday(this.controller);
+        DrawHelper.renderWeekday(this._controller);
 
         // toggle colon
         //this.showColon = !this.showColon;
     }
 
-    private renderTime(): void {
+    private _renderTime(): void {
         const format = this.showColon ? 'HH:mm' : 'HH mm';
         const time = dayjs().format(format);
 
-        this.controller.drawText({
+        this._controller.drawText({
             hexColor: '#00C8C8',
             text: time,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
     }
 }

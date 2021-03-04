@@ -22,11 +22,11 @@ export class CityWeatherApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady(): boolean {
-        return !this.isDataOutdated;
+        return !this._isDataOutdated;
     }
 
-    private get isDataOutdated(): boolean {
-        const cacheMinutesAge = this.calcCacheMinutesAge();
+    private get _isDataOutdated(): boolean {
+        const cacheMinutesAge = this._calcCacheMinutesAge();
 
         if (cacheMinutesAge == null) {
             return true;
@@ -36,43 +36,43 @@ export class CityWeatherApp implements App {
     }
 
     constructor(
-        private controller: SmartDisplayController,
-        private client: MqttClient
+        private _controller: SmartDisplayController,
+        private _client: MqttClient
     ) {}
 
     init(): void {
-        this.refreshWeatherData();
+        this._refreshWeatherData();
     }
 
     reset(): void {
-        if (this.isDataOutdated) {
-            this.refreshWeatherData();
+        if (this._isDataOutdated) {
+            this._refreshWeatherData();
         }
     }
 
     render(): void {
-        this.renderTemperature();
+        this._renderTemperature();
 
         DrawHelper.renderPixelProgress(
-            this.controller,
-            this.calcCacheMinutesAge(),
+            this._controller,
+            this._calcCacheMinutesAge(),
             this._maxCacheAgeMinutes
         );
     }
 
-    private renderTemperature(): void {
+    private _renderTemperature(): void {
         const temperature = StringHelper.roundToFixed(
             this._data?.value?.temperature
         );
 
-        this.controller.drawText({
+        this._controller.drawText({
             hexColor: '#4CFF00',
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
     }
 
-    private calcCacheMinutesAge(): number | null {
+    private _calcCacheMinutesAge(): number | null {
         if (this._data == null || this._data.lastUpdated == null) {
             return null;
         }
@@ -83,7 +83,7 @@ export class CityWeatherApp implements App {
         return diffMinutes;
     }
 
-    private refreshWeatherData(): void {
+    private _refreshWeatherData(): void {
         this._service
             .loadData()
             .then((data) => {
@@ -92,7 +92,7 @@ export class CityWeatherApp implements App {
                 this._data.value = data;
 
                 if (this._publishWeatherData) {
-                    this.client.publish(
+                    this._client.publish(
                         'smartDisplay/server/out/cityWeather',
                         JSON.stringify(data)
                     );

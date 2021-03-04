@@ -36,8 +36,8 @@ export class SmartDisplayController {
         return diffSeconds > 300; // more than 5 minutes old
     }
 
-    constructor(private client: mqtt.Client) {
-        client
+    constructor(private _client: mqtt.Client) {
+        _client
             .subscribe('smartDisplay/client/out/#')
             .on('message', (topic, message) => {
                 if (!topic.startsWith('smartDisplay/client/out/')) {
@@ -50,11 +50,11 @@ export class SmartDisplayController {
                     return;
                 }
 
-                this.processIncomingMessage(command, message.toString());
+                this._processIncomingMessage(command, message.toString());
             });
     }
 
-    private processIncomingMessage(command: string, message: string): void {
+    private _processIncomingMessage(command: string, message: string): void {
         console.debug(new Date(), 'controller cmd', command, message);
 
         switch (command) {
@@ -63,7 +63,7 @@ export class SmartDisplayController {
                     const info = JSON.parse(message) as ControllerInfo;
 
                     this._info.value = info;
-                    this.checkPowerStatus(info);
+                    this._checkPowerStatus(info);
                 } catch (error) {
                     console.error('error on parse info payload', error);
                 }
@@ -76,7 +76,7 @@ export class SmartDisplayController {
         }
     }
 
-    private checkPowerStatus(info: ControllerInfo): void {
+    private _checkPowerStatus(info: ControllerInfo): void {
         const powerOnDevice = info?.powerOn;
 
         // check power status
@@ -94,11 +94,11 @@ export class SmartDisplayController {
     }
 
     show(): void {
-        this.client.publish('smartDisplay/client/in/show', '');
+        this._client.publish('smartDisplay/client/in/show', '');
     }
 
     clear(): void {
-        this.client.publish('smartDisplay/client/in/clear', '');
+        this._client.publish('smartDisplay/client/in/clear', '');
     }
 
     drawText(data: DrawTextDataEasy): void {
@@ -111,7 +111,7 @@ export class SmartDisplayController {
             font: data.fontWeight ?? FontWeight.Normal,
         };
 
-        this.client.publish(
+        this._client.publish(
             'smartDisplay/client/in/drawText',
             JSON.stringify(dataOut)
         );
@@ -128,7 +128,7 @@ export class SmartDisplayController {
             color: color.rgb().array(),
         };
 
-        this.client.publish(
+        this._client.publish(
             'smartDisplay/client/in/drawLine',
             JSON.stringify(dataOut)
         );
@@ -143,7 +143,7 @@ export class SmartDisplayController {
             color: color.rgb().array(),
         };
 
-        this.client.publish(
+        this._client.publish(
             'smartDisplay/client/in/drawPixel',
             JSON.stringify(dataOut)
         );
@@ -155,7 +155,7 @@ export class SmartDisplayController {
             color: color.rgb(),
         };
 
-        this.client.publish(
+        this._client.publish(
             'smartDisplay/client/in/fill',
             JSON.stringify(dataOut)
         );
@@ -167,13 +167,13 @@ export class SmartDisplayController {
         const dataOut = {
             on: status,
         };
-        this.client.publish(
+        this._client.publish(
             'smartDisplay/client/in/power',
             JSON.stringify(dataOut)
         );
     }
 
     destroy(): void {
-        this.client.end(true);
+        this._client.end(true);
     }
 }

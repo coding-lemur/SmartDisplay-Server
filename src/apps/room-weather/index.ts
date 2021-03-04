@@ -13,32 +13,32 @@ export class RoomWeatherApp implements App {
         return this._roomWeather?.temperature != null;
     }
 
-    constructor(private controller: SmartDisplayController) {}
+    constructor(private _controller: SmartDisplayController) {}
 
     reset(): void {
         // load room-weather
-        this._roomWeather = this.controller?.info?.roomWeather;
+        this._roomWeather = this._controller?.info?.roomWeather;
     }
 
     render(): void {
-        this.renderTemperature();
+        this._renderTemperature();
 
         DrawHelper.renderProgressbar(
-            this.controller,
+            this._controller,
             this._roomWeather?.humidity,
             100
         );
     }
 
-    private renderTemperature(): void {
+    private _renderTemperature(): void {
         const temperature = StringHelper.roundToFixed(
             this._roomWeather?.temperature
         );
 
-        this.controller.drawText({
+        this._controller.drawText({
             hexColor: '#00C8C8',
             text: `${temperature}°`,
-            position: { x: 7, y: 1 }
+            position: { x: 7, y: 1 },
         });
     }
 }

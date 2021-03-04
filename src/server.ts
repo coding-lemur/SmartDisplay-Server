@@ -43,12 +43,12 @@ export class Server {
                 }
 
                 if (topic.startsWith('smartDisplay/server/in/')) {
-                    this.processIncomingServerMessage(
+                    this._processIncomingServerMessage(
                         command,
                         message.toString()
                     );
                 } else if (topic.startsWith('smartDisplay/client/out/')) {
-                    this.processOutcomingClientMessage(
+                    this._processOutcomingClientMessage(
                         command,
                         message.toString()
                     );
@@ -60,10 +60,10 @@ export class Server {
 
         this._controller = new SmartDisplayController(this._client);
 
-        this.loadApps();
+        this._loadApps();
     }
 
-    private processIncomingServerMessage(
+    private _processIncomingServerMessage(
         command: string,
         message: string
     ): void {
@@ -102,7 +102,7 @@ export class Server {
         }
     }
 
-    private processOutcomingClientMessage(
+    private _processOutcomingClientMessage(
         command: string,
         message: string
     ): void {
@@ -127,7 +127,7 @@ export class Server {
         }
     }
 
-    private loadApps(): void {
+    private _loadApps(): void {
         const timeApp = new TimeApp(this._controller);
         const dateApp = new DateApp(this._controller);
         const roomWeather = new RoomWeatherApp(this._controller);

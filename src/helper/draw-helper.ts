@@ -25,7 +25,7 @@ export class DrawHelper {
         maxValue: number,
         hexColor = '#A0A0A0'
     ): void {
-        const xEndPosition = this.calcProgressXPosition(value, maxValue);
+        const xEndPosition = this._calcProgressXPosition(value, maxValue);
 
         if (xEndPosition == null) {
             return;
@@ -44,7 +44,7 @@ export class DrawHelper {
         maxValue: number,
         hexColor: string = '#A0A0A0'
     ): void {
-        const xPosition = this.calcProgressXPosition(value, maxValue);
+        const xPosition = this._calcProgressXPosition(value, maxValue);
 
         if (xPosition == null) {
             return;
@@ -53,7 +53,7 @@ export class DrawHelper {
         controller.drawPixel({ x: xPosition, y: 7 }, hexColor);
     }
 
-    private static calcProgressXPosition(
+    private static _calcProgressXPosition(
         value: number | null | undefined,
         maxValue: number
     ): number | undefined {
