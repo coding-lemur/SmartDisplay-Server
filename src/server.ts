@@ -8,6 +8,7 @@ import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
 import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
+import { Co2SensorApp } from './apps/co2-sensor';
 
 export class Server {
     private readonly _client: mqtt.Client;
@@ -132,7 +133,11 @@ export class Server {
         const dateApp = new DateApp(this._controller);
         const roomWeather = new RoomWeatherApp(this._controller);
         const cityWeather = new CityWeatherApp(this._controller, this._client);
-        this._apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
+        const co2Sensor = new Co2SensorApp(this._controller);
+
+        this._apps.push(
+            ...[timeApp, dateApp, roomWeather, cityWeather, co2Sensor]
+        );
     }
 
     start(): void {
