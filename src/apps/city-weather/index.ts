@@ -83,23 +83,21 @@ export class CityWeatherApp implements App {
         return diffMinutes;
     }
 
-    private _refreshWeatherData(): void {
-        this._service
-            .loadData()
-            .then((data) => {
-                console.log('city weather', data);
+    private async _refreshWeatherData(): Promise<void> {
+        try {
+            const data = await this._service.loadData();
+            console.log('city weather', data);
 
-                this._data.value = data;
+            this._data.value = data;
 
-                if (this._publishWeatherData) {
-                    this._client.publish(
-                        'smartDisplay/server/out/cityWeather',
-                        JSON.stringify(data)
-                    );
-                }
-            })
-            .catch((error) =>
-                console.error("can't load openweathermap data", error)
-            );
+            if (this._publishWeatherData) {
+                this._client.publish(
+                    'smartDisplay/server/out/cityWeather',
+                    JSON.stringify(data)
+                );
+            }
+        } catch (error) {
+            console.error("can't load openweathermap data", error);
+        }
     }
 }
