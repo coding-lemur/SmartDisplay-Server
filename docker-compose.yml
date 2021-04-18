@@ -3,14 +3,21 @@ services:
     app:
         image: mceddy/smartdisplay-server:latest
         environment:
+            LOCALE: 'de'
+            TZ: 'Europe/Berlin'
+
             MQTT_SERVER: 'mqtt://localhost:1883'
             MQTT_USERNAME: 'user'
             MQTT_PASSWORD: 'password'
-            LOCALE: 'de'
+
             APP_CITY_WEATHER_CITY_ID: '2950159' # Berlin
             APP_CITY_WEATHER_APP_ID: 'your OpenWeather API key'
             APP_CITY_WEATHER_UNITS: 'metric'
             APP_CITY_WEATHER_MAX_CACHE_AGE: 30
             APP_ITERATIONS: 8
-            TZ: 'Europe/Berlin'
+
+            APP_CO2_SENSOR_BASE_API_URL: 'http://my-server.com/home-assistant/api'
+            APP_CO2_SENSOR_ENTITY_ID: 'sensor.co2meter_value'
+            APP_CO2_SENSOR_ACCESS_TOKEN: 'your Home Assistant access token'
+            APP_CO2_SENSOR_ALARM_THRESHOLD: 1200
         restart: unless-stopped
