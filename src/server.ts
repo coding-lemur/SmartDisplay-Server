@@ -131,7 +131,8 @@ export class Server {
         const timeApp = new TimeApp(this._controller);
         const dateApp = new DateApp(this._controller);
         const roomWeather = new RoomWeatherApp(this._controller);
-        const cityWeather = new CityWeatherApp(this._controller, this._client);
+        const cityWeather = new CityWeatherApp(this._controller);
+
         this._apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
     }
 

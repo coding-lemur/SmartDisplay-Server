@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { MqttClient } from 'mqtt';
 
 import { App } from '../app';
 import { LastUpdated } from '../../models';
@@ -15,8 +14,6 @@ export class CityWeatherApp implements App {
         process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
         10
     );
-    private readonly _publishWeatherData =
-        process.env.APP_CITY_WEATHER_PUBLISH_DATA?.toLowerCase() === 'true';
 
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
@@ -35,10 +32,7 @@ export class CityWeatherApp implements App {
         return cacheMinutesAge >= this._maxCacheAgeMinutes;
     }
 
-    constructor(
-        private _controller: SmartDisplayController,
-        private _client: MqttClient
-    ) {}
+    constructor(private _controller: SmartDisplayController) {}
 
     init(): void {
         this._refreshWeatherData();
@@ -89,13 +83,6 @@ export class CityWeatherApp implements App {
             console.log('city weather', data);
 
             this._data.value = data;
-
-            if (this._publishWeatherData) {
-                this._client.publish(
-                    'smartDisplay/server/out/cityWeather',
-                    JSON.stringify(data)
-                );
-            }
         } catch (error) {
             console.error("can't load openweathermap data", error);
         }
