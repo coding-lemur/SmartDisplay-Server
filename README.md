@@ -42,9 +42,9 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ### Create OpenWeatherMap account (free)
 
-1. signup at https://home.openweathermap.org/users/sign_up
-2. copy your API key from https://home.openweathermap.org/api_keys
-3. find ID of your city: https://openweathermap.org/find
+1. signup at <https://home.openweathermap.org/users/sign_up>
+2. copy your API key from <https://home.openweathermap.org/api_keys>
+3. find ID of your city: <https://openweathermap.org/find>
 
 ### Standalone
 
@@ -58,9 +58,10 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 
 ### Docker
 
-1. Getting the latest image: `docker pull mceddy/smartdisplay-server:latest`
-2. Overwrite environment variables
-3. Run the image: `docker run mceddy/smartdisplay-server`
+1. Ensure [Docker Compose](https://docs.docker.com/compose/) is already installed
+2. Overwrite environment variables in `docker-compose.yml` file
+3. Open command-line and switch to folder containing the `docker-compose.yml` file
+4. Create container and run with `docker-compose up -d`
 
 #### Environment Variables
 
@@ -77,5 +78,4 @@ Overwrite following environment variables to setup your container:
 | APP_CITY_WEATHER_CITY_ID       | The [City ID](https://openweathermap.org/find) for external weather data                                           |
 | APP_CITY_WEATHER_UNITS         | weather data unit forma ("metric" or "imperial")                                                                   |
 | APP_CITY_WEATHER_MAX_CACHE_AGE | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
-| APP_CITY_WEATHER_PUBLISH_DATA  | On TRUE external weather data will published via MQTT if the display is active                                     |
 | TZ                             | Timezone to show the correct time (e.g. "Europe/Berlin")                                                           |
