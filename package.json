@@ -22,7 +22,7 @@
     "dependencies": {
         "clear": "^0.1.0",
         "color": "^3.1.2",
-        "commander": "^6.2.0",
+        "commander": "^7.2.0",
         "dayjs": "^1.10.4",
         "dotenv": "^8.2.0",
         "exit-hook": "^2.2.1",
