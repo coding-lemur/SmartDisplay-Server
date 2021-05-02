@@ -5,7 +5,7 @@ import { SmartDisplayController } from '../../smart-display-controller';
 import { DrawHelper } from '../../helper';
 
 export class TimeApp implements App {
-    private showColon = true;
+    private _showColon = true;
 
     readonly name = 'time';
     readonly renderOnlyOneTime = true;
@@ -22,11 +22,11 @@ export class TimeApp implements App {
     }
 
     private _renderTime(): void {
-        const format = this.showColon ? 'HH:mm' : 'HH mm';
+        const format = this._showColon ? 'HH:mm' : 'HH mm';
         const time = dayjs().format(format);
 
         this._controller.drawText({
-            hexColor: '#00C8C8',
+            hexColor: DrawHelper.PrimaryColor,
             text: time,
             position: { x: 7, y: 1 },
         });

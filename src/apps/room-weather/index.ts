@@ -36,7 +36,7 @@ export class RoomWeatherApp implements App {
         );
 
         this._controller.drawText({
-            hexColor: '#00C8C8',
+            hexColor: DrawHelper.PrimaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });

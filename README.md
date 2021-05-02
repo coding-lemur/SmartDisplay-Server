@@ -71,6 +71,7 @@ Overwrite following environment variables to setup your container:
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | TZ                             | Timezone to show the correct time (e.g. "Europe/Berlin")                                                           |
 | LOCALE                         | Country code for loading date time settings (e.g. "de")                                                            |
+| PRIMARY_COLOR                  | color used by most texts                                                                                           |
 | MQTT_SERVER                    | Adress of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                      |
 | MQTT_USERNAME                  | Username to access the MQTT Broker                                                                                 |
 | MQTT_PASSWORD                  | Password of the MQTT user                                                                                          |

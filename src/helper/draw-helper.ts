@@ -3,13 +3,18 @@ import dayjs from 'dayjs';
 import { SmartDisplayController } from '../smart-display-controller';
 
 export class DrawHelper {
+    static get PrimaryColor(): string {
+        return process.env.PRIMARY_COLOR || '#00C8C8';
+    }
+
     static renderWeekday(controller: SmartDisplayController): void {
         const currentWeekday = dayjs().weekday();
         const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
 
         for (let weekday = 0; weekday < 7; weekday++) {
             const xPosition = getXPositionByWeekDay(weekday);
-            const color = weekday === currentWeekday ? '#00C8C8' : '#A0A0A0';
+            const color =
+                weekday === currentWeekday ? this.PrimaryColor : '#A0A0A0';
 
             controller.drawLine(
                 { x: xPosition, y: 7 },
