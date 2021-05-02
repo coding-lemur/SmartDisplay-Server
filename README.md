@@ -74,6 +74,7 @@ Overwrite following environment variables to setup your container:
 | MQTT_PASSWORD                  | Password of the MQTT user                                                                                          |
 | APP_ITERATIONS                 | Number of seconds before switching to the next app                                                                 |
 | LOCALE                         | Country code for loading date time settings (e.g. "de")                                                            |
+| PRIMARY_COLOR                  | color used by most texts                                                                                           |
 | APP_CITY_WEATHER_APP_ID        | Your [OpenWeathermap API Key](https://home.openweathermap.org/api_keys)                                            |
 | APP_CITY_WEATHER_CITY_ID       | The [City ID](https://openweathermap.org/find) for external weather data                                           |
 | APP_CITY_WEATHER_UNITS         | weather data unit forma ("metric" or "imperial")                                                                   |

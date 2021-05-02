@@ -20,7 +20,7 @@ export class DateApp implements App {
         const date = dayjs().format('DD.MM.');
 
         this._controller.drawText({
-            hexColor: '#00C8C8',
+            hexColor: DrawHelper.PrimaryColor,
             text: date,
             position: { x: 7, y: 1 },
         });
