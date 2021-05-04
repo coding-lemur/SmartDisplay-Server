@@ -60,7 +60,7 @@ export class CityWeatherApp implements App {
         );
 
         this._controller.drawText({
-            hexColor: '#4CFF00',
+            hexColor: DrawHelper.SecondaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
