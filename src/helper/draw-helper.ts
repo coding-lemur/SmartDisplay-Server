@@ -7,6 +7,10 @@ export class DrawHelper {
         return process.env.PRIMARY_COLOR || '#00C8C8';
     }
 
+    static get SecondaryColor(): string {
+        return process.env.SECONDARY_COLOR || '#4CFF00';
+    }
+
     static renderWeekday(controller: SmartDisplayController): void {
         const currentWeekday = dayjs().weekday();
         const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
