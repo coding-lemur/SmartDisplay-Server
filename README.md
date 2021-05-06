@@ -11,10 +11,10 @@ You can easily add own app. All logic for the display is in the SmartDisplayCont
 
 ## Whats the different to AWTRIX Server?
 
-The SmartDisplay is an Fork of the original AWTRIX. We have some API changes and incompatible with the original project (SmartDisplay Server only works in combination with the SmartDisplay Controller).
+The SmartDisplay Controller is a fork of the original AWTRIX. We have some API changes and incompatible with the original project (SmartDisplay Server only works in combination with the SmartDisplay Controller).
 
-We love the AWTRIX project but we don't like that the server is closed source, so you cant extend it.
-Second: We think many users use AWTRIX servers on a raspberry pie which has limitited RAM. Every Java application is very wasteful so that we try to save memory with our server.
+We are inspired by the AWTRIX project but we don't like that the server is closed source, so you can't extend it.
+Second: We think many users use AWTRIX servers on a raspberry pi with limitited RAM. Every Java application is very wasteful so that we try to save memory with our server.
 
 **SmartDisplay isn't compatible with AWTRIX anymore!**
 
@@ -25,7 +25,7 @@ Second: We think many users use AWTRIX servers on a raspberry pie which has limi
 - auto standby mode if no client is connected 🔌⚡
 - easy extendable (only implement a TypeScript interface) 👩‍💻
 - modern and platform independent architecture (nodejs) 🐧
-- [Docker support 🐳](https://hub.docker.com/r/mceddy/smartdisplay-server)
+- multiplatform [Docker support 🐳](https://hub.docker.com/r/mceddy/smartdisplay-server)
 
 ## Included apps
 
