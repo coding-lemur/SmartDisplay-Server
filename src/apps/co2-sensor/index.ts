@@ -64,7 +64,7 @@ export class Co2SensorApp implements App {
 
         this._controller.drawText({
             hexColor: '#FF0000',
-            text: 'CO2 Alarm',
+            text: 'co2 max',
             position: { x: 3, y: 1 },
         });
     }
