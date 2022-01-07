@@ -10,6 +10,9 @@ services:
             MQTT_USERNAME: 'user'
             MQTT_PASSWORD: 'password'
 
+            PRIMARY_COLOR: '#00C8C8'
+            SECONDARY_COLOR: '#4CFF00'
+
             APP_CITY_WEATHER_CITY_ID: '2950159' # Berlin
             APP_CITY_WEATHER_APP_ID: 'your OpenWeather API key'
             APP_CITY_WEATHER_UNITS: 'metric'
