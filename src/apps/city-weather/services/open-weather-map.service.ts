@@ -8,7 +8,7 @@ export class OpenWeatherMapService {
         const appId = process.env.APP_CITY_WEATHER_APP_ID;
         const units = process.env.APP_CITY_WEATHER_UNITS;
 
-        const url = `http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${appId}&units=${units}`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${appId}&units=${units}`;
 
         const response = await fetch(url);
         const data = await response.json();
