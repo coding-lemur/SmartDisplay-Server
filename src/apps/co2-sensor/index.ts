@@ -1,6 +1,6 @@
 import { App } from '../app';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { HomeAssistantApiService } from './services';
+import { HomeAssistantApiService } from '../../services';
 import { LastUpdated } from '../../models';
 
 export class Co2SensorApp implements App {

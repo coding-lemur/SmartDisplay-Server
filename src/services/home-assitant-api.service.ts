@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 export class HomeAssistantApiService {
     async loadCo2SensorValue(): Promise<number | null> {
-        const baseApiUrl = process.env.APP_CO2_SENSOR_BASE_API_URL;
+        const baseApiUrl = process.env.HA_BASE_API_URL;
         const entityId = process.env.APP_CO2_SENSOR_ENTITY_ID;
         const accessToken = process.env.APP_CO2_SENSOR_ACCESS_TOKEN;
 
