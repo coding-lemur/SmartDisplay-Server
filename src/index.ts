@@ -4,7 +4,7 @@ const clear = require('clear');
 require('dotenv').config();
 
 import process from 'process';
-import program from 'commander';
+import { program } from 'commander';
 import exitHook from 'exit-hook';
 
 import packageJson from '../package.json';
