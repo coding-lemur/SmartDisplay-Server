@@ -10,7 +10,7 @@ import {
     FontWeight,
     Position,
 } from './models';
-import { MqttHelper } from './helper';
+import { getLastTopicPart } from './helper';
 
 export class SmartDisplayController {
     private readonly _info = new LastUpdated<ControllerInfo>();
@@ -44,7 +44,7 @@ export class SmartDisplayController {
                     return;
                 }
 
-                const command = MqttHelper.getLastTopicPart(topic);
+                const command = getLastTopicPart(topic);
 
                 if (command == null) {
                     return;

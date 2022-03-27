@@ -3,7 +3,11 @@ import dayjs from 'dayjs';
 import { App } from '../app';
 import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { StringHelper, DrawHelper } from '../../helper';
+import {
+    renderPixelProgress,
+    roundToFixed,
+    secondaryColor,
+} from '../../helper';
 import { OpenWeatherMapService } from './services';
 import { CityWeatherData } from './models';
 
@@ -47,7 +51,7 @@ export class CityWeatherApp implements App {
     render(): void {
         this._renderTemperature();
 
-        DrawHelper.renderPixelProgress(
+        renderPixelProgress(
             this._controller,
             this._calcCacheMinutesAge(),
             this._maxCacheAgeMinutes
@@ -55,12 +59,10 @@ export class CityWeatherApp implements App {
     }
 
     private _renderTemperature(): void {
-        const temperature = StringHelper.roundToFixed(
-            this._data?.value?.temperature
-        );
+        const temperature = roundToFixed(this._data?.value?.temperature);
 
         this._controller.drawText({
-            hexColor: DrawHelper.SecondaryColor,
+            hexColor: secondaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
