@@ -33,7 +33,7 @@ export class Server {
         };
 
         this._client = mqtt
-            .connect(process.env.MQTT_SERVER, clientOptions)
+            .connect(process.env.MQTT_SERVER!, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
                 const command = getLastTopicPart(topic);

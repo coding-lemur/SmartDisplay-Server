@@ -8,12 +8,11 @@ import {
     roundToFixed,
     secondaryColor,
 } from '../../helper';
-import { OpenWeatherMapService } from './services';
+import { loadData } from './services/open-weather-map.service';
 import { CityWeatherData } from './models';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
-    private readonly _service = new OpenWeatherMapService();
     private readonly _maxCacheAgeMinutes = parseInt(
         process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
         10
@@ -81,7 +80,7 @@ export class CityWeatherApp implements App {
 
     private async _refreshWeatherData(): Promise<void> {
         try {
-            const data = await this._service.loadData();
+            const data = await loadData();
             console.log('city weather', data);
 
             this._data.value = data;

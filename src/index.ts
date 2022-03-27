@@ -1,20 +1,13 @@
 #!/usr/bin/env ts-node
 
-const clear = require('clear');
-require('dotenv').config();
-
-import process from 'process';
-import { program } from 'commander';
-import exitHook from 'exit-hook';
-
-import packageJson from '../package.json';
+import clear from 'clear';
+//import process from 'process';
+//import exitHook from 'exit-hook';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import 'dotenv/config';
 
 import { Server } from './server';
-
-program
-    .description(packageJson.description)
-    .version(packageJson.version)
-    .parse(process.argv);
 
 clear();
 console.log('SmartDisplay');
@@ -28,16 +21,13 @@ let server: Server;
 
 //process.stdin.resume(); // so the program will not close instantly
 
-exitHook(() => {
+/*exitHook(() => {
     console.debug('Exiting');
 
     if (server != null) {
         server.shutdown();
     }
-});
-
-import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
+});*/
 
 const locale = process.env.LOCALE;
 
