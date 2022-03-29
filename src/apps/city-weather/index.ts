@@ -21,11 +21,11 @@ export class CityWeatherApp implements App {
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
 
-    get isReady(): boolean {
+    get isReady() {
         return !this._isDataOutdated;
     }
 
-    private get _isDataOutdated(): boolean {
+    private get _isDataOutdated() {
         const cacheMinutesAge = this._calcCacheMinutesAge();
 
         if (cacheMinutesAge == null) {
@@ -37,17 +37,17 @@ export class CityWeatherApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
-    init(): void {
+    init() {
         this._refreshWeatherData();
     }
 
-    reset(): void {
+    reset() {
         if (this._isDataOutdated) {
             this._refreshWeatherData();
         }
     }
 
-    render(): void {
+    render() {
         this._renderTemperature();
 
         renderPixelProgress(
@@ -57,7 +57,7 @@ export class CityWeatherApp implements App {
         );
     }
 
-    private _renderTemperature(): void {
+    private _renderTemperature() {
         const temperature = roundToFixed(this._data?.value?.temperature);
 
         this._controller.drawText({
@@ -67,7 +67,7 @@ export class CityWeatherApp implements App {
         });
     }
 
-    private _calcCacheMinutesAge(): number | null {
+    private _calcCacheMinutesAge() {
         if (this._data == null || this._data.lastUpdated == null) {
             return null;
         }
@@ -78,7 +78,7 @@ export class CityWeatherApp implements App {
         return diffMinutes;
     }
 
-    private async _refreshWeatherData(): Promise<void> {
+    private async _refreshWeatherData() {
         try {
             const data = await loadData();
             console.log('city weather', data);

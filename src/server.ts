@@ -22,7 +22,7 @@ export class Server {
     private _currentAppIndex = 0;
     private _currentAppIteration = 0;
 
-    private get isRunning(): boolean {
+    private get isRunning() {
         return this._interval != null;
     }
 
@@ -63,10 +63,7 @@ export class Server {
         this._loadApps();
     }
 
-    private _processIncomingServerMessage(
-        command: string,
-        message: string
-    ): void {
+    private _processIncomingServerMessage(command: string, message: string) {
         console.debug('server cmd', command, message);
 
         switch (command) {
@@ -102,10 +99,7 @@ export class Server {
         }
     }
 
-    private _processOutcomingClientMessage(
-        command: string,
-        message: string
-    ): void {
+    private _processOutcomingClientMessage(command: string, message: string) {
         switch (command) {
             case 'info':
                 // check info from client but server is in standby (no running interval)
@@ -127,7 +121,7 @@ export class Server {
         }
     }
 
-    private _loadApps(): void {
+    private _loadApps() {
         const timeApp = new TimeApp(this._controller);
         const dateApp = new DateApp(this._controller);
         const roomWeather = new RoomWeatherApp(this._controller);
@@ -136,7 +130,7 @@ export class Server {
         this._apps.push(...[timeApp, dateApp, roomWeather, cityWeather]);
     }
 
-    start(): void {
+    start() {
         if (this._interval != null) {
             console.warn('found running instance');
             this.stop();
@@ -172,7 +166,7 @@ export class Server {
         }, 1000);
     }
 
-    stop(): void {
+    stop() {
         console.debug('stop server');
 
         if (this._interval == null) {
@@ -183,7 +177,7 @@ export class Server {
         this._interval = null;
     }
 
-    private nextApp(): void {
+    private nextApp() {
         this._currentAppIteration = 0;
         this._currentAppIndex++;
 
@@ -202,7 +196,7 @@ export class Server {
         }
     }
 
-    private renderApp(): void {
+    private renderApp() {
         const app = this._apps[this._currentAppIndex];
 
         if (this._currentAppIteration === 0) {
@@ -221,7 +215,7 @@ export class Server {
         this._currentAppIteration++;
     }
 
-    shutdown(): void {
+    shutdown() {
         console.debug('shutdown');
 
         if (this._client != null) {
