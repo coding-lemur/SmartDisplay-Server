@@ -1,11 +1,10 @@
 import { App } from '../app';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { HomeAssistantApiService } from '../../services';
+import { loadCo2SensorValue } from '../../services';
 import { LastUpdated } from '../../models';
 
 export class Co2SensorApp implements App {
     private readonly _data = new LastUpdated<number>();
-    private readonly _service = new HomeAssistantApiService();
     private readonly _alarmThreshold = parseInt(
         process.env.APP_CO2_SENSOR_ALARM_THRESHOLD || '1200',
         10
@@ -16,7 +15,7 @@ export class Co2SensorApp implements App {
     readonly name = 'co2-sensor';
     readonly renderOnlyOneTime = true;
 
-    get isReady(): boolean {
+    get isReady() {
         const { value } = this._data;
 
         if (value == null || value < this._alarmThreshold) {
@@ -28,7 +27,7 @@ export class Co2SensorApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
-    reset(): void {
+    reset() {
         if (this._isDataLoading) {
             return;
         }
@@ -40,13 +39,13 @@ export class Co2SensorApp implements App {
         });
     }
 
-    render(): void {
+    render() {
         this._renderValue();
     }
 
-    private async _refreshSensorData(): Promise<void> {
+    private async _refreshSensorData() {
         try {
-            const value = await this._service.loadCo2SensorValue();
+            const value = await loadCo2SensorValue();
             console.log('co2 value', value);
 
             this._data.value = value;
@@ -55,7 +54,7 @@ export class Co2SensorApp implements App {
         }
     }
 
-    private _renderValue(): void {
+    private _renderValue() {
         const co2Value = this._data.value;
 
         if (co2Value == null) {

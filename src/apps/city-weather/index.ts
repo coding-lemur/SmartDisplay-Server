@@ -3,89 +3,58 @@ import dayjs from 'dayjs';
 import { App } from '../app';
 import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import {
-    renderPixelProgress,
-    roundToFixed,
-    secondaryColor,
-} from '../../helper';
-import { loadData } from './services/open-weather-map.service';
-import { CityWeatherData } from './models';
+import { roundToFixed, secondaryColor } from '../../helper';
+import { loadBME280Temperature } from '../../services';
 
 export class CityWeatherApp implements App {
-    private readonly _data = new LastUpdated<CityWeatherData>();
-    private readonly _maxCacheAgeMinutes = parseInt(
-        process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
-        10
-    );
+    private readonly _data = new LastUpdated<number>();
+
+    private _isDataLoading = false;
 
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
 
-    get isReady(): boolean {
-        return !this._isDataOutdated;
-    }
-
-    private get _isDataOutdated(): boolean {
-        const cacheMinutesAge = this._calcCacheMinutesAge();
-
-        if (cacheMinutesAge == null) {
-            return true;
-        }
-
-        return cacheMinutesAge >= this._maxCacheAgeMinutes;
+    get isReady() {
+        const { value } = this._data;
+        return value != null;
     }
 
     constructor(private _controller: SmartDisplayController) {}
 
-    init(): void {
-        this._refreshWeatherData();
+    reset() {
+        if (this._isDataLoading) {
+            return;
+        }
+
+        this._isDataLoading = true;
+
+        this._refreshSensorData().finally(() => {
+            this._isDataLoading = false;
+        });
     }
 
-    reset(): void {
-        if (this._isDataOutdated) {
-            this._refreshWeatherData();
+    render() {
+        this._renderValue();
+    }
+
+    private async _refreshSensorData() {
+        try {
+            const value = await loadBME280Temperature();
+            console.log('BME280 temperature', value);
+
+            this._data.value = value;
+        } catch (error) {
+            console.error("can't load BME280 temperature");
         }
     }
 
-    render(): void {
-        this._renderTemperature();
-
-        renderPixelProgress(
-            this._controller,
-            this._calcCacheMinutesAge(),
-            this._maxCacheAgeMinutes
-        );
-    }
-
-    private _renderTemperature(): void {
-        const temperature = roundToFixed(this._data?.value?.temperature);
+    private _renderValue() {
+        const temperature = roundToFixed(this._data.value);
 
         this._controller.drawText({
             hexColor: secondaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
-    }
-
-    private _calcCacheMinutesAge(): number | null {
-        if (this._data == null || this._data.lastUpdated == null) {
-            return null;
-        }
-
-        const lastUpdate = dayjs(this._data.lastUpdated);
-        const diffMinutes = dayjs().diff(lastUpdate, 'minute');
-
-        return diffMinutes;
-    }
-
-    private async _refreshWeatherData(): Promise<void> {
-        try {
-            const data = await loadData();
-            console.log('city weather', data);
-
-            this._data.value = data;
-        } catch (error) {
-            console.error("can't load openweathermap data", error);
-        }
     }
 }

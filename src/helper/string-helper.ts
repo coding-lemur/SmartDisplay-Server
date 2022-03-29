@@ -1,5 +1,5 @@
 export const roundToFixed = (
-    value?: number,
+    value: number | null | undefined,
     fractionDigits = 1
 ): string | null => {
     if (value == null) {
