@@ -10,13 +10,13 @@ export class DateApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
-    render(): void {
+    render() {
         this._renderDate();
 
         renderWeekday(this._controller);
     }
 
-    private _renderDate(): void {
+    private _renderDate() {
         const date = dayjs().format('DD.MM.');
 
         this._controller.drawText({

@@ -1,4 +1,4 @@
-export const getLastTopicPart = (topic: string): string | null => {
+export const getLastTopicPart = (topic: string) => {
     if (topic == null || topic === '' || topic.indexOf('/') === -1) {
         return null;
     }

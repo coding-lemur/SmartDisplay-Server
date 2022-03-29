@@ -9,24 +9,24 @@ export class RoomWeatherApp implements App {
     readonly name = 'room-weather';
     readonly renderOnlyOneTime = true;
 
-    get isReady(): boolean {
+    get isReady() {
         return this._roomWeather?.temperature != null;
     }
 
     constructor(private _controller: SmartDisplayController) {}
 
-    reset(): void {
+    reset() {
         // load room-weather
         this._roomWeather = this._controller?.info?.roomWeather;
     }
 
-    render(): void {
+    render() {
         this._renderTemperature();
 
         renderProgressbar(this._controller, this._roomWeather?.humidity, 100);
     }
 
-    private _renderTemperature(): void {
+    private _renderTemperature() {
         const temperature = roundToFixed(this._roomWeather?.temperature);
 
         this._controller.drawText({

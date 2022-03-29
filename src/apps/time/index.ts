@@ -12,7 +12,7 @@ export class TimeApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
-    render(): void {
+    render() {
         this._renderTime();
 
         renderWeekday(this._controller);
@@ -21,7 +21,7 @@ export class TimeApp implements App {
         //this.showColon = !this.showColon;
     }
 
-    private _renderTime(): void {
+    private _renderTime() {
         const format = this._showColon ? 'HH:mm' : 'HH mm';
         const time = dayjs().format(format);
 

@@ -9,7 +9,7 @@ export const secondaryColor = process.env.SECONDARY_COLOR || '#4CFF00';
 const calcProgressXPosition = (
     value: number | null | undefined,
     maxValue: number
-): number | undefined => {
+) => {
     if (value == null) {
         return;
     }
@@ -20,7 +20,7 @@ const calcProgressXPosition = (
     return xPosition;
 };
 
-export const renderWeekday = (controller: SmartDisplayController): void => {
+export const renderWeekday = (controller: SmartDisplayController) => {
     const currentWeekday = dayjs().weekday();
     const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
 
@@ -41,7 +41,7 @@ export const renderProgressbar = (
     value: number | null | undefined,
     maxValue: number,
     hexColor = '#A0A0A0'
-): void => {
+) => {
     const xEndPosition = calcProgressXPosition(value, maxValue);
 
     if (xEndPosition == null) {
@@ -56,7 +56,7 @@ export const renderPixelProgress = (
     value: number | null,
     maxValue: number,
     hexColor: string = '#A0A0A0'
-): void => {
+) => {
     const xPosition = calcProgressXPosition(value, maxValue);
 
     if (xPosition == null) {
