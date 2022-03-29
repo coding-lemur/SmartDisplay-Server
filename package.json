@@ -20,12 +20,12 @@
     "author": "René Schimmelpfennig",
     "license": "MIT",
     "dependencies": {
+        "axios": "^0.26.1",
         "clear": "^0.1.0",
         "color": "^4.2.1",
         "dayjs": "^1.11.0",
         "dotenv": "^16.0.0",
         "mqtt": "^4.3.7",
-        "node-fetch": "^3.2.3",
         "path": "^0.12.7"
     },
     "devDependencies": {

@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 import { CityWeatherData, OpenWeatherResponse } from '../models';
 
@@ -8,9 +8,8 @@ const units = process.env.APP_CITY_WEATHER_UNITS!;
 
 export const loadData = async () => {
     const url = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${appId}&units=${units}`;
-    const response = await fetch(url);
-    const data = (await response.json()) as OpenWeatherResponse;
-
+    const response = await axios.get<OpenWeatherResponse>(url);
+    const { data } = response;
     const result: CityWeatherData = {
         temperature: data.main.temp,
         humidity: data.main.humidity,
