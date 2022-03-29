@@ -1,7 +1,7 @@
 import { App } from '../app';
 import { RoomWeather } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { StringHelper, DrawHelper } from '../../helper';
+import { primaryColor, renderProgressbar, roundToFixed } from '../../helper';
 
 export class RoomWeatherApp implements App {
     private _roomWeather: RoomWeather | undefined;
@@ -23,20 +23,14 @@ export class RoomWeatherApp implements App {
     render(): void {
         this._renderTemperature();
 
-        DrawHelper.renderProgressbar(
-            this._controller,
-            this._roomWeather?.humidity,
-            100
-        );
+        renderProgressbar(this._controller, this._roomWeather?.humidity, 100);
     }
 
     private _renderTemperature(): void {
-        const temperature = StringHelper.roundToFixed(
-            this._roomWeather?.temperature
-        );
+        const temperature = roundToFixed(this._roomWeather?.temperature);
 
         this._controller.drawText({
-            hexColor: DrawHelper.PrimaryColor,
+            hexColor: primaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });

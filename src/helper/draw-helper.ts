@@ -1,78 +1,67 @@
 import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
 
 import { SmartDisplayController } from '../smart-display-controller';
 
-export class DrawHelper {
-    static get PrimaryColor(): string {
-        return process.env.PRIMARY_COLOR || '#00C8C8';
+export const primaryColor = process.env.PRIMARY_COLOR || '#00C8C8';
+export const secondaryColor = process.env.SECONDARY_COLOR || '#4CFF00';
+
+const calcProgressXPosition = (
+    value: number | null | undefined,
+    maxValue: number
+): number | undefined => {
+    if (value == null) {
+        return;
     }
 
-    static get SecondaryColor(): string {
-        return process.env.SECONDARY_COLOR || '#4CFF00';
-    }
+    const percentValue = value / maxValue;
+    const xPosition = 2 + Math.round(26 * percentValue);
 
-    static renderWeekday(controller: SmartDisplayController): void {
-        const currentWeekday = dayjs().weekday();
-        const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
+    return xPosition;
+};
 
-        for (let weekday = 0; weekday < 7; weekday++) {
-            const xPosition = getXPositionByWeekDay(weekday);
-            const color =
-                weekday === currentWeekday ? this.PrimaryColor : '#A0A0A0';
+export const renderWeekday = (controller: SmartDisplayController): void => {
+    const currentWeekday = dayjs().weekday();
+    const getXPositionByWeekDay = (weekday: number) => weekday * 4 + 2;
 
-            controller.drawLine(
-                { x: xPosition, y: 7 },
-                { x: xPosition + 2, y: 7 },
-                color
-            );
-        }
-    }
-
-    static renderProgressbar(
-        controller: SmartDisplayController,
-        value: number | null | undefined,
-        maxValue: number,
-        hexColor = '#A0A0A0'
-    ): void {
-        const xEndPosition = this._calcProgressXPosition(value, maxValue);
-
-        if (xEndPosition == null) {
-            return;
-        }
+    for (let weekday = 0; weekday < 7; weekday++) {
+        const xPosition = getXPositionByWeekDay(weekday);
+        const color = weekday === currentWeekday ? primaryColor : '#A0A0A0';
 
         controller.drawLine(
-            { x: 2, y: 7 },
-            { x: xEndPosition, y: 7 },
-            hexColor
+            { x: xPosition, y: 7 },
+            { x: xPosition + 2, y: 7 },
+            color
         );
     }
+};
 
-    static renderPixelProgress(
-        controller: SmartDisplayController,
-        value: number | null,
-        maxValue: number,
-        hexColor: string = '#A0A0A0'
-    ): void {
-        const xPosition = this._calcProgressXPosition(value, maxValue);
+export const renderProgressbar = (
+    controller: SmartDisplayController,
+    value: number | null | undefined,
+    maxValue: number,
+    hexColor = '#A0A0A0'
+): void => {
+    const xEndPosition = calcProgressXPosition(value, maxValue);
 
-        if (xPosition == null) {
-            return;
-        }
-
-        controller.drawPixel({ x: xPosition, y: 7 }, hexColor);
+    if (xEndPosition == null) {
+        return;
     }
 
-    private static _calcProgressXPosition(
-        value: number | null | undefined,
-        maxValue: number
-    ): number | undefined {
-        if (value == null) {
-            return;
-        }
+    controller.drawLine({ x: 2, y: 7 }, { x: xEndPosition, y: 7 }, hexColor);
+};
 
-        const percentValue = value / maxValue;
-        const xPosition = 2 + Math.round(26 * percentValue);
+export const renderPixelProgress = (
+    controller: SmartDisplayController,
+    value: number | null,
+    maxValue: number,
+    hexColor: string = '#A0A0A0'
+): void => {
+    const xPosition = calcProgressXPosition(value, maxValue);
 
-        return xPosition;
+    if (xPosition == null) {
+        return;
     }
-}
+
+    controller.drawPixel({ x: xPosition, y: 7 }, hexColor);
+};

@@ -1,6 +1,6 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
-import { MqttHelper } from './helper';
+import { getLastTopicPart } from './helper';
 import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
 import { App } from './apps/app';
@@ -34,10 +34,10 @@ export class Server {
         };
 
         this._client = mqtt
-            .connect(process.env.MQTT_SERVER, clientOptions)
+            .connect(process.env.MQTT_SERVER!, clientOptions)
             .subscribe('smartDisplay/server/in/#')
             .on('message', (topic, message) => {
-                const command = MqttHelper.getLastTopicPart(topic);
+                const command = getLastTopicPart(topic);
 
                 if (command == null) {
                     return;

@@ -1,6 +1,6 @@
 {
     "name": "smart-display-server",
-    "version": "0.44.0",
+    "version": "1.0.0",
     "description": "Server which controlles the smart display.",
     "repository": {
         "type": "git",
@@ -20,23 +20,22 @@
     "author": "René Schimmelpfennig",
     "license": "MIT",
     "dependencies": {
+        "axios": "^0.26.1",
         "clear": "^0.1.0",
-        "color": "^3.1.3",
-        "commander": "^7.2.0",
-        "dayjs": "^1.10.5",
-        "dotenv": "^10.0.0",
-        "exit-hook": "^2.2.1",
-        "mqtt": "^4.2.8",
-        "node-fetch": "^2.6.1",
+        "color": "^4.2.1",
+        "dayjs": "^1.11.0",
+        "dotenv": "^16.0.0",
+        "mqtt": "^4.3.7",
         "path": "^0.12.7"
     },
     "devDependencies": {
-        "@types/color": "^3.0.1",
+        "@types/clear": "^0.1.2",
+        "@types/color": "^3.0.3",
         "@types/mqtt": "^2.5.0",
-        "@types/node": "^15.12.4",
-        "@types/node-fetch": "^2.5.10",
-        "@types/ws": "^7.4.5",
-        "ts-node": "^10.0.0",
-        "typescript": "^4.3.4"
+        "@types/node": "^17.0.23",
+        "@types/node-fetch": "^2.6.1",
+        "@types/ws": "^8.5.3",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.6.3"
     }
 }

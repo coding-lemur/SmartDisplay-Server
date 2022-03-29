@@ -3,13 +3,16 @@ import dayjs from 'dayjs';
 import { App } from '../app';
 import { LastUpdated } from '../../models';
 import { SmartDisplayController } from '../../smart-display-controller';
-import { StringHelper, DrawHelper } from '../../helper';
-import { OpenWeatherMapService } from './services';
+import {
+    renderPixelProgress,
+    roundToFixed,
+    secondaryColor,
+} from '../../helper';
+import { loadData } from './services/open-weather-map.service';
 import { CityWeatherData } from './models';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
-    private readonly _service = new OpenWeatherMapService();
     private readonly _maxCacheAgeMinutes = parseInt(
         process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
         10
@@ -47,7 +50,7 @@ export class CityWeatherApp implements App {
     render(): void {
         this._renderTemperature();
 
-        DrawHelper.renderPixelProgress(
+        renderPixelProgress(
             this._controller,
             this._calcCacheMinutesAge(),
             this._maxCacheAgeMinutes
@@ -55,12 +58,10 @@ export class CityWeatherApp implements App {
     }
 
     private _renderTemperature(): void {
-        const temperature = StringHelper.roundToFixed(
-            this._data?.value?.temperature
-        );
+        const temperature = roundToFixed(this._data?.value?.temperature);
 
         this._controller.drawText({
-            hexColor: DrawHelper.SecondaryColor,
+            hexColor: secondaryColor,
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
@@ -79,7 +80,7 @@ export class CityWeatherApp implements App {
 
     private async _refreshWeatherData(): Promise<void> {
         try {
-            const data = await this._service.loadData();
+            const data = await loadData();
             console.log('city weather', data);
 
             this._data.value = data;
