@@ -57,5 +57,5 @@ export const loadBME280Temperature = async () => {
         return null;
     }
 
-    return state;
+    return Number(state);
 };
