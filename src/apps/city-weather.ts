@@ -1,10 +1,8 @@
-import dayjs from 'dayjs';
-
-import { App } from '../app';
-import { LastUpdated } from '../../models';
-import { SmartDisplayController } from '../../smart-display-controller';
-import { roundToFixed, secondaryColor } from '../../helper';
-import { loadBME280Temperature } from '../../services';
+import { App } from './app';
+import { SmartDisplayController } from '../smart-display-controller';
+import { LastUpdated } from '../models';
+import { loadBME280Temperature } from '../services';
+import { roundToFixed, secondaryColor } from '../helper';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<number>();
