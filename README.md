@@ -82,6 +82,6 @@ Overwrite following environment variables to setup your container:
 | APP_CITY_WEATHER_UNITS         | weather data unit forma ("metric" or "imperial")                                                                   |
 | APP_CITY_WEATHER_MAX_CACHE_AGE | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
 | HA_BASE_API_URL                | URL to Home Assistant API                                                                                          |
-| APP_CO2_SENSOR_ACCESS_TOKEN    | Access token for Home Assistant API                                                                                |
+| HA_ACCESS_TOKEN    | Access token for Home Assistant API                                                                                |
 | APP_CO2_SENSOR_ENTITY_ID       | Entity ID of the CO2 sensor                                                                                        |
 | APP_CO2_SENSOR_ALARM_THRESHOLD | minimum sensor value to show the ventilate alarm on the display                                                    |

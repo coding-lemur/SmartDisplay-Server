@@ -2,12 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 
 const baseApiUrl = process.env.HA_BASE_API_URL!;
-const accessToken = process.env.APP_CO2_SENSOR_ACCESS_TOKEN!; // TODO rename to HA_ACCESS_TOKEN
+const accessToken = process.env.HA_ACCESS_TOKEN!;
 
 const co2SensorEntityId = process.env.APP_CO2_SENSOR_ENTITY_ID!;
 const bme280SensorEntityId = 'sensor.bme280_temperature'; // TOOD use env varibale
 
-export const loadState = async (entityId: string) => {
+const loadState = async (entityId: string) => {
     const url = `${baseApiUrl}/states/${entityId}`;
 
     const options: AxiosRequestConfig = {

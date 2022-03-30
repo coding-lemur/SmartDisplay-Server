@@ -20,8 +20,8 @@ services:
             APP_ITERATIONS: 8
 
             HA_BASE_API_URL: 'http://my-server.com/home-assistant/api'
+            HA_ACCESS_TOKEN: 'your Home Assistant access token'
 
             APP_CO2_SENSOR_ENTITY_ID: 'sensor.co2meter_value'
-            APP_CO2_SENSOR_ACCESS_TOKEN: 'your Home Assistant access token'
             APP_CO2_SENSOR_ALARM_THRESHOLD: 1200
         restart: unless-stopped
