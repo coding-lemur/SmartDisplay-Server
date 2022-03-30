@@ -21,7 +21,19 @@ export class CityWeatherApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
+    init() {
+        this._loadData();
+    }
+
     reset() {
+        this._loadData();
+    }
+
+    render() {
+        this._renderValue();
+    }
+
+    private async _loadData() {
         if (this._isDataLoading) {
             return;
         }
@@ -31,10 +43,6 @@ export class CityWeatherApp implements App {
         this._refreshSensorData().finally(() => {
             this._isDataLoading = false;
         });
-    }
-
-    render() {
-        this._renderValue();
     }
 
     private async _refreshSensorData() {
