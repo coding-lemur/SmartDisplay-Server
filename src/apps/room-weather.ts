@@ -1,7 +1,7 @@
-import { App } from '../app';
-import { RoomWeather } from '../../models';
-import { SmartDisplayController } from '../../smart-display-controller';
-import { primaryColor, renderProgressbar, roundToFixed } from '../../helper';
+import { App } from './app';
+import { RoomWeather } from '../models';
+import { SmartDisplayController } from '../smart-display-controller';
+import { primaryColor, renderProgressbar, roundToFixed } from '../helper';
 
 export class RoomWeatherApp implements App {
     private _roomWeather: RoomWeather | undefined;

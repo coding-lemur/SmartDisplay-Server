@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
-import { App } from '../app';
-import { SmartDisplayController } from '../../smart-display-controller';
-import { primaryColor, renderWeekday } from '../../helper';
+import { App } from './app';
+import { SmartDisplayController } from '../smart-display-controller';
+import { primaryColor, renderWeekday } from '../helper';
 
 export class TimeApp implements App {
     private _showColon = true;

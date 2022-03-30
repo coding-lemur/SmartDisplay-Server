@@ -1,15 +1,10 @@
 import dayjs from 'dayjs';
 
-import { App } from '../app';
-import { LastUpdated } from '../../models';
-import { SmartDisplayController } from '../../smart-display-controller';
-import {
-    renderPixelProgress,
-    roundToFixed,
-    secondaryColor,
-} from '../../helper';
-import { loadData } from './services/open-weather-map.service';
-import { CityWeatherData } from './models';
+import { App } from './app';
+import { SmartDisplayController } from '../smart-display-controller';
+import { renderPixelProgress, roundToFixed, secondaryColor } from '../helper';
+import { loadData } from '../services/open-weather-map.service';
+import { CityWeatherData, LastUpdated } from '../models';
 
 export class CityWeatherApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
