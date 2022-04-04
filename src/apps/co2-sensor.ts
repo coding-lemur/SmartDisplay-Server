@@ -1,7 +1,7 @@
-import { App } from '../app';
-import { SmartDisplayController } from '../../smart-display-controller';
-import { loadCo2SensorValue } from '../../services';
-import { LastUpdated } from '../../models';
+import { App } from './app';
+import { SmartDisplayController } from '../smart-display-controller';
+import { loadCo2SensorValue } from '../services';
+import { LastUpdated } from '../models';
 
 export class Co2SensorApp implements App {
     private readonly _data = new LastUpdated<number>();
