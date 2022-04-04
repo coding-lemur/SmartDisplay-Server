@@ -1,6 +1,5 @@
 import mqtt, { IClientOptions } from 'mqtt';
 
-import { getLastTopicPart } from './helper';
 import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
 import { App } from './apps/app';
@@ -8,6 +7,7 @@ import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
 import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
+import { getLastTopicPart } from './helper/mqtt-helper';
 
 export class Server {
     private readonly _client: mqtt.Client;

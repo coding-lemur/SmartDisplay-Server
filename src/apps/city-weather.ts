@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderPixelProgress, roundToFixed, secondaryColor } from '../helper';
-import { loadData } from '../services/open-weather-map.service';
+import { renderPixelProgress, secondaryColor } from '../helper/draw-helper';
+import { roundToFixed } from '../helper/string-helper';
+import { loadData } from '../services/open-weather-map-service';
 import { CityWeatherData, LastUpdated } from '../models';
 
 export class CityWeatherApp implements App {
