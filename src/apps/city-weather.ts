@@ -1,11 +1,12 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
+import { loadBME280Humidity, loadBME280Temperature } from '../services';
+import { renderProgressbar, roundToFixed, secondaryColor } from '../helper';
 import { LastUpdated } from '../models';
-import { loadBME280Temperature } from '../services';
-import { roundToFixed, secondaryColor } from '../helper';
 
 export class CityWeatherApp implements App {
-    private readonly _data = new LastUpdated<number>();
+    private readonly _temperature = new LastUpdated<number>();
+    private readonly _humidity = new LastUpdated<number>();
 
     private _isDataLoading = false;
 
@@ -13,8 +14,7 @@ export class CityWeatherApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady() {
-        const { value } = this._data;
-        return value != null;
+        return this._temperature != null || this._humidity != null;
     }
 
     constructor(private _controller: SmartDisplayController) {}
@@ -29,6 +29,8 @@ export class CityWeatherApp implements App {
 
     render() {
         this._renderValue();
+
+        renderProgressbar(this._controller, this._humidity.value, 100);
     }
 
     private async _loadData() {
@@ -45,17 +47,19 @@ export class CityWeatherApp implements App {
 
     private async _refreshSensorData() {
         try {
-            const value = await loadBME280Temperature();
-            console.log('BME280 temperature', value);
+            const temperature = await loadBME280Temperature();
+            const humidity = await loadBME280Humidity();
+            console.log('BME280 values', temperature, humidity);
 
-            this._data.value = value;
+            this._temperature.value = temperature;
+            this._humidity.value = humidity;
         } catch (error) {
             console.error("can't load BME280 temperature");
         }
     }
 
     private _renderValue() {
-        const temperature = roundToFixed(this._data.value);
+        const temperature = roundToFixed(this._temperature.value);
 
         this._controller.drawText({
             hexColor: secondaryColor,

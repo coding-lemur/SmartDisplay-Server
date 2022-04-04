@@ -5,7 +5,10 @@ const baseApiUrl = process.env.HA_BASE_API_URL!;
 const accessToken = process.env.HA_ACCESS_TOKEN!;
 
 const co2SensorEntityId = process.env.APP_CO2_SENSOR_ENTITY_ID!;
-const bme280SensorEntityId = 'sensor.bme280_temperature'; // TOOD use env varibale
+
+// TOOD use env varibale
+const temperatureSensorEntityId = 'sensor.bme280_temperature';
+const humiditySensorEntityId = 'sensor.bme280_humidity';
 
 const loadState = async (entityId: string) => {
     const url = `${baseApiUrl}/states/${entityId}`;
@@ -43,7 +46,7 @@ export const loadCo2SensorValue = async () => {
 };
 
 export const loadBME280Temperature = async () => {
-    const { state, last_updated } = await loadState(bme280SensorEntityId);
+    const { state, last_updated } = await loadState(temperatureSensorEntityId);
 
     if (state === 'unavailable') {
         console.log('BME280 temperature value unavailable');
@@ -57,5 +60,25 @@ export const loadBME280Temperature = async () => {
         return null;
     }
 
-    return Number(state);
+    const value = Number(state);
+    return Number.isNaN(value) ? null : value;
+};
+
+export const loadBME280Humidity = async () => {
+    const { state, last_updated } = await loadState(humiditySensorEntityId);
+
+    if (state === 'unavailable') {
+        console.log('BME280 humidity value unavailable');
+        return null;
+    }
+
+    const diffMinutes = dayjs().diff(last_updated, 'minute');
+
+    if (diffMinutes >= 5) {
+        console.log('BME280 humidity is too old', diffMinutes);
+        return null;
+    }
+
+    const value = Number(state);
+    return Number.isNaN(value) ? null : value;
 };
