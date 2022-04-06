@@ -2,6 +2,10 @@
 
 ![Node.js CI](https://github.com/Smart-Display/SmartDisplay-Server/workflows/Node.js%20CI/badge.svg)
 
+## Demo
+
+![demo](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/demo.gif?raw=true)
+
 ## Description
 
 Use in combination with [SmartDisplay Controller](https://github.com/MCeddy/SmartDisplay-Controller).
