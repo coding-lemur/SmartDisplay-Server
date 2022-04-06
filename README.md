@@ -4,7 +4,7 @@
 
 ## Demo
 
-![demo](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/demo.gif?raw=true
+![demo](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/demo.gif?raw=true)
 
 ## Description
 
