@@ -1,11 +1,11 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderProgressbar, secondaryColor } from '../helper/draw-helper';
-import { roundToFixed } from '../helper/string-helper';
+import { renderProgressbar, secondaryColor } from '../helper/draw';
+import { roundToFixed } from '../helper/string';
 import {
     loadBME280Humidity,
     loadBME280Temperature,
-} from '../services/home-assitant-api.service';
+} from '../services/home-assitant-api';
 import { LastUpdated } from '../models';
 
 export class CityWeatherApp implements App {

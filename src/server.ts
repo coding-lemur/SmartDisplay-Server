@@ -2,7 +2,7 @@ import mqtt, { IClientOptions } from 'mqtt';
 
 import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
-import { getLastTopicPart } from './helper/mqtt-helper';
+import { getLastTopicPart } from './helper/mqtt';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
