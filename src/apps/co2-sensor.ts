@@ -18,7 +18,11 @@ export class Co2SensorApp implements App {
     get isReady() {
         const { value } = this._data;
 
-        if (value == null || value < this._alarmThreshold) {
+        if (
+            this._isDataLoading ||
+            value == null ||
+            value < this._alarmThreshold
+        ) {
             return false;
         }
 
@@ -27,20 +31,32 @@ export class Co2SensorApp implements App {
 
     constructor(private _controller: SmartDisplayController) {}
 
+    init() {
+        this._loadData();
+    }
+
     reset() {
+        this._loadData();
+    }
+
+    render() {
+        this._renderCo2Value();
+    }
+
+    private async _loadData() {
         if (this._isDataLoading) {
             return;
         }
 
         this._isDataLoading = true;
 
-        this._refreshSensorData().finally(() => {
+        try {
+            await this._refreshSensorData();
+        } catch (e) {
+            console.error('problem on fetching co2 sensor data', e);
+        } finally {
             this._isDataLoading = false;
-        });
-    }
-
-    render() {
-        this._renderValue();
+        }
     }
 
     private async _refreshSensorData() {
@@ -54,7 +70,7 @@ export class Co2SensorApp implements App {
         }
     }
 
-    private _renderValue() {
+    private _renderCo2Value() {
         const co2Value = this._data.value;
 
         if (co2Value == null) {

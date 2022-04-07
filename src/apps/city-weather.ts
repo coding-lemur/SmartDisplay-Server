@@ -18,7 +18,7 @@ export class CityWeatherApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady() {
-        return this._temperature != null || this._humidity != null;
+        return !this._isDataLoading && this._temperature.value != null;
     }
 
     constructor(private _controller: SmartDisplayController) {}
@@ -32,9 +32,8 @@ export class CityWeatherApp implements App {
     }
 
     render() {
-        this._renderValue();
-
-        renderProgressbar(this._controller, this._humidity.value, 100);
+        this._renderTemerature();
+        this._renderHumidity();
     }
 
     private async _loadData() {
@@ -44,16 +43,19 @@ export class CityWeatherApp implements App {
 
         this._isDataLoading = true;
 
-        this._refreshSensorData().finally(() => {
+        try {
+            await this._refreshSensorData();
+        } catch (e) {
+            console.error('problem on fetching BME280 sensor data', e);
+        } finally {
             this._isDataLoading = false;
-        });
+        }
     }
 
     private async _refreshSensorData() {
         try {
             const temperature = await loadBME280Temperature();
             const humidity = await loadBME280Humidity();
-            console.log('BME280 values', temperature, humidity);
 
             this._temperature.value = temperature;
             this._humidity.value = humidity;
@@ -62,7 +64,7 @@ export class CityWeatherApp implements App {
         }
     }
 
-    private _renderValue() {
+    private _renderTemerature() {
         const temperature = roundToFixed(this._temperature.value);
 
         this._controller.drawText({
@@ -70,5 +72,9 @@ export class CityWeatherApp implements App {
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
+    }
+
+    private _renderHumidity() {
+        renderProgressbar(this._controller, this._humidity.value, 100);
     }
 }
