@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderPixelProgress, secondaryColor } from '../helper/draw-helper';
-import { roundToFixed } from '../helper/string-helper';
-import { loadData } from '../services/open-weather-map-service';
+import { renderPixelProgress, secondaryColor } from '../helper/draw';
+import { roundToFixed } from '../helper/string';
+import { loadData } from '../services/open-weather-map';
 import { CityWeatherData, LastUpdated } from '../models';
 
 export class CityWeatherApp implements App {
@@ -45,12 +45,7 @@ export class CityWeatherApp implements App {
 
     render() {
         this._renderTemperature();
-
-        renderPixelProgress(
-            this._controller,
-            this._calcCacheMinutesAge(),
-            this._maxCacheAgeMinutes
-        );
+        this._renderCacheTimeout();
     }
 
     private _renderTemperature() {
@@ -61,6 +56,14 @@ export class CityWeatherApp implements App {
             text: `${temperature}°`,
             position: { x: 7, y: 1 },
         });
+    }
+
+    private _renderCacheTimeout() {
+        renderPixelProgress(
+            this._controller,
+            this._calcCacheMinutesAge(),
+            this._maxCacheAgeMinutes
+        );
     }
 
     private _calcCacheMinutesAge() {

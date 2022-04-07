@@ -7,7 +7,7 @@ import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
 import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
-import { getLastTopicPart } from './helper/mqtt-helper';
+import { getLastTopicPart } from './helper/mqtt';
 
 export class Server {
     private readonly _client: mqtt.Client;
