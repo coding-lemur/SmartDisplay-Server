@@ -51,22 +51,14 @@ export class Co2SensorApp implements App {
         this._isDataLoading = true;
 
         try {
-            await this._refreshSensorData();
-        } catch (e) {
-            console.error('problem on fetching co2 sensor data', e);
-        } finally {
-            this._isDataLoading = false;
-        }
-    }
-
-    private async _refreshSensorData() {
-        try {
             const value = await loadCo2SensorValue();
             console.log('co2 value', value);
 
             this._data.value = value;
-        } catch (error) {
-            console.error("can't load co2-sensor value");
+        } catch (e) {
+            console.error('problem on fetching co2 sensor data', e);
+        } finally {
+            this._isDataLoading = false;
         }
     }
 

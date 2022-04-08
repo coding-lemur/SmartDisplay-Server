@@ -44,23 +44,15 @@ export class CityWeatherApp implements App {
         this._isDataLoading = true;
 
         try {
-            await this._refreshSensorData();
-        } catch (e) {
-            console.error('problem on fetching BME280 sensor data', e);
-        } finally {
-            this._isDataLoading = false;
-        }
-    }
-
-    private async _refreshSensorData() {
-        try {
             const temperature = await loadBME280Temperature();
             const humidity = await loadBME280Humidity();
 
             this._temperature.value = temperature;
             this._humidity.value = humidity;
-        } catch (error) {
-            console.error("can't load BME280 temperature");
+        } catch (e) {
+            console.error('problem on fetching BME280 sensor data', e);
+        } finally {
+            this._isDataLoading = false;
         }
     }
 
