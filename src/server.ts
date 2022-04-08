@@ -196,6 +196,7 @@ export class Server {
         }
 
         if (app.isReady === false) {
+            console.log('skip because not ready');
             this.nextApp();
         }
     }
