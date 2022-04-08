@@ -18,7 +18,12 @@ export class CityWeatherApp implements App {
     readonly renderOnlyOneTime = true;
 
     get isReady() {
-        return !this._isDataLoading && this._temperature.value != null;
+        if (this._temperature.value == null) {
+            console.log('not ready because temperate has no value');
+            return false;
+        }
+
+        return true;
     }
 
     constructor(private _controller: SmartDisplayController) {}
@@ -46,6 +51,7 @@ export class CityWeatherApp implements App {
         try {
             const temperature = await loadBME280Temperature();
             const humidity = await loadBME280Humidity();
+            console.log('bme280 values', temperature, humidity);
 
             this._temperature.value = temperature;
             this._humidity.value = humidity;
