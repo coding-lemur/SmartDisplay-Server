@@ -18,11 +18,7 @@ export class Co2SensorApp implements App {
     get isReady() {
         const { value } = this._data;
 
-        if (
-            this._isDataLoading ||
-            value == null ||
-            value < this._alarmThreshold
-        ) {
+        if (value == null || value < this._alarmThreshold) {
             return false;
         }
 
