@@ -20,7 +20,7 @@
     "author": "René Schimmelpfennig",
     "license": "MIT",
     "dependencies": {
-        "axios": "^0.26.1",
+        "axios": "^0.27.2",
         "clear": "^0.1.0",
         "color": "^4.2.3",
         "dayjs": "^1.11.0",
