@@ -1,13 +1,12 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderProgress, secondaryColor } from '../helper/draw';
-import { roundToFixed } from '../helper/string';
 import { loadStateWithTimeCheck } from '../services/home-assistant-api';
 import { LastUpdated } from '../models';
 
 // TODO use env variable
-/*const temperatureSensorEntityId = 'sensor.bme280_temperature';
-const humiditySensorEntityId = 'sensor.bme280_humidity';*/
+const temperatureSensorEntityId = 'sensor.openweathermap_temperature';
+const humiditySensorEntityId = 'sensor.openweathermap_humidity';
 
 export class CityWeatherApp implements App {
     private readonly _temperature = new LastUpdated<number>();
@@ -51,11 +50,11 @@ export class CityWeatherApp implements App {
 
         try {
             const temperature = await loadStateWithTimeCheck(
-                'sensor.openweathermap_temperature',
+                temperatureSensorEntityId,
                 70
             ); //await loadBME280Temperature();
             const humidity = await loadStateWithTimeCheck(
-                'sensor.openweathermap_humidity',
+                humiditySensorEntityId,
                 70
             ); //await loadBME280Humidity();
             console.log('values', temperature, humidity);
@@ -63,14 +62,14 @@ export class CityWeatherApp implements App {
             this._temperature.value = temperature;
             this._humidity.value = humidity;
         } catch (e) {
-            console.error('problem on fetching BME280 sensor data', e);
+            console.error('problem on fetching sensor data', e);
         } finally {
             this._isDataLoading = false;
         }
     }
 
     private _renderTemperature() {
-        const temperature = roundToFixed(this._temperature.value);
+        const temperature = this._temperature.value;
 
         this._controller.drawText({
             hexColor: secondaryColor,
