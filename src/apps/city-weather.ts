@@ -1,12 +1,13 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderProgressbar, secondaryColor } from '../helper/draw';
+import { renderProgress, secondaryColor } from '../helper/draw';
 import { roundToFixed } from '../helper/string';
-import {
-    loadBME280Humidity,
-    loadBME280Temperature,
-} from '../services/home-assitant-api';
+import { loadStateWithTimeCheck } from '../services/home-assistant-api';
 import { LastUpdated } from '../models';
+
+// TODO use env variable
+/*const temperatureSensorEntityId = 'sensor.bme280_temperature';
+const humiditySensorEntityId = 'sensor.bme280_humidity';*/
 
 export class CityWeatherApp implements App {
     private readonly _temperature = new LastUpdated<number>();
@@ -37,7 +38,7 @@ export class CityWeatherApp implements App {
     }
 
     render() {
-        this._renderTemerature();
+        this._renderTemperature();
         this._renderHumidity();
     }
 
@@ -49,9 +50,15 @@ export class CityWeatherApp implements App {
         this._isDataLoading = true;
 
         try {
-            const temperature = await loadBME280Temperature();
-            const humidity = await loadBME280Humidity();
-            console.log('bme280 values', temperature, humidity);
+            const temperature = await loadStateWithTimeCheck(
+                'sensor.openweathermap_temperature',
+                70
+            ); //await loadBME280Temperature();
+            const humidity = await loadStateWithTimeCheck(
+                'sensor.openweathermap_humidity',
+                70
+            ); //await loadBME280Humidity();
+            console.log('values', temperature, humidity);
 
             this._temperature.value = temperature;
             this._humidity.value = humidity;
@@ -62,7 +69,7 @@ export class CityWeatherApp implements App {
         }
     }
 
-    private _renderTemerature() {
+    private _renderTemperature() {
         const temperature = roundToFixed(this._temperature.value);
 
         this._controller.drawText({
@@ -73,6 +80,6 @@ export class CityWeatherApp implements App {
     }
 
     private _renderHumidity() {
-        renderProgressbar(this._controller, this._humidity.value, 100);
+        renderProgress(this._controller, this._humidity.value, 100);
     }
 }

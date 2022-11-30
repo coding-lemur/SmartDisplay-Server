@@ -36,7 +36,7 @@ export const renderWeekday = (controller: SmartDisplayController) => {
     }
 };
 
-export const renderProgressbar = (
+export const renderProgress = (
     controller: SmartDisplayController,
     value: number | null | undefined,
     maxValue: number,

@@ -1,7 +1,7 @@
 import { App } from './app';
 import { RoomWeather } from '../models';
 import { SmartDisplayController } from '../smart-display-controller';
-import { primaryColor, renderProgressbar } from '../helper/draw';
+import { primaryColor, renderProgress } from '../helper/draw';
 import { roundToFixed } from '../helper/string';
 
 export class RoomWeatherApp implements App {
@@ -24,7 +24,7 @@ export class RoomWeatherApp implements App {
     render() {
         this._renderTemperature();
 
-        renderProgressbar(this._controller, this._roomWeather?.humidity, 100);
+        renderProgress(this._controller, this._roomWeather?.humidity, 100);
     }
 
     private _renderTemperature() {

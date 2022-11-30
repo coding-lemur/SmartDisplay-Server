@@ -1,7 +1,9 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { loadCo2SensorValue } from '../services/home-assitant-api';
+import { loadStateWithTimeCheck } from '../services/home-assistant-api';
 import { LastUpdated } from '../models';
+
+const co2SensorEntityId = process.env.APP_CO2_SENSOR_ENTITY_ID!;
 
 export class Co2SensorApp implements App {
     private readonly _data = new LastUpdated<number>();
@@ -47,7 +49,7 @@ export class Co2SensorApp implements App {
         this._isDataLoading = true;
 
         try {
-            const value = await loadCo2SensorValue();
+            const value = await loadStateWithTimeCheck(co2SensorEntityId, 5);
             console.log('co2 value', value);
 
             this._data.value = value;
