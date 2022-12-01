@@ -24,7 +24,7 @@ export class RoomWeatherApp implements App {
     render() {
         this._renderTemperature();
 
-        renderProgress(this._controller, this._roomWeather?.humidity, 100);
+        renderProgress(this._controller, this._roomWeather?.humidity);
     }
 
     private _renderTemperature() {

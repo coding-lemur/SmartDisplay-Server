@@ -39,7 +39,7 @@ export const renderWeekday = (controller: SmartDisplayController) => {
 export const renderProgress = (
     controller: SmartDisplayController,
     value: number | null | undefined,
-    maxValue: number,
+    maxValue: number = 100,
     hexColor = '#A0A0A0'
 ) => {
     const xEndPosition = calcProgressXPosition(value, maxValue);

@@ -39,5 +39,5 @@ export const loadStateWithTimeCheck = async (
         return null;
     }
 
-    return state;
+    return state as number;
 };

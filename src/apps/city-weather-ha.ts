@@ -2,23 +2,26 @@ import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderProgress, secondaryColor } from '../helper/draw';
 import { loadStateWithTimeCheck } from '../services/home-assistant-api';
-import { LastUpdated } from '../models';
 
-// TODO use env variable
-const temperatureSensorEntityId = 'sensor.openweathermap_temperature';
-const humiditySensorEntityId = 'sensor.openweathermap_humidity';
+const temperatureSensorEntityId =
+    process.env.HA_CITY_WEATHER_ENTITY_ID_TEMPERATURE;
+const humiditySensorEntityId = process.env.HA_CITY_WEATHER_ENTITY_ID_HUMIDITY!;
 
-export class CityWeatherApp implements App {
-    private readonly _temperature = new LastUpdated<number>();
-    private readonly _humidity = new LastUpdated<number>();
+const maxAgeMinutes = process.env.HA_CITY_WEATHER_MAX_AGE
+    ? parseInt(process.env.HA_CITY_WEATHER_MAX_AGE, 10)
+    : undefined;
 
-    private _isDataLoading = false;
-
+export class CityWeatherHaApp implements App {
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
 
+    private _temperature: number | null = null;
+    private _humidity: number | null = null;
+
+    private _isDataLoading = false;
+
     get isReady() {
-        if (this._temperature.value == null) {
+        if (!this._temperature) {
             console.log('not ready because temperate has no value');
             return false;
         }
@@ -42,7 +45,7 @@ export class CityWeatherApp implements App {
     }
 
     private async _loadData() {
-        if (this._isDataLoading) {
+        if (this._isDataLoading || !temperatureSensorEntityId) {
             return;
         }
 
@@ -51,16 +54,19 @@ export class CityWeatherApp implements App {
         try {
             const temperature = await loadStateWithTimeCheck(
                 temperatureSensorEntityId,
-                70
-            ); //await loadBME280Temperature();
-            const humidity = await loadStateWithTimeCheck(
-                humiditySensorEntityId,
-                70
-            ); //await loadBME280Humidity();
-            console.log('values', temperature, humidity);
+                maxAgeMinutes
+            );
+            this._temperature = temperature;
+            console.log('temperature', temperature);
 
-            this._temperature.value = temperature;
-            this._humidity.value = humidity;
+            if (humiditySensorEntityId) {
+                const humidity = await loadStateWithTimeCheck(
+                    humiditySensorEntityId,
+                    maxAgeMinutes
+                );
+                this._humidity = humidity;
+                console.log('humidity', humidity);
+            }
         } catch (e) {
             console.error('problem on fetching sensor data', e);
         } finally {
@@ -69,16 +75,14 @@ export class CityWeatherApp implements App {
     }
 
     private _renderTemperature() {
-        const temperature = this._temperature.value;
-
         this._controller.drawText({
             hexColor: secondaryColor,
-            text: `${temperature}°`,
+            text: `${this._temperature}°`,
             position: { x: 7, y: 1 },
         });
     }
 
     private _renderHumidity() {
-        renderProgress(this._controller, this._humidity.value, 100);
+        renderProgress(this._controller, this._humidity);
     }
 }

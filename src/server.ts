@@ -6,9 +6,10 @@ import { getLastTopicPart } from './helper/mqtt';
 import { App } from './apps/app';
 import { TimeApp } from './apps/time';
 import { RoomWeatherApp } from './apps/room-weather';
-import { CityWeatherApp } from './apps/city-weather';
 import { DateApp } from './apps/date';
 import { Co2SensorApp } from './apps/co2-sensor';
+import { CityWeatherOwmApp as CityWeatherOwmApp } from './apps/city-weather-owm';
+import { CityWeatherHaApp as CityWeatherHaApp } from './apps/city-weather-ha';
 
 export class Server {
     private readonly _client: mqtt.Client;
@@ -126,11 +127,19 @@ export class Server {
         const timeApp = new TimeApp(this._controller);
         const dateApp = new DateApp(this._controller);
         const roomWeather = new RoomWeatherApp(this._controller);
-        const cityWeather = new CityWeatherApp(this._controller);
+        const cityWeatherOwm = new CityWeatherOwmApp(this._controller);
+        const cityWeatherHa = new CityWeatherHaApp(this._controller);
         const co2Sensor = new Co2SensorApp(this._controller);
 
         this._apps.push(
-            ...[timeApp, dateApp, roomWeather, cityWeather, co2Sensor]
+            ...[
+                timeApp,
+                dateApp,
+                roomWeather,
+                cityWeatherOwm,
+                cityWeatherHa,
+                co2Sensor,
+            ]
         );
     }
 
