@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { hasValue } from '../helper/string';
 
 import { CityWeatherData, OpenWeatherResponse } from '../models';
 
@@ -7,7 +8,7 @@ const appId = process.env.APP_CITY_WEATHER_APP_ID;
 const units = process.env.APP_CITY_WEATHER_UNITS;
 
 export const isConfigured =
-    cityId !== undefined && appId !== undefined && units !== undefined;
+    hasValue(cityId) && hasValue(appId) && hasValue(units);
 
 export const loadWeatherData = async () => {
     const url = `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${appId}&units=${units}`;
