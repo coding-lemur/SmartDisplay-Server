@@ -4,7 +4,7 @@ import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderPixelProgress, secondaryColor } from '../helper/draw';
 import { roundToFixed } from '../helper/string';
-import { loadWeatherData } from '../services/open-weather-map';
+import { isConfigured, loadWeatherData } from '../services/open-weather-map';
 import { CityWeatherData, LastUpdated } from '../models';
 
 const maxCacheAgeMinutes = parseInt(
@@ -80,8 +80,13 @@ export class CityWeatherOwmApp implements App {
 
     private async _refreshWeatherData() {
         try {
+            if (!isConfigured) {
+                console.debug("skip city-weather-owm because isn't configured");
+                return;
+            }
+
             const data = await loadWeatherData();
-            console.log('city weather', data);
+            console.debug('city weather', data);
 
             this._data.value = data;
         } catch (error) {
