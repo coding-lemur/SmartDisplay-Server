@@ -4,15 +4,16 @@ import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderPixelProgress, secondaryColor } from '../helper/draw';
 import { roundToFixed } from '../helper/string';
-import { loadData } from '../services/open-weather-map';
+import { isConfigured, loadWeatherData } from '../services/open-weather-map';
 import { CityWeatherData, LastUpdated } from '../models';
 
-export class CityWeatherApp implements App {
+const maxCacheAgeMinutes = parseInt(
+    process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
+    10
+);
+
+export class CityWeatherOwmApp implements App {
     private readonly _data = new LastUpdated<CityWeatherData>();
-    private readonly _maxCacheAgeMinutes = parseInt(
-        process.env.APP_CITY_WEATHER_MAX_CACHE_AGE || '0',
-        10
-    );
 
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
@@ -28,7 +29,7 @@ export class CityWeatherApp implements App {
             return true;
         }
 
-        return cacheMinutesAge >= this._maxCacheAgeMinutes;
+        return cacheMinutesAge >= maxCacheAgeMinutes;
     }
 
     constructor(private _controller: SmartDisplayController) {}
@@ -62,7 +63,7 @@ export class CityWeatherApp implements App {
         renderPixelProgress(
             this._controller,
             this._calcCacheMinutesAge(),
-            this._maxCacheAgeMinutes
+            maxCacheAgeMinutes
         );
     }
 
@@ -79,12 +80,17 @@ export class CityWeatherApp implements App {
 
     private async _refreshWeatherData() {
         try {
-            const data = await loadData();
-            console.log('city weather', data);
+            if (!isConfigured) {
+                console.debug("skip city-weather-owm because isn't configured");
+                return;
+            }
+
+            const data = await loadWeatherData();
+            console.debug('city weather', data);
 
             this._data.value = data;
         } catch (error) {
-            console.error("can't load openweathermap data", error);
+            console.error("can't load open-weather-map data", error);
         }
     }
 }

@@ -20,10 +20,10 @@
     "author": "René Schimmelpfennig",
     "license": "MIT",
     "dependencies": {
-        "axios": "^0.27.2",
+        "axios": "^1.2.0",
         "clear": "^0.1.0",
         "color": "^4.2.3",
-        "dayjs": "^1.11.5",
+        "dayjs": "^1.11.6",
         "dotenv": "^16.0.3",
         "mqtt": "^4.3.7",
         "path": "^0.12.7"

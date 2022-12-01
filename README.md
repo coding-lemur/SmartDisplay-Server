@@ -71,17 +71,24 @@ Second: We think many users use AWTRIX servers on a raspberry pi with limitited 
 
 Overwrite following environment variables to setup your container:
 
-| Name                           | Description                                                                                                        |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| MQTT_SERVER                    | Adress of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                      |
-| MQTT_USERNAME                  | Username to access the MQTT Broker                                                                                 |
-| MQTT_PASSWORD                  | Password of the MQTT user                                                                                          |
-| APP_ITERATIONS                 | Number of seconds before switching to the next app                                                                 |
-| LOCALE                         | Country code for loading date time settings (e.g. "de")                                                            |
-| PRIMARY_COLOR                  | Color used by most texts                                                                                           |
-| SECONDARY_COLOR                | Color used by city-weather app                                                                                     |
-| APP_CITY_WEATHER_APP_ID        | Your [OpenWeathermap API Key](https://home.openweathermap.org/api_keys)                                            |
-| APP_CITY_WEATHER_CITY_ID       | The [City ID](https://openweathermap.org/find) for external weather data                                           |
-| APP_CITY_WEATHER_UNITS         | weather data unit forma ("metric" or "imperial")                                                                   |
-| APP_CITY_WEATHER_MAX_CACHE_AGE | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
-| TZ                             | Timezone to show the correct time (e.g. "Europe/Berlin")                                                           |
+| Name                                  | Required | Description                                                                                                        |
+| ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| TZ                                    | X        | Timezone to show the correct time (e.g. "Europe/Berlin")                                                           |
+| LOCALE                                | X        | Country code for loading date time settings (e.g. "de")                                                            |
+| PRIMARY_COLOR                         | X        | Color used by most texts                                                                                           |
+| SECONDARY_COLOR                       | x        | Color used by city-weather app                                                                                     |
+| MQTT_SERVER                           | x        | Address of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                     |
+| MQTT_USERNAME                         | x        | Username to access the MQTT Broker                                                                                 |
+| MQTT_PASSWORD                         | x        | Password of the MQTT user                                                                                          |
+| APP_ITERATIONS                        | x        | Number of seconds before switching to the next app                                                                 |
+| APP_CITY_WEATHER_APP_ID               |          | Your [OpenWeathermap API Key](https://home.openweathermap.org/api_keys)                                            |
+| APP_CITY_WEATHER_CITY_ID              |          | The [City ID](https://openweathermap.org/find) for external weather data                                           |
+| APP_CITY_WEATHER_UNITS                |          | weather data unit forma ("metric" or "imperial")                                                                   |
+| APP_CITY_WEATHER_MAX_CACHE_AGE        |          | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
+| HA_CITY_WEATHER_ENTITY_ID_TEMPERATURE |          |                                                                                                                    |
+| HA_CITY_WEATHER_ENTITY_ID_HUMIDITY    |          |                                                                                                                    |
+| HA_CITY_WEATHER_MAX_AGE               |          |                                                                                                                    |
+| HA_BASE_API_URL                       |          | URL to Home Assistant API                                                                                          |
+| HA_ACCESS_TOKEN                       |          | Access token for Home Assistant API                                                                                |
+| APP_CO2_SENSOR_ENTITY_ID              |          | Entity ID of the CO2 sensor                                                                                        |
+| APP_CO2_SENSOR_ALARM_THRESHOLD        |          | minimum sensor value to show the ventilate alarm on the display                                                    |
