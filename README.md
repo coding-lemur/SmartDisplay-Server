@@ -77,7 +77,7 @@ Overwrite following environment variables to setup your container:
 | LOCALE                                | X        | Country code for loading date time settings (e.g. "de")                                                            |
 | PRIMARY_COLOR                         | X        | Color used by most texts                                                                                           |
 | SECONDARY_COLOR                       | x        | Color used by city-weather app                                                                                     |
-| MQTT_SERVER                           | x        | Adress of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                      |
+| MQTT_SERVER                           | x        | Address of the MQTT broker in format "mqtt://192.168.1.1:1883"                                                     |
 | MQTT_USERNAME                         | x        | Username to access the MQTT Broker                                                                                 |
 | MQTT_PASSWORD                         | x        | Password of the MQTT user                                                                                          |
 | APP_ITERATIONS                        | x        | Number of seconds before switching to the next app                                                                 |
