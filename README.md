@@ -36,7 +36,8 @@ Second: We think many users use AWTRIX servers on a raspberry pi with limitited 
 - time: display the current time
 - date: display the currend day and month
 - roomWeather: display the current room temperature (by integrated DHT22 from the controller)
-- cityWeather: display the current city temperature (by openweathermap API call)
+- cityWeather: display the current city temperature (by openweathermap API call or from Home Assistant)
+- [CO2 Warner](https://github.com/coding-lemur/co2-meter-esp32) (via Home Assistant)
 
 ## Architecture
 
@@ -44,7 +45,7 @@ Second: We think many users use AWTRIX servers on a raspberry pi with limitited 
 
 ## Setup
 
-### Create OpenWeatherMap account (free)
+### Create OpenWeatherMap account (free, optional)
 
 1. signup at <https://home.openweathermap.org/users/sign_up>
 2. copy your API key from <https://home.openweathermap.org/api_keys>
@@ -87,8 +88,8 @@ Overwrite following environment variables to setup your container:
 | APP_CITY_WEATHER_MAX_CACHE_AGE        |          | With an free OpenWeatherMap account the count of API requests is limited. How many minutes should the data cached? |
 | HA_BASE_API_URL                       |          | URL to Home Assistant API                                                                                          |
 | HA_ACCESS_TOKEN                       |          | Access token for Home Assistant API                                                                                |
-| HA_CITY_WEATHER_ENTITY_ID_TEMPERATURE |          |                                                                                                                    |
-| HA_CITY_WEATHER_ENTITY_ID_HUMIDITY    |          |                                                                                                                    |
-| HA_CITY_WEATHER_MAX_AGE               |          |                                                                                                                    |
+| HA_CITY_WEATHER_ENTITY_ID_TEMPERATURE |          | Entity ID of the temperature sensor                                                                                                                   |
+| HA_CITY_WEATHER_ENTITY_ID_HUMIDITY    |          | Entity ID of the humidity sensor                                                                                                                   |
+| HA_CITY_WEATHER_MAX_AGE               |          | max minutes for sensor values to accept as valid                                                                                                                   |
 | APP_CO2_SENSOR_ENTITY_ID              |          | Entity ID of the CO2 sensor                                                                                        |
 | APP_CO2_SENSOR_ALARM_THRESHOLD        |          | minimum sensor value to show the ventilate alarm on the display                                                    |
