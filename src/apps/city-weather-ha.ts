@@ -11,6 +11,8 @@ const maxAgeMinutes = process.env.HA_CITY_WEATHER_MAX_AGE
     ? parseInt(process.env.HA_CITY_WEATHER_MAX_AGE, 10)
     : undefined;
 
+const toNumber = (value: string | null) => value ? parseFloat(value) : null;
+
 export class CityWeatherHaApp implements App {
     readonly name = 'city-weather';
     readonly renderOnlyOneTime = true;
@@ -56,7 +58,7 @@ export class CityWeatherHaApp implements App {
                 temperatureSensorEntityId,
                 maxAgeMinutes
             );
-            this._temperature = temperature;
+            this._temperature = toNumber(temperature);
             console.log('temperature', temperature);
 
             if (humiditySensorEntityId) {
@@ -64,7 +66,7 @@ export class CityWeatherHaApp implements App {
                     humiditySensorEntityId,
                     maxAgeMinutes
                 );
-                this._humidity = humidity;
+                this._humidity = toNumber(humidity);
                 console.log('humidity', humidity);
             }
         } catch (e) {
@@ -77,7 +79,7 @@ export class CityWeatherHaApp implements App {
     private _renderTemperature() {
         this._controller.drawText({
             hexColor: secondaryColor,
-            text: `${this._temperature}°`,
+            text: `${this._temperature?.toFixed(1)}°`,
             position: { x: 7, y: 1 },
         });
     }
