@@ -43,3 +43,5 @@ export const loadStateWithTimeCheck = async (
 
     return state as string;
 };
+
+export const toNumber = (value: string | null) => value ? parseFloat(value) : null;

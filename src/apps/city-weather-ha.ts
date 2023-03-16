@@ -1,7 +1,7 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderProgress, secondaryColor } from '../helper/draw';
-import { loadStateWithTimeCheck } from '../services/home-assistant-api';
+import { loadStateWithTimeCheck, toNumber } from '../services/home-assistant-api';
 
 const temperatureSensorEntityId =
     process.env.HA_CITY_WEATHER_ENTITY_ID_TEMPERATURE;
@@ -10,8 +10,6 @@ const humiditySensorEntityId = process.env.HA_CITY_WEATHER_ENTITY_ID_HUMIDITY!;
 const maxAgeMinutes = process.env.HA_CITY_WEATHER_MAX_AGE
     ? parseInt(process.env.HA_CITY_WEATHER_MAX_AGE, 10)
     : undefined;
-
-const toNumber = (value: string | null) => value ? parseFloat(value) : null;
 
 export class CityWeatherHaApp implements App {
     readonly name = 'city-weather';
