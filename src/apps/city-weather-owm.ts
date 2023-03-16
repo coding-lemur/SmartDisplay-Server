@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
 import { renderPixelProgress, secondaryColor } from '../helper/draw';
-import { roundToFixed } from '../helper/string';
 import { isConfigured, loadWeatherData } from '../services/open-weather-map';
 import { CityWeatherData, LastUpdated } from '../models';
 
@@ -50,7 +49,7 @@ export class CityWeatherOwmApp implements App {
     }
 
     private _renderTemperature() {
-        const temperature = roundToFixed(this._data?.value?.temperature);
+        const temperature = this._data?.value?.temperature.toFixed(1);
 
         this._controller.drawText({
             hexColor: secondaryColor,

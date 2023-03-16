@@ -2,7 +2,6 @@ import { App } from './app';
 import { RoomWeather } from '../models';
 import { SmartDisplayController } from '../smart-display-controller';
 import { primaryColor, renderProgress } from '../helper/draw';
-import { roundToFixed } from '../helper/string';
 
 export class RoomWeatherApp implements App {
     private _roomWeather: RoomWeather | undefined;
@@ -28,7 +27,7 @@ export class RoomWeatherApp implements App {
     }
 
     private _renderTemperature() {
-        const temperature = roundToFixed(this._roomWeather?.temperature);
+        const temperature = this._roomWeather?.temperature.toFixed(1);
 
         this._controller.drawText({
             hexColor: primaryColor,
