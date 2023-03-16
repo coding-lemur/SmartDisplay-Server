@@ -1,8 +1,10 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 
 const baseApiUrl = process.env.HA_BASE_API_URL!;
 const accessToken = process.env.HA_ACCESS_TOKEN!;
+
+type HaResponse = {state: string, last_updated: string}
 
 const loadState = async (entityId: string) => {
     const url = `${baseApiUrl}/states/${entityId}`;
@@ -15,7 +17,7 @@ const loadState = async (entityId: string) => {
         },
     };
 
-    const response = await axios.get(url, options);
+    const response = await axios.get<any, AxiosResponse<HaResponse, any>>(url, options);
     const { state, last_updated } = response.data;
 
     return { state, last_updated };
@@ -39,5 +41,5 @@ export const loadStateWithTimeCheck = async (
         return null;
     }
 
-    return state as number;
+    return state as string;
 };
