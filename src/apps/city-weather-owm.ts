@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderPixelProgress, secondaryColor } from '../helper/draw';
+import { renderPixelProgress, secondaryColor } from '../utils/draw';
 import { isConfigured, loadWeatherData } from '../services/open-weather-map';
 import { CityWeatherData, LastUpdated } from '../models';
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { hasValue } from '../helper/string';
+import { hasValue } from '../utils/string';
 
 import { CityWeatherData, OpenWeatherResponse } from '../models';
 

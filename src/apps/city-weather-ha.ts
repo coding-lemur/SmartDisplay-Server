@@ -1,6 +1,6 @@
 import { App } from './app';
 import { SmartDisplayController } from '../smart-display-controller';
-import { renderProgress, secondaryColor } from '../helper/draw';
+import { renderProgress, secondaryColor } from '../utils/draw';
 import { loadStateWithTimeCheck, toNumber } from '../services/home-assistant-api';
 
 const temperatureSensorEntityId =

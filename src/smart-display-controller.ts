@@ -10,7 +10,7 @@ import {
     FontWeight,
     Position,
 } from './models';
-import { getLastTopicPart } from './helper/mqtt';
+import { getLastTopicPart } from './utils/mqtt';
 
 export class SmartDisplayController {
     private readonly _info = new LastUpdated<ControllerInfo>();
