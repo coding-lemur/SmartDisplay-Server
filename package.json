@@ -32,7 +32,7 @@
         "@types/clear": "^0.1.2",
         "@types/color": "^3.0.3",
         "@types/node": "^18.16.3",
-        "@types/node-fetch": "^2.6.3",
+        "@types/node-fetch": "^2.6.4",
         "@types/ws": "^8.5.4",
         "ts-node": "^10.9.1",
         "typescript": "^5.0.4"
