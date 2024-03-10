@@ -1,4 +1,4 @@
-import mqtt, { IClientOptions } from 'mqtt';
+import mqtt, { IClientOptions, MqttClient } from 'mqtt';
 
 import { ControllerInfo } from './models';
 import { SmartDisplayController } from './smart-display-controller';
@@ -12,7 +12,7 @@ import { CityWeatherOwmApp as CityWeatherOwmApp } from './apps/city-weather-owm'
 import { CityWeatherHaApp as CityWeatherHaApp } from './apps/city-weather-ha';
 
 export class Server {
-    private readonly _client: mqtt.Client;
+    private readonly _client: MqttClient;
     private readonly _apps: App[] = [];
     private readonly _controller: SmartDisplayController;
     private readonly _appIterations = parseInt(

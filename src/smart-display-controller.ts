@@ -1,4 +1,4 @@
-import mqtt from 'mqtt';
+import { MqttClient } from 'mqtt';
 import Color from 'color';
 import dayjs from 'dayjs';
 
@@ -36,7 +36,7 @@ export class SmartDisplayController {
         return diffSeconds > 300; // more than 5 minutes old
     }
 
-    constructor(private _client: mqtt.Client) {
+    constructor(private _client: MqttClient) {
         _client
             .subscribe('smartDisplay/client/out/#')
             .on('message', (topic, message) => {
