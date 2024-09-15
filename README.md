@@ -2,6 +2,8 @@
 
 ![Node.js CI](https://github.com/Smart-Display/SmartDisplay-Server/workflows/Node.js%20CI/badge.svg)
 
+⚠ ⚠ ⚠ This project is no longer in development. Please use [AWTRIX 3](https://blueforcer.github.io/awtrix3/) ⚠ ⚠ ⚠
+
 ## Demo
 
 ![demo](https://github.com/Smart-Display/SmartDisplay-Server/blob/master/docs/demo.gif?raw=true)
